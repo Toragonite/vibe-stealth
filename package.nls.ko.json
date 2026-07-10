@@ -1,5 +1,5 @@
 {
-  "displayName": "Vibe Stealth — 스포츠·e스포츠 실시간 문자중계",
+  "displayName": "Vibe Stealth",
   "description": "업무 중에도 조용히, 에디터 안에서 텍스트로 경기를 따라가세요 — KBO·K리그 문자중계, MLB, NHL, NBA, NFL, 월드컵과 주요 축구 리그, LCK·MSI·롤드컵. 사이드바에 진행 중인 경기 목록, 출력 채널에 중계, 상태 표시줄에 점수. 핵심 종목은 계정도 API 키도 필요 없습니다.",
   "viewContainer.title": "Vibe Stealth",
   "view.games.name": "진행 중인 경기",

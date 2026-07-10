@@ -1,5 +1,5 @@
 {
-  "displayName": "Vibe Stealth — Live Sports & Esports Text Relay",
+  "displayName": "Vibe Stealth",
   "description": "Follow live sports & esports as a quiet text play-by-play inside VS Code — KBO/K League (문자중계), MLB, NHL, NBA, NFL, World Cup & top soccer leagues, LCK/MSI/Worlds. Tree of live games, output-channel relay, compact status-bar score. No accounts, no keys for the core sports.",
   "viewContainer.title": "Vibe Stealth",
   "view.games.name": "Live Games",

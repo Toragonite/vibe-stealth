@@ -1,6 +1,6 @@
 # Vibe Stealth — Live Sports & Esports Text Relay
 
-![Vibe Stealth](media/banner.png)
+![Vibe Stealth](https://raw.githubusercontent.com/Toragonite/vibe-stealth/master/media/banner.png)
 
 **Follow the game without leaving your editor.** Vibe Stealth turns live sports and esports into a quiet text ticker inside VS Code: no video, no sound, no extra window stealing focus — just short play-by-play lines streaming into an Output Channel, plus a compact score in your status bar. Pick a game from the activity-bar tree, follow it, and keep coding while the relay runs in the background.
 
@@ -45,13 +45,13 @@ League ids used in `vibeStealth.leagues.enabled` are `provider:league` — for e
 
 ## How the relay looks
 
-<img src="media/screenshots/sidebar.png" alt="Vibe Stealth sidebar tree" width="285" align="right" />
+<img src="https://raw.githubusercontent.com/Toragonite/vibe-stealth/master/media/screenshots/sidebar.png" alt="Vibe Stealth sidebar tree" width="285" align="right" />
 
 The activity-bar tree lists every league and game; a followed live game (here `LAA 1:5 TEX`, Bottom 6th) expands to show live state and both lineups, with real team crests on each row.
 
 The followed game's play-by-play streams into the Output Channel:
 
-![Vibe Stealth relay output](media/screenshots/output.png)
+![Vibe Stealth relay output](https://raw.githubusercontent.com/Toragonite/vibe-stealth/master/media/screenshots/output.png)
 
 The same lines in ASCII, for reference:
 

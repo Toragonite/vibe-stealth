@@ -1,6 +1,6 @@
 # Vibe Stealth — 스포츠·e스포츠 실시간 문자중계
 
-![Vibe Stealth](media/banner.png)
+![Vibe Stealth](https://raw.githubusercontent.com/Toragonite/vibe-stealth/master/media/banner.png)
 
 **업무 중에도 조용히, 에디터 안에서 경기를 따라가세요.** Vibe Stealth는 KBO·K리그 문자중계와 LCK를 비롯한 실시간 스포츠·e스포츠를 VS Code 안의 조용한 텍스트 티커로 바꿔줍니다. 영상도, 소리도, 포커스를 빼앗는 별도 창도 없이 — 짧은 중계 한 줄 한 줄이 출력 채널(Output Channel)에 흘러들고, 상태 표시줄에는 간결한 스코어만 뜹니다. 액티비티 바 트리에서 경기를 골라 팔로우하면, 코드를 계속 짜는 동안 중계가 뒤에서 알아서 돌아갑니다.
 
@@ -45,13 +45,13 @@
 
 ## 중계 화면 예시
 
-<img src="media/screenshots/sidebar.png" alt="Vibe Stealth 사이드바 트리" width="285" align="right" />
+<img src="https://raw.githubusercontent.com/Toragonite/vibe-stealth/master/media/screenshots/sidebar.png" alt="Vibe Stealth 사이드바 트리" width="285" align="right" />
 
 액티비티 바 트리에 모든 리그와 경기가 나열되고, 팔로우 중인 진행 경기(여기서는 `LAA 1:5 TEX`, 6회말)를 펼치면 실시간 상황과 양 팀 라인업이 실제 팀 엠블럼과 함께 표시됩니다.
 
 팔로우한 경기의 문자중계는 출력 채널로 흘러듭니다:
 
-![Vibe Stealth 중계 출력](media/screenshots/output.png)
+![Vibe Stealth 중계 출력](https://raw.githubusercontent.com/Toragonite/vibe-stealth/master/media/screenshots/output.png)
 
 같은 라인을 ASCII로 표현하면:
 
