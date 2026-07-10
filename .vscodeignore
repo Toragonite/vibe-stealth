@@ -8,7 +8,6 @@ scripts/**
 node_modules/**
 out/**/*.map
 media/logo.png
-media/screenshots/**
 README.ko.md
 tsconfig.json
 vitest.config.ts

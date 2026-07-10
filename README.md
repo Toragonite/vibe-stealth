@@ -45,6 +45,16 @@ League ids used in `vibeStealth.leagues.enabled` are `provider:league` — for e
 
 ## How the relay looks
 
+<img src="media/screenshots/sidebar.png" alt="Vibe Stealth sidebar tree" width="285" align="right" />
+
+The activity-bar tree lists every league and game; a followed live game (here `LAA 1:5 TEX`, Bottom 6th) expands to show live state and both lineups, with real team crests on each row.
+
+The followed game's play-by-play streams into the Output Channel:
+
+![Vibe Stealth relay output](media/screenshots/output.png)
+
+The same lines in ASCII, for reference:
+
 ```
 19:32:05 │ · T7 │ ⚾ J. Soto strikes out swinging.
 19:33:41 │ ★ T7 │ ⚾ B. Harper homers (12) to left field. NYY 4, PHI 3.

@@ -45,6 +45,16 @@
 
 ## 중계 화면 예시
 
+<img src="media/screenshots/sidebar.png" alt="Vibe Stealth 사이드바 트리" width="285" align="right" />
+
+액티비티 바 트리에 모든 리그와 경기가 나열되고, 팔로우 중인 진행 경기(여기서는 `LAA 1:5 TEX`, 6회말)를 펼치면 실시간 상황과 양 팀 라인업이 실제 팀 엠블럼과 함께 표시됩니다.
+
+팔로우한 경기의 문자중계는 출력 채널로 흘러듭니다:
+
+![Vibe Stealth 중계 출력](media/screenshots/output.png)
+
+같은 라인을 ASCII로 표현하면:
+
 ```
 19:32:05 │ · T7 │ ⚾ J. Soto strikes out swinging.
 19:33:41 │ ★ T7 │ ⚾ B. Harper homers (12) to left field. NYY 4, PHI 3.
