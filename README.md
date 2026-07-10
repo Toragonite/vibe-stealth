@@ -1,5 +1,7 @@
 # Vibe Stealth — Live Sports & Esports Text Relay
 
+![Vibe Stealth](media/banner.png)
+
 **Follow the game without leaving your editor.** Vibe Stealth turns live sports and esports into a quiet text ticker inside VS Code: no video, no sound, no extra window stealing focus — just short play-by-play lines streaming into an Output Channel, plus a compact score in your status bar. Pick a game from the activity-bar tree, follow it, and keep coding while the relay runs in the background.
 
 Built for people who want to know the score without opening a browser tab, a stream, or a second monitor.
