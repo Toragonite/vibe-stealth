@@ -19,8 +19,18 @@
     "sports",
     "esports",
     "live scores",
+    "scoreboard",
     "play-by-play",
-    "scoreboard"
+    "ticker",
+    "relay",
+    "baseball",
+    "hockey",
+    "basketball",
+    "soccer",
+    "football",
+    "league of legends",
+    "스포츠",
+    "중계"
   ],
   "engines": {
     "vscode": "^1.90.0"
