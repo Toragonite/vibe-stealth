@@ -1,0 +1,120 @@
+{
+  "data": {
+    "event": {
+      "id": "115570934355614581",
+      "type": "match",
+      "league": {
+        "id": "98767991325878492",
+        "slug": "msi",
+        "name": "MSI"
+      },
+      "match": {
+        "strategy": {
+          "count": 5
+        },
+        "teams": [
+          {
+            "id": "98767991926151025",
+            "name": "G2 Esports",
+            "code": "G2",
+            "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+            "result": {
+              "gameWins": 0
+            }
+          },
+          {
+            "id": "98767991853197861",
+            "name": "T1",
+            "code": "T1",
+            "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
+            "result": {
+              "gameWins": 0
+            }
+          }
+        ],
+        "games": [
+          {
+            "number": 1,
+            "id": "115570934355614582",
+            "state": "inProgress",
+            "teams": [
+              {
+                "id": "98767991926151025",
+                "side": "blue"
+              },
+              {
+                "id": "98767991853197861",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          },
+          {
+            "number": 2,
+            "id": "115570934355614583",
+            "state": "unstarted",
+            "teams": [
+              {
+                "id": "98767991926151025",
+                "side": "blue"
+              },
+              {
+                "id": "98767991853197861",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          },
+          {
+            "number": 3,
+            "id": "115570934355614584",
+            "state": "unstarted",
+            "teams": [
+              {
+                "id": "98767991853197861",
+                "side": "blue"
+              },
+              {
+                "id": "98767991926151025",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          },
+          {
+            "number": 4,
+            "id": "115570934355614585",
+            "state": "unstarted",
+            "teams": [
+              {
+                "id": "98767991926151025",
+                "side": "blue"
+              },
+              {
+                "id": "98767991853197861",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          },
+          {
+            "number": 5,
+            "id": "115570934355614586",
+            "state": "unstarted",
+            "teams": [
+              {
+                "id": "98767991853197861",
+                "side": "blue"
+              },
+              {
+                "id": "98767991926151025",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "_note": "SYNTHETIC fixture — PandaScore has no real probed payload. Hand-authored to match docs/CONTRACT.md §2.4 (matches list with opponents[].opponent, results[], games[] with position/finished/winner). The real /{slug}/matches endpoint returns a BARE ARRAY; tests feed the `matches` array below to the mocked fetchJson.",
+  "matches": [
+    {
+      "id": 1001,
+      "status": "running",
+      "begin_at": "2026-07-08T10:00:00Z",
+      "number_of_games": 3,
+      "opponents": [
+        { "type": "Team", "opponent": { "id": 11, "name": "T1", "acronym": "T1", "image_url": "https://cdn.pandascore.co/images/team/image/11/t1.png" } },
+        { "type": "Team", "opponent": { "id": 22, "name": "Gen.G", "acronym": "GEN" } }
+      ],
+      "results": [
+        { "team_id": 11, "score": 1 },
+        { "team_id": 22, "score": 0 }
+      ],
+      "games": [
+        { "position": 1, "status": "finished", "finished": true, "winner": { "id": 11, "type": "Team" } },
+        { "position": 2, "status": "running", "finished": false, "winner": { "id": null, "type": "Team" } }
+      ]
+    },
+    {
+      "id": 1002,
+      "status": "not_started",
+      "begin_at": "2026-07-08T13:00:00Z",
+      "number_of_games": 5,
+      "opponents": [
+        { "type": "Team", "opponent": { "id": 33, "name": "G2 Esports", "acronym": "G2" } },
+        { "type": "Team", "opponent": { "id": 44, "name": "Fnatic", "acronym": "FNC" } }
+      ],
+      "results": [
+        { "team_id": 33, "score": 0 },
+        { "team_id": 44, "score": 0 }
+      ],
+      "games": []
+    }
+  ]
+}

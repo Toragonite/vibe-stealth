@@ -1,0 +1,254 @@
+{
+  "plays": [
+    {
+      "eventId": 78,
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "02:19",
+      "timeRemaining": "17:41",
+      "situationCode": "1551",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 505,
+      "typeDescKey": "goal",
+      "sortOrder": 39,
+      "details": {
+        "xCoord": -87,
+        "yCoord": 7,
+        "zoneCode": "O",
+        "shotType": "snap",
+        "scoringPlayerId": 8482145,
+        "scoringPlayerTotal": 20,
+        "assist1PlayerId": 8476902,
+        "assist1PlayerTotal": 26,
+        "assist2PlayerId": 8480950,
+        "assist2PlayerTotal": 8,
+        "eventOwnerTeamId": 25,
+        "goalieInNetId": 8481551,
+        "awayScore": 1,
+        "homeScore": 0,
+        "highlightClipSharingUrl": "https://nhl.com/video/dal-buf-bourque-scores-goal-against-colten-ellis-6393186284112",
+        "highlightClipSharingUrlFr": "https://nhl.com/fr/video/mavrik-bourque-with-a-but-vs-les-sabres-de-buffalo-6393184114112",
+        "highlightClip": 6393186284112,
+        "highlightClipFr": 6393184114112,
+        "discreteClip": 6393186081112,
+        "discreteClipFr": 6393186379112
+      },
+      "pptReplayUrl": "https://wsr.nhle.com/sprites/20252026/2025021301/ev78.json"
+    },
+    {
+      "eventId": 227,
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "12:48",
+      "timeRemaining": "07:12",
+      "situationCode": "1551",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 505,
+      "typeDescKey": "goal",
+      "sortOrder": 182,
+      "details": {
+        "xCoord": 61,
+        "yCoord": 23,
+        "zoneCode": "O",
+        "shotType": "wrist",
+        "scoringPlayerId": 8480064,
+        "scoringPlayerTotal": 13,
+        "assist1PlayerId": 8484145,
+        "assist1PlayerTotal": 30,
+        "assist2PlayerId": 8482671,
+        "assist2PlayerTotal": 20,
+        "eventOwnerTeamId": 7,
+        "goalieInNetId": 8479979,
+        "awayScore": 1,
+        "homeScore": 1,
+        "highlightClipSharingUrl": "https://nhl.com/video/dal-buf-norris-scores-goal-against-jake-oettinger-6393186314112",
+        "highlightClipSharingUrlFr": "https://nhl.com/fr/video/dal-buf-norris-marque-un-but-contre-jake-oettinger-6393185352112",
+        "highlightClip": 6393186314112,
+        "highlightClipFr": 6393185352112,
+        "discreteClip": 6393185153112,
+        "discreteClipFr": 6393185825112
+      },
+      "pptReplayUrl": "https://wsr.nhle.com/sprites/20252026/2025021301/ev227.json"
+    },
+    {
+      "eventId": 186,
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "09:08",
+      "timeRemaining": "10:52",
+      "situationCode": "1551",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 509,
+      "typeDescKey": "penalty",
+      "sortOrder": 139,
+      "details": {
+        "xCoord": 81,
+        "yCoord": -1,
+        "zoneCode": "D",
+        "typeCode": "MIN",
+        "descKey": "high-sticking",
+        "duration": 2,
+        "committedByPlayerId": 8476889,
+        "drawnByPlayerId": 8480064,
+        "eventOwnerTeamId": 25
+      }
+    },
+    {
+      "eventId": 52,
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:00",
+      "timeRemaining": "20:00",
+      "situationCode": "1551",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 520,
+      "typeDescKey": "period-start",
+      "sortOrder": 8
+    },
+    {
+      "eventId": 372,
+      "periodDescriptor": {
+        "number": 5,
+        "periodType": "SO",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:00",
+      "timeRemaining": "00:00",
+      "situationCode": "0101",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 523,
+      "typeDescKey": "shootout-complete",
+      "sortOrder": 824
+    },
+    {
+      "eventId": 373,
+      "periodDescriptor": {
+        "number": 5,
+        "periodType": "SO",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:00",
+      "timeRemaining": "00:00",
+      "situationCode": "0101",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 521,
+      "typeDescKey": "period-end",
+      "sortOrder": 825
+    },
+    {
+      "eventId": 377,
+      "periodDescriptor": {
+        "number": 5,
+        "periodType": "SO",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:00",
+      "timeRemaining": "00:00",
+      "situationCode": "0101",
+      "homeTeamDefendingSide": "left",
+      "typeCode": 524,
+      "typeDescKey": "game-end",
+      "sortOrder": 829
+    }
+  ],
+  "rosterSpots": [
+    {
+      "teamId": 25,
+      "playerId": 8473994,
+      "firstName": {
+        "default": "Jamie"
+      },
+      "lastName": {
+        "default": "Benn"
+      },
+      "sweaterNumber": 14,
+      "positionCode": "L",
+      "headshot": "https://assets.nhle.com/mugs/nhl/20252026/DAL/8473994.png"
+    },
+    {
+      "teamId": 7,
+      "playerId": 8474568,
+      "firstName": {
+        "default": "Luke"
+      },
+      "lastName": {
+        "default": "Schenn"
+      },
+      "sweaterNumber": 5,
+      "positionCode": "D",
+      "headshot": "https://assets.nhle.com/mugs/nhl/20252026/BUF/8474568.png"
+    },
+    {
+      "teamId": 25,
+      "playerId": 8474574,
+      "firstName": {
+        "default": "Tyler"
+      },
+      "lastName": {
+        "default": "Myers"
+      },
+      "sweaterNumber": 57,
+      "positionCode": "D",
+      "headshot": "https://assets.nhle.com/mugs/nhl/20252026/DAL/8474574.png"
+    },
+    {
+      "teamId": 25,
+      "playerId": 8475168,
+      "firstName": {
+        "default": "Matt"
+      },
+      "lastName": {
+        "default": "Duchene"
+      },
+      "sweaterNumber": 95,
+      "positionCode": "C",
+      "headshot": "https://assets.nhle.com/mugs/nhl/20252026/DAL/8475168.png"
+    },
+    {
+      "teamId": 7,
+      "playerId": 8476871,
+      "firstName": {
+        "default": "Tanner"
+      },
+      "lastName": {
+        "default": "Pearson"
+      },
+      "sweaterNumber": 70,
+      "positionCode": "L",
+      "headshot": "https://assets.nhle.com/mugs/nhl/20252026/BUF/8476871.png"
+    },
+    {
+      "teamId": 25,
+      "playerId": 8476889,
+      "firstName": {
+        "default": "Radek"
+      },
+      "lastName": {
+        "default": "Faksa"
+      },
+      "sweaterNumber": 12,
+      "positionCode": "C",
+      "headshot": "https://assets.nhle.com/mugs/nhl/20252026/DAL/8476889.png"
+    }
+  ],
+  "homeTeam": {
+    "id": 7,
+    "abbrev": "BUF"
+  },
+  "awayTeam": {
+    "id": 25,
+    "abbrev": "DAL"
+  }
+}

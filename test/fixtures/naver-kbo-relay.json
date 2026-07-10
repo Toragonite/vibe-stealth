@@ -1,0 +1,448 @@
+{
+  "code": 200,
+  "success": true,
+  "result": {
+    "textRelayData": {
+      "gameId": "20260707HTLT02026",
+      "category": "kbo",
+      "inn": 9,
+      "no": 101,
+      "inningScore": {
+        "home": {
+          "1": "4",
+          "2": "1",
+          "3": "3",
+          "4": "1",
+          "5": "0",
+          "6": "0",
+          "7": "0",
+          "8": "1",
+          "9": "-"
+        },
+        "away": {
+          "1": "1",
+          "2": "0",
+          "3": "0",
+          "4": "0",
+          "5": "0",
+          "6": "0",
+          "7": "0",
+          "8": "1",
+          "9": "0"
+        }
+      },
+      "currentGameState": {
+        "homeScore": "10",
+        "awayScore": "2",
+        "homeHit": "18",
+        "awayHit": "5",
+        "homeBallFour": "4",
+        "awayBallFour": "1",
+        "homeError": "0",
+        "awayError": "2",
+        "pitcher": "56554",
+        "batter": "66354",
+        "strike": "1",
+        "ball": "2",
+        "out": "3",
+        "base1": "3",
+        "base2": "0",
+        "base3": "0"
+      },
+      "textRelays": [
+        {
+          "title": "=====================================",
+          "no": 101,
+          "inn": 9,
+          "homeOrAway": "0",
+          "statusCode": 0,
+          "textOptions": [
+            {
+              "seqno": 547,
+              "text": "=====================================",
+              "type": 99,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "3",
+                "strike": "1",
+                "ball": "2"
+              }
+            },
+            {
+              "seqno": 548,
+              "text": "승리투수: 로드리게스",
+              "type": 99,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "3",
+                "strike": "1",
+                "ball": "2"
+              }
+            }
+          ]
+        },
+        {
+          "title": "5번타자 주효상",
+          "no": 100,
+          "inn": 9,
+          "homeOrAway": "0",
+          "statusCode": 0,
+          "textOptions": [
+            {
+              "seqno": 541,
+              "text": "5번타자 주효상",
+              "type": 8,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "2",
+                "strike": "0",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 542,
+              "text": "1구 볼",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "2",
+                "strike": "0",
+                "ball": "1"
+              }
+            },
+            {
+              "seqno": 543,
+              "text": "2구 볼",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "2",
+                "strike": "0",
+                "ball": "2"
+              }
+            },
+            {
+              "seqno": 544,
+              "text": "3구 스트라이크",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "2",
+                "strike": "1",
+                "ball": "2"
+              }
+            },
+            {
+              "seqno": 545,
+              "text": "4구 타격",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "2",
+                "strike": "1",
+                "ball": "2"
+              }
+            },
+            {
+              "seqno": 546,
+              "text": "주효상 : 우익수 플라이 아웃",
+              "type": 13,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "3",
+                "strike": "1",
+                "ball": "2"
+              }
+            }
+          ]
+        },
+        {
+          "title": "4번타자 박정우",
+          "no": 99,
+          "inn": 9,
+          "homeOrAway": "0",
+          "statusCode": 0,
+          "textOptions": [
+            {
+              "seqno": 534,
+              "text": "4번타자 박정우",
+              "type": 8,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "0",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 535,
+              "text": "1구 볼",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "0",
+                "ball": "1"
+              }
+            },
+            {
+              "seqno": 536,
+              "text": "2구 스트라이크",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "1",
+                "ball": "1"
+              }
+            },
+            {
+              "seqno": 537,
+              "text": "3구 볼",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "1",
+                "ball": "2"
+              }
+            },
+            {
+              "seqno": 538,
+              "text": "4구 볼",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "1",
+                "ball": "3"
+              }
+            },
+            {
+              "seqno": 539,
+              "text": "5구 타격",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "1",
+                "ball": "3"
+              }
+            },
+            {
+              "seqno": 540,
+              "text": "박정우 : 좌익수 플라이 아웃",
+              "type": 13,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "2",
+                "strike": "1",
+                "ball": "3"
+              }
+            }
+          ]
+        },
+        {
+          "title": "3번타자 카스트로",
+          "no": 98,
+          "inn": 9,
+          "homeOrAway": "0",
+          "statusCode": 0,
+          "textOptions": [
+            {
+              "seqno": 529,
+              "text": "3번타자 카스트로",
+              "type": 8,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "0",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 530,
+              "text": "1구 스트라이크",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "1",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 531,
+              "text": "2구 스트라이크",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "2",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 532,
+              "text": "3구 타격",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "2",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 533,
+              "text": "카스트로 : 우익수 오른쪽 1루타",
+              "type": 13,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "2",
+                "ball": "0"
+              }
+            }
+          ]
+        },
+        {
+          "title": "2번타자 변우혁",
+          "no": 97,
+          "inn": 9,
+          "homeOrAway": "0",
+          "statusCode": 0,
+          "textOptions": [
+            {
+              "seqno": 524,
+              "text": "2번타자 변우혁",
+              "type": 8,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "0",
+                "strike": "0",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 525,
+              "text": "투수 이진하 : 투수 이준서 (으)로 교체",
+              "type": 2,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "0",
+                "strike": "0",
+                "ball": "0"
+              }
+            },
+            {
+              "seqno": 526,
+              "text": "1구 볼",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "0",
+                "strike": "0",
+                "ball": "1"
+              }
+            },
+            {
+              "seqno": 527,
+              "text": "2구 타격",
+              "type": 1,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "0",
+                "strike": "0",
+                "ball": "1"
+              }
+            },
+            {
+              "seqno": 528,
+              "text": "변우혁 : 유격수 땅볼 아웃 (유격수->1루수 송구아웃)",
+              "type": 13,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "1",
+                "strike": "0",
+                "ball": "1"
+              }
+            }
+          ]
+        },
+        {
+          "title": "9회초 KIA 공격",
+          "no": 96,
+          "inn": 9,
+          "homeOrAway": "0",
+          "statusCode": 0,
+          "textOptions": [
+            {
+              "seqno": 523,
+              "text": "9회초 KIA 공격",
+              "type": 0,
+              "ptsGameId": null,
+              "currentGameState": {
+                "homeScore": "10",
+                "awayScore": "2",
+                "out": "0",
+                "strike": "0",
+                "ball": "0"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

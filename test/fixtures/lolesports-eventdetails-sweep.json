@@ -1,0 +1,250 @@
+{
+  "data": {
+    "event": {
+      "state": null,
+      "type": "match",
+      "match": {
+        "id": null,
+        "strategy": {
+          "count": 5
+        },
+        "teams": [
+          {
+            "code": "DK",
+            "name": "Dplus KIA",
+            "result": {
+              "gameWins": 3
+            }
+          },
+          {
+            "code": "BRO",
+            "name": "HANJIN BRION",
+            "result": {
+              "gameWins": 0
+            }
+          }
+        ],
+        "games": [
+          {
+            "number": 1,
+            "id": "115548128963037564",
+            "state": "completed",
+            "teams": [
+              {
+                "id": "100725845018863243",
+                "side": "blue"
+              },
+              {
+                "id": "105505619546859895",
+                "side": "red"
+              }
+            ],
+            "vods": [
+              {
+                "id": "116702836216098132",
+                "parameter": "KQd6jOPvC5A",
+                "locale": "en-US",
+                "mediaLocale": {
+                  "locale": "en-US",
+                  "englishName": "English (North America)",
+                  "translatedName": "English (North America)"
+                },
+                "provider": "youtube",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T07:20:30.673Z",
+                "startMillis": 2686000,
+                "endMillis": 5194000
+              },
+              {
+                "id": "116705073043814023",
+                "parameter": "w5i4FXcAGV0",
+                "locale": "fr-FR",
+                "mediaLocale": {
+                  "locale": "fr-FR",
+                  "englishName": "French (France)",
+                  "translatedName": "Français"
+                },
+                "provider": "youtube",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T08:04:57.434Z",
+                "startMillis": 900000,
+                "endMillis": 3420000
+              },
+              {
+                "id": "116702836216098133",
+                "parameter": "197899995",
+                "locale": "ko-KR",
+                "mediaLocale": {
+                  "locale": "ko-KR",
+                  "englishName": "Korean (Korea)",
+                  "translatedName": "한국어"
+                },
+                "provider": "afreecatv",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T07:19:54.792Z",
+                "startMillis": 2717000,
+                "endMillis": 5225000
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "id": "115548128963037565",
+            "state": "completed",
+            "teams": [
+              {
+                "id": "100725845018863243",
+                "side": "blue"
+              },
+              {
+                "id": "105505619546859895",
+                "side": "red"
+              }
+            ],
+            "vods": [
+              {
+                "id": "116702836224265921",
+                "parameter": "KQd6jOPvC5A",
+                "locale": "en-US",
+                "mediaLocale": {
+                  "locale": "en-US",
+                  "englishName": "English (North America)",
+                  "translatedName": "English (North America)"
+                },
+                "provider": "youtube",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T07:20:30.673Z",
+                "startMillis": 6233000,
+                "endMillis": 8018000
+              },
+              {
+                "id": "116705073044274100",
+                "parameter": "w5i4FXcAGV0",
+                "locale": "fr-FR",
+                "mediaLocale": {
+                  "locale": "fr-FR",
+                  "englishName": "French (France)",
+                  "translatedName": "Français"
+                },
+                "provider": "youtube",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T08:04:57.434Z",
+                "startMillis": 3960000,
+                "endMillis": 5745000
+              },
+              {
+                "id": "116702836224265922",
+                "parameter": "197903889",
+                "locale": "ko-KR",
+                "mediaLocale": {
+                  "locale": "ko-KR",
+                  "englishName": "Korean (Korea)",
+                  "translatedName": "한국어"
+                },
+                "provider": "afreecatv",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T08:50:21.416Z",
+                "startMillis": 842000,
+                "endMillis": 2627000
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "id": "115548128963037566",
+            "state": "completed",
+            "teams": [
+              {
+                "id": "100725845018863243",
+                "side": "blue"
+              },
+              {
+                "id": "105505619546859895",
+                "side": "red"
+              }
+            ],
+            "vods": [
+              {
+                "id": "116702836215508306",
+                "parameter": "KQd6jOPvC5A",
+                "locale": "en-US",
+                "mediaLocale": {
+                  "locale": "en-US",
+                  "englishName": "English (North America)",
+                  "translatedName": "English (North America)"
+                },
+                "provider": "youtube",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T07:20:30.673Z",
+                "startMillis": 8980000,
+                "endMillis": 10862000
+              },
+              {
+                "id": "116705073044798389",
+                "parameter": "w5i4FXcAGV0",
+                "locale": "fr-FR",
+                "mediaLocale": {
+                  "locale": "fr-FR",
+                  "englishName": "French (France)",
+                  "translatedName": "Français"
+                },
+                "provider": "youtube",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T08:04:57.434Z",
+                "startMillis": 6300000,
+                "endMillis": 8400000
+              },
+              {
+                "id": "116702836215508307",
+                "parameter": "197910159",
+                "locale": "ko-KR",
+                "mediaLocale": {
+                  "locale": "ko-KR",
+                  "englishName": "Korean (Korea)",
+                  "translatedName": "한국어"
+                },
+                "provider": "afreecatv",
+                "offset": 0,
+                "firstFrameTime": "2026-06-06T09:37:29.128Z",
+                "startMillis": 762000,
+                "endMillis": 2644000
+              }
+            ]
+          },
+          {
+            "number": 4,
+            "id": "115548128963037567",
+            "state": "unneeded",
+            "teams": [
+              {
+                "id": "100725845018863243",
+                "side": "blue"
+              },
+              {
+                "id": "105505619546859895",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          },
+          {
+            "number": 5,
+            "id": "115548128963037568",
+            "state": "unneeded",
+            "teams": [
+              {
+                "id": "105505619546859895",
+                "side": "blue"
+              },
+              {
+                "id": "100725845018863243",
+                "side": "red"
+              }
+            ],
+            "vods": []
+          }
+        ]
+      }
+    }
+  }
+}

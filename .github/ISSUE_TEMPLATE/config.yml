@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability (private)
+    url: https://github.com/Toragonite/vibe-stealth/security/advisories/new
+    about: Do not file security issues publicly. Use GitHub's private vulnerability reporting — see SECURITY.md.
+  - name: Read the docs first
+    url: https://github.com/Toragonite/vibe-stealth#readme
+    about: The README covers supported leagues, settings, and the "Honest limits" that explain a lot of expected behavior.

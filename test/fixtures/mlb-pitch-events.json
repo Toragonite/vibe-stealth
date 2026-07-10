@@ -1,0 +1,466 @@
+{
+  "gameData": {
+    "status": {
+      "abstractGameState": "Live"
+    },
+    "teams": {
+      "home": {
+        "abbreviation": "SF"
+      },
+      "away": {
+        "abbreviation": "TOR"
+      }
+    },
+    "datetime": {}
+  },
+  "liveData": {
+    "linescore": {
+      "currentInning": 1,
+      "inningState": "Top",
+      "balls": 1,
+      "strikes": 2,
+      "outs": 1,
+      "teams": {
+        "home": {
+          "runs": 0
+        },
+        "away": {
+          "runs": 0
+        }
+      }
+    },
+    "boxscore": {
+      "teams": {
+        "home": {
+          "battingOrder": [],
+          "players": {}
+        },
+        "away": {
+          "battingOrder": [],
+          "players": {}
+        }
+      }
+    },
+    "plays": {
+      "allPlays": [
+        {
+          "about": {
+            "atBatIndex": 0,
+            "isComplete": true,
+            "halfInning": "top",
+            "inning": 1,
+            "isScoringPlay": false
+          },
+          "result": {
+            "description": "Ernie Clement singles on a line drive to left fielder Heliot Ramos.",
+            "event": "Single",
+            "eventType": "single",
+            "homeScore": 0,
+            "awayScore": 0
+          },
+          "matchup": {
+            "batter": {
+              "fullName": "Ernie Clement"
+            },
+            "pitcher": {
+              "fullName": "Logan Webb"
+            }
+          },
+          "playEvents": [
+            {
+              "index": 0,
+              "isPitch": false,
+              "details": {
+                "type": null,
+                "call": null,
+                "description": "Status Change - Pre-Game"
+              },
+              "pitchData": null,
+              "count": {
+                "balls": 0,
+                "strikes": 0,
+                "outs": 0
+              }
+            },
+            {
+              "index": 1,
+              "isPitch": false,
+              "details": {
+                "type": null,
+                "call": null,
+                "description": "Status Change - Warmup"
+              },
+              "pitchData": null,
+              "count": {
+                "balls": 0,
+                "strikes": 0,
+                "outs": 0
+              }
+            },
+            {
+              "index": 2,
+              "isPitch": false,
+              "details": {
+                "type": null,
+                "call": null,
+                "description": "Status Change - In Progress"
+              },
+              "pitchData": null,
+              "count": {
+                "balls": 0,
+                "strikes": 0,
+                "outs": 0
+              }
+            },
+            {
+              "index": 3,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "SI",
+                  "description": "Sinker"
+                },
+                "call": {
+                  "code": "C",
+                  "description": "Called Strike"
+                },
+                "description": "Called Strike"
+              },
+              "pitchData": {
+                "startSpeed": 90.8,
+                "zone": 6
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 1,
+                "outs": 0
+              }
+            },
+            {
+              "index": 4,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "ST",
+                  "description": "Sweeper"
+                },
+                "call": {
+                  "code": "S",
+                  "description": "Swinging Strike"
+                },
+                "description": "Swinging Strike"
+              },
+              "pitchData": {
+                "startSpeed": 84.0,
+                "zone": 14
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 2,
+                "outs": 0
+              }
+            },
+            {
+              "index": 5,
+              "isPitch": false,
+              "details": {
+                "type": null,
+                "call": null,
+                "description": "Batter Timeout."
+              },
+              "pitchData": null,
+              "count": {
+                "balls": 0,
+                "strikes": 2,
+                "outs": 0
+              }
+            },
+            {
+              "index": 6,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "SI",
+                  "description": "Sinker"
+                },
+                "call": {
+                  "code": "D",
+                  "description": "In play, no out"
+                },
+                "description": "In play, no out"
+              },
+              "pitchData": {
+                "startSpeed": 92.8,
+                "zone": 13
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 2,
+                "outs": 0
+              }
+            }
+          ]
+        },
+        {
+          "about": {
+            "atBatIndex": 1,
+            "isComplete": true,
+            "halfInning": "top",
+            "inning": 1,
+            "isScoringPlay": false
+          },
+          "result": {
+            "description": "Nathan Lukes singles on a fly ball to left fielder Heliot Ramos. Ernie Clement to 2nd.",
+            "event": "Single",
+            "eventType": "single",
+            "homeScore": 0,
+            "awayScore": 0
+          },
+          "matchup": {
+            "batter": {
+              "fullName": "Nathan Lukes"
+            },
+            "pitcher": {
+              "fullName": "Logan Webb"
+            }
+          },
+          "playEvents": [
+            {
+              "index": 0,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "CH",
+                  "description": "Changeup"
+                },
+                "call": {
+                  "code": "S",
+                  "description": "Swinging Strike"
+                },
+                "description": "Swinging Strike"
+              },
+              "pitchData": {
+                "startSpeed": 87.5,
+                "zone": 13
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 1,
+                "outs": 0
+              }
+            },
+            {
+              "index": 1,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "FF",
+                  "description": "Four-Seam Fastball"
+                },
+                "call": {
+                  "code": "B",
+                  "description": "Ball"
+                },
+                "description": "Ball"
+              },
+              "pitchData": {
+                "startSpeed": 91.7,
+                "zone": 11
+              },
+              "count": {
+                "balls": 1,
+                "strikes": 1,
+                "outs": 0
+              }
+            },
+            {
+              "index": 2,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "FC",
+                  "description": "Cutter"
+                },
+                "call": {
+                  "code": "D",
+                  "description": "In play, no out"
+                },
+                "description": "In play, no out"
+              },
+              "pitchData": {
+                "startSpeed": 89.9,
+                "zone": 3
+              },
+              "count": {
+                "balls": 1,
+                "strikes": 1,
+                "outs": 0
+              }
+            }
+          ]
+        },
+        {
+          "about": {
+            "atBatIndex": 2,
+            "isComplete": true,
+            "halfInning": "top",
+            "inning": 1,
+            "isScoringPlay": false
+          },
+          "result": {
+            "description": "Vladimir Guerrero Jr. grounds out softly, catcher Eric Haase to first baseman Rafael Devers. Ernie Clement to 3rd. Nathan Lukes to 2nd.",
+            "event": "Groundout",
+            "eventType": "field_out",
+            "homeScore": 0,
+            "awayScore": 0
+          },
+          "matchup": {
+            "batter": {
+              "fullName": "Vladimir Guerrero Jr."
+            },
+            "pitcher": {
+              "fullName": "Logan Webb"
+            }
+          },
+          "playEvents": [
+            {
+              "index": 0,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "SI",
+                  "description": "Sinker"
+                },
+                "call": {
+                  "code": "F",
+                  "description": "Foul"
+                },
+                "description": "Foul"
+              },
+              "pitchData": {
+                "startSpeed": 91.4,
+                "zone": 11
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 1,
+                "outs": 0
+              }
+            },
+            {
+              "index": 1,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "SI",
+                  "description": "Sinker"
+                },
+                "call": {
+                  "code": "C",
+                  "description": "Called Strike"
+                },
+                "description": "Called Strike"
+              },
+              "pitchData": {
+                "startSpeed": 91.5,
+                "zone": 9
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 2,
+                "outs": 0
+              }
+            },
+            {
+              "index": 2,
+              "isPitch": false,
+              "details": {
+                "type": null,
+                "call": null,
+                "description": "Batter Timeout."
+              },
+              "pitchData": null,
+              "count": {
+                "balls": 0,
+                "strikes": 2,
+                "outs": 0
+              }
+            },
+            {
+              "index": 3,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "FC",
+                  "description": "Cutter"
+                },
+                "call": {
+                  "code": "F",
+                  "description": "Foul"
+                },
+                "description": "Foul"
+              },
+              "pitchData": {
+                "startSpeed": 90.4,
+                "zone": 12
+              },
+              "count": {
+                "balls": 0,
+                "strikes": 2,
+                "outs": 0
+              }
+            },
+            {
+              "index": 4,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "SI",
+                  "description": "Sinker"
+                },
+                "call": {
+                  "code": "B",
+                  "description": "Ball"
+                },
+                "description": "Ball"
+              },
+              "pitchData": {
+                "startSpeed": 91.9,
+                "zone": 11
+              },
+              "count": {
+                "balls": 1,
+                "strikes": 2,
+                "outs": 0
+              }
+            },
+            {
+              "index": 5,
+              "isPitch": true,
+              "details": {
+                "type": {
+                  "code": "SI",
+                  "description": "Sinker"
+                },
+                "call": {
+                  "code": "X",
+                  "description": "In play, out(s)"
+                },
+                "description": "In play, out(s)"
+              },
+              "pitchData": {
+                "startSpeed": 92.0,
+                "zone": 7
+              },
+              "count": {
+                "balls": 1,
+                "strikes": 2,
+                "outs": 0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+node_modules/
+out/
+*.vsix
+.DS_Store
+
+# Workspace orchestration artifacts — kept in the private dev repo only.
+.mcp.json
+CLAUDE.md
+.orchestrator/
+VERIFICATION.md

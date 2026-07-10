@@ -1,0 +1,542 @@
+{
+  "rosters": [
+    {
+      "homeAway": "home",
+      "formation": "4-2-3-1",
+      "team": {
+        "abbreviation": "ENG"
+      },
+      "roster": [
+        {
+          "starter": true,
+          "jersey": "1",
+          "position": {
+            "abbreviation": "G"
+          },
+          "athlete": {
+            "displayName": "Jordan Pickford"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "6",
+          "position": {
+            "abbreviation": "CD-L"
+          },
+          "athlete": {
+            "displayName": "Marc Guéhi"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "2",
+          "position": {
+            "abbreviation": "CD-R"
+          },
+          "athlete": {
+            "displayName": "Ezri Konsa"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "3",
+          "position": {
+            "abbreviation": "LB"
+          },
+          "athlete": {
+            "displayName": "Nico O'Reilly"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "25",
+          "position": {
+            "abbreviation": "RB"
+          },
+          "athlete": {
+            "displayName": "Djed Spence"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "10",
+          "position": {
+            "abbreviation": "AM"
+          },
+          "athlete": {
+            "displayName": "Jude Bellingham"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "4",
+          "position": {
+            "abbreviation": "LM"
+          },
+          "athlete": {
+            "displayName": "Declan Rice"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "8",
+          "position": {
+            "abbreviation": "RM"
+          },
+          "athlete": {
+            "displayName": "Elliot Anderson"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "9",
+          "position": {
+            "abbreviation": "F"
+          },
+          "athlete": {
+            "displayName": "Harry Kane"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "11",
+          "position": {
+            "abbreviation": "AM-L"
+          },
+          "athlete": {
+            "displayName": "Marcus Rashford"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "20",
+          "position": {
+            "abbreviation": "AM-R"
+          },
+          "athlete": {
+            "displayName": "Noni Madueke"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "12",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Trevoh Chalobah"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "15",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Dan Burn"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "16",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Kobbie Mainoo"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "7",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Bukayo Saka"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "17",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Morgan Rogers"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "13",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Dean Henderson"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "19",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Ollie Watkins"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "22",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Ivan Toney"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "5",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "John Stones"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "14",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Jordan Henderson"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "18",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Anthony Gordon"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "23",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "James Trafford"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "24",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Reece James"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "21",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Eberechi Eze"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "26",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Jarell Quansah"
+          }
+        }
+      ]
+    },
+    {
+      "homeAway": "away",
+      "formation": "4-3-3",
+      "team": {
+        "abbreviation": "COD"
+      },
+      "roster": [
+        {
+          "starter": true,
+          "jersey": "1",
+          "position": {
+            "abbreviation": "G"
+          },
+          "athlete": {
+            "displayName": "Lionel Mpasi"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "4",
+          "position": {
+            "abbreviation": "CD-L"
+          },
+          "athlete": {
+            "displayName": "Axel Tuanzebe"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "22",
+          "position": {
+            "abbreviation": "CD-R"
+          },
+          "athlete": {
+            "displayName": "Chancel Mbemba"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "26",
+          "position": {
+            "abbreviation": "LB"
+          },
+          "athlete": {
+            "displayName": "Arthur Masuaku"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "2",
+          "position": {
+            "abbreviation": "RB"
+          },
+          "athlete": {
+            "displayName": "Aaron Wan-Bissaka"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "8",
+          "position": {
+            "abbreviation": "CM"
+          },
+          "athlete": {
+            "displayName": "Samuel Moutoussamy"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "14",
+          "position": {
+            "abbreviation": "LM"
+          },
+          "athlete": {
+            "displayName": "Noah Sadiki"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "6",
+          "position": {
+            "abbreviation": "RM"
+          },
+          "athlete": {
+            "displayName": "Ngal'ayel Mukau"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "20",
+          "position": {
+            "abbreviation": "F"
+          },
+          "athlete": {
+            "displayName": "Yoane Wissa"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "9",
+          "position": {
+            "abbreviation": "LF"
+          },
+          "athlete": {
+            "displayName": "Brian Cipenga"
+          }
+        },
+        {
+          "starter": true,
+          "jersey": "7",
+          "position": {
+            "abbreviation": "RF"
+          },
+          "athlete": {
+            "displayName": "Nathanaël Mbuku"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "17",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Cédric Bakambu"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "21",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Matthieu Epolo"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "16",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Timothy Fayulu"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "19",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Fiston Mayele"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "18",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Charles Pickel"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "10",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Théo Bongonda"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "24",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Gédéon Kalulu"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "25",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Edo Kayembe"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "5",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Dylan Batubinsika"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "11",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Gaël Kakuta"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "13",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Meschack Elia"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "23",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Simon Banza"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "15",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Aaron Tshibola"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "3",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Steve Kapuadi"
+          }
+        },
+        {
+          "starter": false,
+          "jersey": "12",
+          "position": {
+            "abbreviation": "SUB"
+          },
+          "athlete": {
+            "displayName": "Joris Kayembe"
+          }
+        }
+      ]
+    }
+  ]
+}

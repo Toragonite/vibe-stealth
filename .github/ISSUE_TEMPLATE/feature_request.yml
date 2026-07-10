@@ -1,0 +1,69 @@
+name: Feature request
+description: Suggest a new league, sport, relay detail, or capability for Vibe Stealth.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. Vibe Stealth is a **text relay** — it turns data an
+        API already exposes into lines and tree rows. That shapes what is
+        buildable: a feature can only ship if some API actually serves the data
+        for it. The endpoint field below is the most important part of this form.
+
+        Vibe Stealth is not affiliated with any league or provider, and it stays
+        deliberately quiet (no video, no webviews) — please keep suggestions in
+        that spirit.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like, and why?
+      description: The capability you want and the problem it solves. What can't you do today?
+      placeholder: e.g. "Relay the KHL / a new soccer league / per-round CS2 events, because …"
+    validations:
+      required: true
+
+  - type: input
+    id: sport-league
+    attributes:
+      label: Sport / league / provider it concerns
+      placeholder: e.g. NBA playoffs, a new ESPN soccer league, PandaScore Valorant …
+    validations:
+      required: false
+
+  - type: textarea
+    id: api-endpoint
+    attributes:
+      label: Which API endpoint would supply the data?
+      description: >
+        **This is the deciding factor.** A feature is only buildable if a real,
+        reachable API exposes the data. Name the endpoint (and provider) that
+        serves it, and if you can, the field(s) that carry what you want — a
+        sample URL or a trimmed response is ideal. If you don't know of one, say
+        so; the feature may not be possible without it.
+      placeholder: |
+        e.g. https://site.api.espn.com/apis/site/v2/sports/…/scoreboard
+        Fields: events[].competitions[0].situation.…
+    validations:
+      required: true
+
+  - type: dropdown
+    id: access
+    attributes:
+      label: Does that endpoint need a key or token?
+      description: Vibe Stealth is key-free by default; the only secret it stores is a PandaScore token.
+      options:
+        - "Key-free / public"
+        - "Needs a user-supplied token (like PandaScore)"
+        - "Not sure"
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or notes
+      description: Other ways you've considered getting this, related issues, or anything else.
+    validations:
+      required: false

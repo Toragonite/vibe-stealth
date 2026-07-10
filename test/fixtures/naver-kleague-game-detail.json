@@ -1,0 +1,118 @@
+{
+  "result": {
+    "game": {
+      "gameId": "20260704052191",
+      "superCategoryId": "football",
+      "upperCategoryId": "kfootball",
+      "upperCategoryName": "국내축구",
+      "categoryId": "kleague",
+      "categoryName": "K리그1",
+      "gameDate": "2026-07-04",
+      "gameDateTime": "2026-07-04T19:30:00",
+      "timeTbd": false,
+      "stadium": "전주 월드컵",
+      "title": "",
+      "homeTeamCode": "05",
+      "homeTeamName": "전북",
+      "homeTeamScore": 1,
+      "awayTeamCode": "21",
+      "awayTeamName": "강원",
+      "awayTeamScore": 2,
+      "winner": "AWAY",
+      "statusCode": "RESULT",
+      "statusNum": 4,
+      "statusInfo": "경기종료",
+      "cancel": false,
+      "suspended": false,
+      "hasVideo": true,
+      "seasonCode": "2026",
+      "seasonYear": 2026,
+      "roundCode": "",
+      "generalTitle": null,
+      "generalInfo3": null,
+      "manualRelayUrl": null,
+      "emptyScoreBeforeResult": false,
+      "reversedHomeAway": false,
+      "homeTeamEmblemUrl": "https://sports-phinf.pstatic.net/team/kleague/default/05.png",
+      "awayTeamEmblemUrl": "https://sports-phinf.pstatic.net/team/kleague/default/21.png",
+      "homeTeamShortName": "전북",
+      "awayTeamShortName": "강원",
+      "homeTeamFullName": "전북 현대 모터스",
+      "awayTeamFullName": "강원FC",
+      "scheduledTv": false,
+      "gameOnAir": false,
+      "pv": 0,
+      "cv": 0,
+      "peak": 0,
+      "embedUrl": null,
+      "gameCenterUrl": {
+        "baseUrl": "https://m.sports.naver.com/game/20260704052191",
+        "cheerTabUrl": "https://m.sports.naver.com/game/20260704052191/cheer"
+      },
+      "liveList": [],
+      "chzzkLive": null,
+      "chzzkLives": null,
+      "broadcastChzzkLives": null,
+      "competitionStartDate": null,
+      "competitionEndDate": null,
+      "leaderBoardEnable": false,
+      "widgetEnable": false,
+      "enable": true,
+      "commentInfo": {
+        "title": "전북 vs 강원 07월 04일",
+        "description": "K리그1 이야기를 함께 해요!",
+        "templateId": "kfootball",
+        "categoryLogo": "https://sports-phinf.pstatic.net/category/super/default/football.png",
+        "hasTeamInfo": true,
+        "expose": {
+          "state": false,
+          "endDateTime": "2026-07-05T19:30:00"
+        }
+      },
+      "specialMatchInfo": null,
+      "seriesOutcome": null,
+      "season": "2026",
+      "matchRound": "16",
+      "scorers": {
+        "home": [
+          {
+            "time": 73,
+            "addedTime": 0,
+            "playerName": "이승우",
+            "ownGoal": false
+          }
+        ],
+        "away": [
+          {
+            "time": 24,
+            "addedTime": 0,
+            "playerName": "송준석",
+            "ownGoal": false
+          },
+          {
+            "time": 52,
+            "addedTime": 0,
+            "playerName": "이유현",
+            "ownGoal": false
+          }
+        ]
+      },
+      "hasPtSore": false,
+      "hasPtScore": false,
+      "homePtScore": 0,
+      "awayPtScore": 0,
+      "shootOuts": {
+        "home": null,
+        "away": null
+      },
+      "phaseCode": null,
+      "leg": 0,
+      "weatherInfo": {
+        "weather": "25.0° 비",
+        "dongCode": "13113132",
+        "leisureWeatherCode": "LSFB0004",
+        "regionCode": null
+      }
+    }
+  }
+}

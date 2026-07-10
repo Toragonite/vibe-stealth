@@ -1,0 +1,157 @@
+name: Bug report
+description: Something in Vibe Stealth's relay, tree, status bar, or logos is wrong.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Vibe Stealth is an **unofficial** client of
+        several third-party APIs (ESPN, Naver Sports, Riot's LoL Esports gateway,
+        MLB StatsAPI, the NHL API, PandaScore). Some behavior depends on a game
+        actually being **live**, and upstream feeds can change or hiccup on their
+        own — the fields below help tell a real bug apart from an upstream
+        condition.
+
+        For **security issues**, do not file here — use private reporting per
+        [SECURITY.md](https://github.com/Toragonite/vibe-stealth/blob/master/SECURITY.md).
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Vibe Stealth version
+      description: From the Extensions view, or the version in the status/about of the extension.
+      placeholder: e.g. 1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: editor-version
+    attributes:
+      label: VS Code (or fork) and version
+      description: Which editor and version. If a fork, name it (VSCodium, Cursor, Antigravity).
+      placeholder: e.g. VS Code 1.90.2, or VSCodium 1.90.1, Cursor 0.40, Antigravity …
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. macOS 14.6, Windows 11, Ubuntu 24.04
+    validations:
+      required: true
+
+  - type: dropdown
+    id: sport-league
+    attributes:
+      label: Sport / league
+      description: Which provider and league was involved?
+      options:
+        - "Naver — KBO (야구/문자중계)"
+        - "Naver — K League 1 (축구)"
+        - "LoL Esports — LCK / LPL / LEC / MSI / Worlds / First Stand"
+        - "MLB StatsAPI — MLB"
+        - "NHL"
+        - "ESPN — NFL"
+        - "ESPN — NBA / WNBA"
+        - "ESPN — soccer (World Cup, EPL, La Liga, Serie A, Bundesliga, Ligue 1, MLS, UCL)"
+        - "PandaScore — LoL / CS2 / Dota 2 / Valorant"
+        - "Other / not sure"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: game-phase
+    attributes:
+      label: Game phase at the time
+      description: Was the game live, already finished, or not started yet?
+      options:
+        - "Live (in progress)"
+        - "Finished"
+        - "Scheduled / upcoming"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm-live
+    attributes:
+      label: Live-only behaviors
+      description: >
+        Several behaviors are **live-only by design** — live game state (bases/count,
+        lineups, LoL draft/gold/kills) and the LoL kill feed only appear for a game
+        you are FOLLOWING that is CURRENTLY live. Please confirm before reporting one
+        of those as missing.
+      options:
+        - label: I confirm the game was actually **live** at the time (checked the score/clock was moving), if the issue is about live state or play-by-play.
+          required: false
+
+  - type: dropdown
+    id: detail-setting
+    attributes:
+      label: "`vibeStealth.detail` setting"
+      description: Summary is the default; detailed adds pitch-by-pitch, NHL shots/hits, soccer key events, and the LoL kill feed.
+      options:
+        - "summary (default)"
+        - "detailed"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: locale-setting
+    attributes:
+      label: "`vibeStealth.locale` setting"
+      options:
+        - "auto (default)"
+        - "en"
+        - "ko"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-vs-actual
+    attributes:
+      label: What the relay showed vs what you expected
+      description: Paste the relevant relay lines (or the tree row / status bar text) and say what you expected instead.
+      placeholder: |
+        Showed:
+        20:14:57 │ ★ B9 │ ⚾ …
+
+        Expected:
+        …
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: "\"Vibe Stealth Diagnostics\" output channel"
+      description: >
+        Open the Output panel (View → Output), pick **Vibe Stealth Diagnostics**
+        from the dropdown, and paste the contents. This is the single most useful
+        thing for diagnosing a bug. Redact anything you consider private.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Vibe Stealth tree
+        2. Follow game X in league Y while it was live
+        3. …
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Screenshots, notes, whether it reproduced on a re-run (an intermittent failure may be an upstream hiccup, not a bug in the extension).
+    validations:
+      required: false

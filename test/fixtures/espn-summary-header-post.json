@@ -1,0 +1,38 @@
+{
+  "header": {
+    "id": "401859967",
+    "competitions": [
+      {
+        "status": {
+          "type": {
+            "id": "3",
+            "name": "STATUS_FINAL",
+            "state": "post",
+            "completed": true,
+            "description": "Final",
+            "detail": "Final",
+            "shortDetail": "Final"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "90",
+            "team": {
+              "abbreviation": "SA",
+              "displayName": "San Antonio Spurs"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "94",
+            "team": {
+              "abbreviation": "NY",
+              "displayName": "New York Knicks"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

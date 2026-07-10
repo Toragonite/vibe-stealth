@@ -1,0 +1,730 @@
+{
+  "plays": [
+    {
+      "id": "4018717900001990099",
+      "sequenceNumber": "7",
+      "type": {
+        "id": "99",
+        "text": "End Batter/Pitcher",
+        "type": "end-batterpitcher"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+        "type": "Top",
+        "number": 1,
+        "displayValue": "1st Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "8"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4649953"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "31283"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "31283"
+          },
+          "type": "onSecond"
+        }
+      ],
+      "wallclock": "2026-07-07T18:17:12Z",
+      "atBatId": "4018717900001",
+      "batOrder": 1,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 4,
+      "pitchCoordinate": {
+        "x": 113,
+        "y": 168
+      },
+      "hitCoordinate": {
+        "x": 214,
+        "y": 110
+      },
+      "pitchCount": {
+        "balls": 2,
+        "strikes": 1
+      },
+      "resultCount": {
+        "balls": 2,
+        "strikes": 1
+      },
+      "trajectory": "L",
+      "outs": 0,
+      "onSecond": {
+        "athlete": {
+          "id": "31283"
+        }
+      }
+    },
+    {
+      "id": "4018717900002990099",
+      "sequenceNumber": "4",
+      "type": {
+        "id": "99",
+        "text": "End Batter/Pitcher",
+        "type": "end-batterpitcher"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+        "type": "Top",
+        "number": 1,
+        "displayValue": "1st Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "8"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4649953"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4917869"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "31283"
+          },
+          "type": "onThird"
+        }
+      ],
+      "wallclock": "2026-07-07T18:17:41Z",
+      "atBatId": "4018717900002",
+      "batOrder": 2,
+      "bats": {
+        "type": "RIGHT",
+        "abbreviation": "R",
+        "displayValue": "Right"
+      },
+      "atBatPitchNumber": 1,
+      "pitchCoordinate": {
+        "x": 104,
+        "y": 167
+      },
+      "hitCoordinate": {
+        "x": 147,
+        "y": 64
+      },
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "trajectory": "F",
+      "outs": 1,
+      "onThird": {
+        "athlete": {
+          "id": "31283"
+        }
+      }
+    },
+    {
+      "id": "4018717901704010001",
+      "sequenceNumber": "1",
+      "type": {
+        "id": "1",
+        "text": "Start Batter/Pitcher",
+        "alternativeText": "Now at bat",
+        "type": "start-batterpitcher"
+      },
+      "text": "Abner Uribe pitches to Nathan Church",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "24"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:52:41Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "summaryType": "A",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901704020021",
+      "sequenceNumber": "2",
+      "type": {
+        "id": "21",
+        "text": "Foul Ball",
+        "abbreviation": "F",
+        "type": "foul-ball"
+      },
+      "text": "Pitch 1 : Strike 1 Foul",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "8"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:52:41Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 1,
+      "pitchCoordinate": {
+        "x": 100,
+        "y": 193
+      },
+      "pitchType": {
+        "id": "2",
+        "text": "Sinker",
+        "abbreviation": "SI"
+      },
+      "pitchVelocity": 99,
+      "hitCoordinate": {
+        "x": 152,
+        "y": 170
+      },
+      "summaryType": "P",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 1
+      },
+      "trajectory": "G",
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901704030021",
+      "sequenceNumber": "3",
+      "type": {
+        "id": "21",
+        "text": "Foul Ball",
+        "abbreviation": "F",
+        "type": "foul-ball"
+      },
+      "text": "Pitch 2 : Strike 2 Foul",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "8"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:53:04Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 2,
+      "pitchCoordinate": {
+        "x": 100,
+        "y": 188
+      },
+      "pitchType": {
+        "id": "2",
+        "text": "Sinker",
+        "abbreviation": "SI"
+      },
+      "pitchVelocity": 100,
+      "hitCoordinate": {
+        "x": 152,
+        "y": 170
+      },
+      "summaryType": "P",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 1
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "trajectory": "G",
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901704040021",
+      "sequenceNumber": "4",
+      "type": {
+        "id": "21",
+        "text": "Foul Ball",
+        "abbreviation": "F",
+        "type": "foul-ball"
+      },
+      "text": "Pitch 3 : Strike 2 Foul",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "8"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:53:26Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 3,
+      "pitchCoordinate": {
+        "x": 82,
+        "y": 207
+      },
+      "pitchType": {
+        "id": "5",
+        "text": "Slider",
+        "abbreviation": "SL"
+      },
+      "pitchVelocity": 89,
+      "hitCoordinate": {
+        "x": 152,
+        "y": 170
+      },
+      "summaryType": "P",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "trajectory": "G",
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901704050024",
+      "sequenceNumber": "5",
+      "type": {
+        "id": "24",
+        "text": "Ground Out",
+        "abbreviation": "GRO",
+        "alternativeText": "Ground Out",
+        "type": "ground-out"
+      },
+      "text": "Pitch 4 : Ball In Play",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "8"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:54:16Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 4,
+      "pitchCoordinate": {
+        "x": 94,
+        "y": 201
+      },
+      "pitchType": {
+        "id": "2",
+        "text": "Sinker",
+        "abbreviation": "SI"
+      },
+      "pitchVelocity": 100,
+      "hitCoordinate": {
+        "x": 152,
+        "y": 170
+      },
+      "summaryType": "P",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "trajectory": "G",
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901704990057",
+      "sequenceNumber": "6",
+      "type": {
+        "id": "57",
+        "text": "Play Result",
+        "type": "play-result"
+      },
+      "alternativeType": {
+        "id": "24",
+        "text": "Ground Out",
+        "abbreviation": "GRO",
+        "alternativeText": "Ground Out",
+        "type": "ground-out"
+      },
+      "alternativePlay": "4018717901704050024",
+      "text": "Church grounded out to first.",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "24"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:54:16Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 4,
+      "pitchCoordinate": {
+        "x": 94,
+        "y": 201
+      },
+      "summaryType": "N",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "trajectory": "G",
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901704990099",
+      "sequenceNumber": "7",
+      "type": {
+        "id": "99",
+        "text": "End Batter/Pitcher",
+        "type": "end-batterpitcher"
+      },
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "Bottom",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "24"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4917865"
+          },
+          "type": "pitcher"
+        },
+        {
+          "athlete": {
+            "id": "4843048"
+          },
+          "type": "batter"
+        },
+        {
+          "athlete": {
+            "id": "4683365"
+          },
+          "type": "onFirst"
+        }
+      ],
+      "wallclock": "2026-07-07T20:54:16Z",
+      "atBatId": "4018717901704",
+      "batOrder": 7,
+      "bats": {
+        "type": "LEFT",
+        "abbreviation": "L",
+        "displayValue": "Left"
+      },
+      "atBatPitchNumber": 4,
+      "pitchCoordinate": {
+        "x": 94,
+        "y": 201
+      },
+      "hitCoordinate": {
+        "x": 152,
+        "y": 170
+      },
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 2
+      },
+      "trajectory": "G",
+      "outs": 3,
+      "onFirst": {
+        "athlete": {
+          "id": "4683365"
+        }
+      }
+    },
+    {
+      "id": "4018717901799990058",
+      "sequenceNumber": "2",
+      "type": {
+        "id": "58",
+        "text": "End Inning",
+        "type": "end-inning"
+      },
+      "text": "End of the 9th inning",
+      "awayScore": 4,
+      "homeScore": 3,
+      "period": {
+        "type": "End",
+        "number": 9,
+        "displayValue": "9th Inning"
+      },
+      "scoringPlay": false,
+      "scoreValue": 0,
+      "team": {
+        "id": "24"
+      },
+      "wallclock": "2026-07-07T20:54:16Z",
+      "atBatId": "4018717901704",
+      "pitchCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "resultCount": {
+        "balls": 0,
+        "strikes": 0
+      },
+      "outs": 0
+    }
+  ]
+}

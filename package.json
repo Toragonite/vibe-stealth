@@ -1,0 +1,266 @@
+{
+  "name": "vibe-stealth",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "1.0.0",
+  "publisher": "toragonite",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Toragonite/vibe-stealth.git"
+  },
+  "homepage": "https://github.com/Toragonite/vibe-stealth#readme",
+  "bugs": {
+    "url": "https://github.com/Toragonite/vibe-stealth/issues"
+  },
+  "qna": "marketplace",
+  "keywords": [
+    "sports",
+    "esports",
+    "live scores",
+    "scoreboard",
+    "play-by-play",
+    "relay",
+    "ticker",
+    "baseball",
+    "mlb",
+    "nhl",
+    "nba",
+    "nfl",
+    "soccer",
+    "football",
+    "premier league",
+    "league of legends",
+    "lol",
+    "lck",
+    "msi",
+    "worlds",
+    "cs2",
+    "dota",
+    "valorant",
+    "kbo",
+    "k league",
+    "world cup",
+    "스포츠",
+    "중계",
+    "문자중계"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vibeStealth",
+          "title": "%viewContainer.title%",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "vibeStealth": [
+        {
+          "id": "vibeStealth.games",
+          "name": "%view.games.name%"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "vibeStealth.refreshGames",
+        "title": "%command.refreshGames.title%",
+        "category": "Vibe Stealth",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "vibeStealth.followGame",
+        "title": "%command.followGame.title%",
+        "category": "Vibe Stealth",
+        "icon": "$(star)"
+      },
+      {
+        "command": "vibeStealth.unfollowGame",
+        "title": "%command.unfollowGame.title%",
+        "category": "Vibe Stealth",
+        "icon": "$(star-full)"
+      },
+      {
+        "command": "vibeStealth.openRelay",
+        "title": "%command.openRelay.title%",
+        "category": "Vibe Stealth",
+        "icon": "$(output)"
+      },
+      {
+        "command": "vibeStealth.clearRelay",
+        "title": "%command.clearRelay.title%",
+        "category": "Vibe Stealth",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "vibeStealth.pickFollowed",
+        "title": "%command.pickFollowed.title%",
+        "category": "Vibe Stealth"
+      },
+      {
+        "command": "vibeStealth.setPandascoreToken",
+        "title": "%command.setPandascoreToken.title%",
+        "category": "Vibe Stealth",
+        "icon": "$(key)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "vibeStealth.refreshGames",
+          "when": "view == vibeStealth.games",
+          "group": "navigation@1"
+        },
+        {
+          "command": "vibeStealth.openRelay",
+          "when": "view == vibeStealth.games",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vibeStealth.followGame",
+          "when": "view == vibeStealth.games && viewItem == game",
+          "group": "inline@1"
+        },
+        {
+          "command": "vibeStealth.unfollowGame",
+          "when": "view == vibeStealth.games && viewItem == followedGame",
+          "group": "inline@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "vibeStealth.unfollowGame",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Vibe Stealth",
+      "properties": {
+        "vibeStealth.locale": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "en",
+            "ko"
+          ],
+          "description": "%config.locale.description%"
+        },
+        "vibeStealth.pollSecondsLive": {
+          "type": "number",
+          "default": 20,
+          "minimum": 10,
+          "maximum": 120,
+          "description": "%config.pollSecondsLive.description%"
+        },
+        "vibeStealth.pollSecondsScoreboard": {
+          "type": "number",
+          "default": 60,
+          "minimum": 30,
+          "maximum": 600,
+          "description": "%config.pollSecondsScoreboard.description%"
+        },
+        "vibeStealth.backfillLimit": {
+          "type": "number",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "%config.backfillLimit.description%"
+        },
+        "vibeStealth.maxFollowedGames": {
+          "type": "number",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 12,
+          "description": "%config.maxFollowedGames.description%"
+        },
+        "vibeStealth.statusBar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.statusBar.enabled.description%"
+        },
+        "vibeStealth.relay.showEmoji": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.relay.showEmoji.description%"
+        },
+        "vibeStealth.gameState.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.gameState.enabled.description%"
+        },
+        "vibeStealth.detail": {
+          "type": "string",
+          "default": "summary",
+          "enum": [
+            "summary",
+            "detailed"
+          ],
+          "enumDescriptions": [
+            "%config.detail.summary%",
+            "%config.detail.detailed%"
+          ],
+          "description": "%config.detail.description%"
+        },
+        "vibeStealth.logos.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.logos.enabled.description%"
+        },
+        "vibeStealth.leagues.enabled": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "%config.leagues.enabled.description%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "test": "vitest run",
+    "package": "vsce package",
+    "publish": "vsce publish --packagePath vibe-stealth-$npm_package_version.vsix",
+    "publish:ovsx": "ovsx publish vibe-stealth-$npm_package_version.vsix",
+    "probe": "node scripts/hostile-probes.mjs && node scripts/probe-i18n-render.mjs && node scripts/probe-logos.mjs",
+    "release:check": "npm run compile && vitest run && npm run probe && node scripts/probe.mjs && vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "ovsx": "^0.10.12",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "galleryBanner": {
+    "color": "#10141f",
+    "theme": "dark"
+  }
+}

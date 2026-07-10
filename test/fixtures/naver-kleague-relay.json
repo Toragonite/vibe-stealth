@@ -1,0 +1,97 @@
+{
+  "code": 200,
+  "success": true,
+  "result": {
+    "textRelayData": {
+      "gameId": "20260704052191",
+      "homeScore": 1,
+      "awayScore": 2,
+      "half": "2",
+      "statusCode": 4,
+      "statusInfo": "종료",
+      "no": 62,
+      "textRelays": [
+        {
+          "no": 62,
+          "eventType": "ST",
+          "homeOrAway": "home",
+          "time": "+7",
+          "half": "2",
+          "text": "전북 현대 - 감보아 슈팅",
+          "playerId": "20250353",
+          "playerName": "감보아"
+        },
+        {
+          "no": 61,
+          "eventType": "CK",
+          "homeOrAway": "home",
+          "time": "+7",
+          "half": "2",
+          "text": "전북 현대 - 이승우 코너킥",
+          "playerId": "20220042",
+          "playerName": "이승우"
+        },
+        {
+          "no": 60,
+          "eventType": "FO",
+          "homeOrAway": "home",
+          "time": "+4",
+          "half": "2",
+          "text": "전북 현대 - 김태현 파울",
+          "playerId": "20180185",
+          "playerName": "김태현"
+        },
+        {
+          "no": 59,
+          "eventType": "YC",
+          "homeOrAway": "away",
+          "time": "+4",
+          "half": "2",
+          "text": "강원FC - 김도현 경고",
+          "playerId": "20230203",
+          "playerName": "김도현"
+        },
+        {
+          "no": 58,
+          "eventType": "ST",
+          "homeOrAway": "away",
+          "time": "+1",
+          "half": "2",
+          "text": "강원FC - 송준석 슈팅",
+          "playerId": "20210112",
+          "playerName": "송준석"
+        },
+        {
+          "no": 57,
+          "eventType": "ST",
+          "homeOrAway": "home",
+          "time": "89'",
+          "half": "2",
+          "text": "전북 현대 - 모따 슈팅",
+          "playerId": "20230224",
+          "playerName": "모따"
+        },
+        {
+          "no": 56,
+          "eventType": "CH",
+          "homeOrAway": "away",
+          "time": "88'",
+          "half": "2",
+          "text": "강원FC - 박호영 in / 김대원 out",
+          "playerId": "20180157",
+          "playerName": "박호영"
+        },
+        {
+          "no": 55,
+          "eventType": "CH",
+          "homeOrAway": "home",
+          "time": "88'",
+          "half": "2",
+          "text": "전북 현대 - 김하준 in / 오베르단 out",
+          "playerId": "20230250",
+          "playerName": "김하준"
+        }
+      ]
+    }
+  }
+}

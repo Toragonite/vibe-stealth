@@ -1,0 +1,22 @@
+{
+  "_note": "SYNTHETIC fixture — PandaScore has no real probed payload. Hand-authored to match docs/CONTRACT.md §2.4 (single /matches/{id} object with finished games[] out of order to exercise the ascending position sort). Tests feed the `match` object below to the mocked fetchJson.",
+  "match": {
+    "id": 1001,
+    "status": "running",
+    "begin_at": "2026-07-08T10:00:00Z",
+    "number_of_games": 3,
+    "opponents": [
+      { "type": "Team", "opponent": { "id": 11, "name": "T1", "acronym": "T1", "image_url": "https://cdn.pandascore.co/images/team/image/11/t1.png" } },
+      { "type": "Team", "opponent": { "id": 22, "name": "Gen.G", "acronym": "GEN" } }
+    ],
+    "results": [
+      { "team_id": 11, "score": 2 },
+      { "team_id": 22, "score": 1 }
+    ],
+    "games": [
+      { "position": 2, "status": "finished", "finished": true, "winner": { "id": 22, "type": "Team" } },
+      { "position": 1, "status": "finished", "finished": true, "winner": { "id": 11, "type": "Team" } },
+      { "position": 3, "status": "finished", "finished": true, "winner": { "id": 11, "type": "Team" } }
+    ]
+  }
+}

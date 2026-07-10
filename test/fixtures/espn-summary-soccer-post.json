@@ -1,0 +1,458 @@
+{
+  "commentary": [
+    {
+      "sequence": 0,
+      "time": {
+        "value": 0.0,
+        "displayValue": ""
+      },
+      "text": "Lineups are announced and players are warming up."
+    },
+    {
+      "sequence": 1,
+      "time": {
+        "value": 0.0,
+        "displayValue": ""
+      },
+      "text": "First Half begins."
+    },
+    {
+      "sequence": 2,
+      "time": {
+        "value": 101.0,
+        "displayValue": "2'"
+      },
+      "text": "Offside, Congo DR. Yoane Wissa is caught offside.",
+      "play": {
+        "id": "49671050",
+        "type": {
+          "id": "68",
+          "text": "Offside",
+          "type": "offside"
+        },
+        "text": "Offside, Congo DR. Yoane Wissa is caught offside.",
+        "shortText": "Chancel Mbemba Offside",
+        "period": {
+          "number": 1
+        },
+        "clock": {
+          "value": 101.0,
+          "displayValue": "2'"
+        },
+        "team": {
+          "displayName": "Congo DR"
+        },
+        "participants": [
+          {
+            "athlete": {
+              "displayName": "Chancel Mbemba"
+            }
+          }
+        ],
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T16:02:02Z",
+        "fieldPositionX": 41.3,
+        "fieldPositionY": 25.6,
+        "fieldPosition2X": 64.7,
+        "fieldPosition2Y": 34.4
+      }
+    },
+    {
+      "sequence": 3,
+      "time": {
+        "value": 173.0,
+        "displayValue": "3'"
+      },
+      "text": "Foul by Marcus Rashford (England).",
+      "play": {
+        "id": "49671070",
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "text": "Ngal'ayel Mukau (Congo DR) wins a free kick in the defensive half.",
+        "shortText": "Marcus Rashford Foul",
+        "period": {
+          "number": 1
+        },
+        "clock": {
+          "value": 173.0,
+          "displayValue": "3'"
+        },
+        "team": {
+          "displayName": "England"
+        },
+        "participants": [
+          {
+            "athlete": {
+              "displayName": "Marcus Rashford"
+            }
+          },
+          {
+            "athlete": {
+              "displayName": "Ngal'ayel Mukau"
+            }
+          }
+        ],
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T16:03:14Z",
+        "fieldPositionX": 61.3,
+        "fieldPositionY": 73.8
+      }
+    },
+    {
+      "sequence": 98,
+      "time": {
+        "value": 5566.0,
+        "displayValue": "90'+3'"
+      },
+      "text": "Harry Kane (England) wins a free kick in the attacking half.",
+      "play": {
+        "id": "49672496",
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "text": "Harry Kane (England) wins a free kick in the attacking half.",
+        "shortText": "Axel Tuanzebe Foul",
+        "period": {
+          "number": 2
+        },
+        "clock": {
+          "value": 5400.0,
+          "displayValue": "90'+3'"
+        },
+        "team": {
+          "displayName": "Congo DR"
+        },
+        "participants": [
+          {
+            "athlete": {
+              "displayName": "Axel Tuanzebe"
+            }
+          },
+          {
+            "athlete": {
+              "displayName": "Harry Kane"
+            }
+          }
+        ],
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T17:56:01Z",
+        "fieldPositionX": 32.2,
+        "fieldPositionY": 78.2
+      }
+    },
+    {
+      "sequence": 99,
+      "time": {
+        "value": 5699.0,
+        "displayValue": "90'+5'"
+      },
+      "text": "Yoane Wissa (Congo DR) wins a free kick in the attacking half.",
+      "play": {
+        "id": "49672524",
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "text": "Foul by Jude Bellingham (England).",
+        "shortText": "Jude Bellingham Foul",
+        "period": {
+          "number": 2
+        },
+        "clock": {
+          "value": 5400.0,
+          "displayValue": "90'+5'"
+        },
+        "team": {
+          "displayName": "England"
+        },
+        "participants": [
+          {
+            "athlete": {
+              "displayName": "Jude Bellingham"
+            }
+          },
+          {
+            "athlete": {
+              "displayName": "Yoane Wissa"
+            }
+          }
+        ],
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T17:58:14Z",
+        "fieldPositionX": 27.2,
+        "fieldPositionY": 48.0
+      }
+    },
+    {
+      "sequence": 100,
+      "time": {
+        "value": 5699.0,
+        "displayValue": "90'+5'"
+      },
+      "text": "Foul by Jude Bellingham (England).",
+      "play": {
+        "id": "49672524",
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "text": "Foul by Jude Bellingham (England).",
+        "shortText": "Jude Bellingham Foul",
+        "period": {
+          "number": 2
+        },
+        "clock": {
+          "value": 5400.0,
+          "displayValue": "90'+5'"
+        },
+        "team": {
+          "displayName": "England"
+        },
+        "participants": [
+          {
+            "athlete": {
+              "displayName": "Jude Bellingham"
+            }
+          },
+          {
+            "athlete": {
+              "displayName": "Yoane Wissa"
+            }
+          }
+        ],
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T17:58:14Z",
+        "fieldPositionX": 27.2,
+        "fieldPositionY": 48.0
+      }
+    },
+    {
+      "sequence": 101,
+      "time": {
+        "value": 5787.0,
+        "displayValue": "90'+7'"
+      },
+      "text": "Attempt missed. Yoane Wissa (Congo DR) right footed shot from outside the box is too high from a direct free kick.",
+      "play": {
+        "id": "49672527",
+        "type": {
+          "id": "117",
+          "text": "Shot Off Target",
+          "type": "shot-off-target"
+        },
+        "text": "Attempt missed. Yoane Wissa (Congo DR) right footed shot from outside the box is too high from a direct free kick.",
+        "shortText": "Yoane Wissa Shot Off Target",
+        "period": {
+          "number": 2
+        },
+        "clock": {
+          "value": 5400.0,
+          "displayValue": "90'+7'"
+        },
+        "team": {
+          "displayName": "Congo DR"
+        },
+        "participants": [
+          {
+            "athlete": {
+              "displayName": "Yoane Wissa"
+            }
+          }
+        ],
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T17:59:42Z",
+        "goalPositionY": 48.1,
+        "fieldPositionX": 73.1,
+        "fieldPositionY": 54.0,
+        "fieldPosition2X": 100.0,
+        "fieldPosition2Y": 48.1
+      }
+    },
+    {
+      "sequence": 102,
+      "time": {
+        "value": 5809.0,
+        "displayValue": "90'+7'"
+      },
+      "text": "Second Half ends, England 2, Congo DR 1.",
+      "play": {
+        "id": "49672530",
+        "type": {
+          "id": "83",
+          "text": "End Regular Time",
+          "type": "end-regular-time"
+        },
+        "text": "Second Half ends, England 2, Congo DR 1.",
+        "period": {
+          "number": 2
+        },
+        "clock": {
+          "value": 5400.0,
+          "displayValue": "90'+7'"
+        },
+        "source": {
+          "id": "38",
+          "description": "SA.ENVOY"
+        },
+        "wallclock": "2026-07-01T18:00:15Z"
+      }
+    },
+    {
+      "sequence": 103,
+      "time": {
+        "value": 0.0,
+        "displayValue": ""
+      },
+      "text": "Match ends, England 2, Congo DR 1."
+    }
+  ],
+  "keyEvents": [
+    {
+      "id": "49671031",
+      "type": {
+        "id": "80",
+        "text": "Kickoff",
+        "type": "kickoff"
+      },
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "value": 0.0,
+        "displayValue": ""
+      },
+      "scoringPlay": false,
+      "source": {
+        "id": "38",
+        "description": "SA.ENVOY"
+      },
+      "wallclock": "2026-07-01T16:00:21Z",
+      "shootout": false
+    },
+    {
+      "id": "49671136",
+      "type": {
+        "id": "70",
+        "text": "Goal",
+        "type": "goal"
+      },
+      "text": "Goal! England 0, Congo DR 1. Brian Cipenga (Congo DR) right footed shot from the left side of the box to the bottom left corner. Assisted by Chancel Mbemba.",
+      "shortText": "Brian Cipenga Goal",
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "value": 387.0,
+        "displayValue": "7'"
+      },
+      "scoringPlay": true,
+      "team": {
+        "id": "2850",
+        "displayName": "Congo DR"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "352285",
+            "displayName": "Brian Cipenga"
+          }
+        },
+        {
+          "athlete": {
+            "id": "174322",
+            "displayName": "Chancel Mbemba"
+          }
+        }
+      ],
+      "source": {
+        "id": "38",
+        "description": "SA.ENVOY"
+      },
+      "wallclock": "2026-07-01T16:06:48Z",
+      "shootout": false,
+      "goalPositionY": 53.6,
+      "fieldPositionX": 90.6,
+      "fieldPositionY": 69.4,
+      "fieldPosition2X": 100.0,
+      "fieldPosition2Y": 53.6
+    },
+    {
+      "id": "49671145",
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "text": "Delay in match because of an injury Lionel Mpasi (Congo DR).",
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "value": 482.0,
+        "displayValue": "9'"
+      },
+      "scoringPlay": false,
+      "team": {
+        "id": "2850",
+        "displayName": "Congo DR"
+      },
+      "source": {
+        "id": "38",
+        "description": "SA.ENVOY"
+      },
+      "wallclock": "2026-07-01T16:08:23Z",
+      "shootout": false
+    },
+    {
+      "id": "49671146",
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "value": 482.0,
+        "displayValue": "9'"
+      },
+      "scoringPlay": false,
+      "team": {
+        "id": "448",
+        "displayName": "England"
+      },
+      "source": {
+        "id": "38",
+        "description": "SA.ENVOY"
+      },
+      "wallclock": "2026-07-01T16:08:24Z",
+      "shootout": false
+    }
+  ]
+}

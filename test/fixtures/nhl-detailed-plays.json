@@ -1,0 +1,652 @@
+{
+  "homeTeam": {
+    "id": 7,
+    "abbrev": "BUF"
+  },
+  "awayTeam": {
+    "id": 25,
+    "abbrev": "DAL"
+  },
+  "gameState": "LIVE",
+  "periodDescriptor": {
+    "number": 5,
+    "periodType": "SO",
+    "maxRegulationPeriods": 3
+  },
+  "clock": {
+    "timeRemaining": "00:00",
+    "secondsRemaining": 0,
+    "running": false,
+    "inIntermission": false
+  },
+  "rosterSpots": [
+    {
+      "playerId": 8473994,
+      "firstName": {
+        "default": "Jamie"
+      },
+      "lastName": {
+        "default": "Benn"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8474568,
+      "firstName": {
+        "default": "Luke"
+      },
+      "lastName": {
+        "default": "Schenn"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8474574,
+      "firstName": {
+        "default": "Tyler"
+      },
+      "lastName": {
+        "default": "Myers"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8475168,
+      "firstName": {
+        "default": "Matt"
+      },
+      "lastName": {
+        "default": "Duchene"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8476871,
+      "firstName": {
+        "default": "Tanner"
+      },
+      "lastName": {
+        "default": "Pearson"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8476889,
+      "firstName": {
+        "default": "Radek"
+      },
+      "lastName": {
+        "default": "Faksa"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8476902,
+      "firstName": {
+        "default": "Esa"
+      },
+      "lastName": {
+        "default": "Lindell"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8477454,
+      "firstName": {
+        "default": "Adam"
+      },
+      "lastName": {
+        "default": "Erne"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8477949,
+      "firstName": {
+        "default": "Alex"
+      },
+      "lastName": {
+        "default": "Tuch"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8478047,
+      "firstName": {
+        "default": "Michael"
+      },
+      "lastName": {
+        "default": "Bunting"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8478413,
+      "firstName": {
+        "default": "Jordan"
+      },
+      "lastName": {
+        "default": "Greenway"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8478420,
+      "firstName": {
+        "default": "Mikko"
+      },
+      "lastName": {
+        "default": "Rantanen"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8479193,
+      "firstName": {
+        "default": "Casey"
+      },
+      "lastName": {
+        "default": "DeSmith"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8479351,
+      "firstName": {
+        "default": "Sam"
+      },
+      "lastName": {
+        "default": "Steel"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8479359,
+      "firstName": {
+        "default": "Beck"
+      },
+      "lastName": {
+        "default": "Malenstyn"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8479378,
+      "firstName": {
+        "default": "Logan"
+      },
+      "lastName": {
+        "default": "Stanley"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8479979,
+      "firstName": {
+        "default": "Jake"
+      },
+      "lastName": {
+        "default": "Oettinger"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8479982,
+      "firstName": {
+        "default": "Conor"
+      },
+      "lastName": {
+        "default": "Timmins"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8480027,
+      "firstName": {
+        "default": "Jason"
+      },
+      "lastName": {
+        "default": "Robertson"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8480045,
+      "firstName": {
+        "default": "Ukko-Pekka"
+      },
+      "lastName": {
+        "default": "Luukkonen"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8480064,
+      "firstName": {
+        "default": "Josh"
+      },
+      "lastName": {
+        "default": "Norris"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8480840,
+      "firstName": {
+        "default": "Oskar"
+      },
+      "lastName": {
+        "default": "Bäck"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8480878,
+      "firstName": {
+        "default": "Nils"
+      },
+      "lastName": {
+        "default": "Lundkvist"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8480891,
+      "firstName": {
+        "default": "Michael"
+      },
+      "lastName": {
+        "default": "Kesselring"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8480950,
+      "firstName": {
+        "default": "Ilya"
+      },
+      "lastName": {
+        "default": "Lyubushkin"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8481522,
+      "firstName": {
+        "default": "Peyton"
+      },
+      "lastName": {
+        "default": "Krebs"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8481524,
+      "firstName": {
+        "default": "Bowen"
+      },
+      "lastName": {
+        "default": "Byram"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8481551,
+      "firstName": {
+        "default": "Colten"
+      },
+      "lastName": {
+        "default": "Ellis"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8481581,
+      "firstName": {
+        "default": "Thomas"
+      },
+      "lastName": {
+        "default": "Harley"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8482097,
+      "firstName": {
+        "default": "Jack"
+      },
+      "lastName": {
+        "default": "Quinn"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8482145,
+      "firstName": {
+        "default": "Mavrik"
+      },
+      "lastName": {
+        "default": "Bourque"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8482623,
+      "firstName": {
+        "default": "Josh"
+      },
+      "lastName": {
+        "default": "Dunne"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8482659,
+      "firstName": {
+        "default": "Josh"
+      },
+      "lastName": {
+        "default": "Doan"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8482671,
+      "firstName": {
+        "default": "Owen"
+      },
+      "lastName": {
+        "default": "Power"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8482740,
+      "firstName": {
+        "default": "Wyatt"
+      },
+      "lastName": {
+        "default": "Johnston"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8482896,
+      "firstName": {
+        "default": "Tyson"
+      },
+      "lastName": {
+        "default": "Kozak"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8483425,
+      "firstName": {
+        "default": "Lian"
+      },
+      "lastName": {
+        "default": "Bichsel"
+      },
+      "teamId": 25
+    },
+    {
+      "playerId": 8484145,
+      "firstName": {
+        "default": "Zach"
+      },
+      "lastName": {
+        "default": "Benson"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8484305,
+      "firstName": {
+        "default": "Zach"
+      },
+      "lastName": {
+        "default": "Metsa"
+      },
+      "teamId": 7
+    },
+    {
+      "playerId": 8484829,
+      "firstName": {
+        "default": "Justin"
+      },
+      "lastName": {
+        "default": "Hryckowian"
+      },
+      "teamId": 25
+    }
+  ],
+  "plays": [
+    {
+      "eventId": 78,
+      "sortOrder": 39,
+      "typeDescKey": "goal",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "02:19",
+      "details": {
+        "xCoord": -87,
+        "yCoord": 7,
+        "zoneCode": "O",
+        "shotType": "snap",
+        "scoringPlayerId": 8482145,
+        "scoringPlayerTotal": 20,
+        "assist1PlayerId": 8476902,
+        "assist1PlayerTotal": 26,
+        "assist2PlayerId": 8480950,
+        "assist2PlayerTotal": 8,
+        "eventOwnerTeamId": 25,
+        "goalieInNetId": 8481551,
+        "awayScore": 1,
+        "homeScore": 0,
+        "highlightClipSharingUrl": "https://nhl.com/video/dal-buf-bourque-scores-goal-against-colten-ellis-6393186284112",
+        "highlightClipSharingUrlFr": "https://nhl.com/fr/video/mavrik-bourque-with-a-but-vs-les-sabres-de-buffalo-6393184114112",
+        "highlightClip": 6393186284112,
+        "highlightClipFr": 6393184114112,
+        "discreteClip": 6393186081112,
+        "discreteClipFr": 6393186379112
+      }
+    },
+    {
+      "eventId": 88,
+      "sortOrder": 47,
+      "typeDescKey": "shot-on-goal",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "02:58",
+      "details": {
+        "xCoord": -2,
+        "yCoord": -22,
+        "zoneCode": "N",
+        "shotType": "wrist",
+        "shootingPlayerId": 8478047,
+        "goalieInNetId": 8481551,
+        "eventOwnerTeamId": 25,
+        "awaySOG": 1,
+        "homeSOG": 0
+      }
+    },
+    {
+      "eventId": 112,
+      "sortOrder": 71,
+      "typeDescKey": "shot-on-goal",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "04:07",
+      "details": {
+        "xCoord": 50,
+        "yCoord": -9,
+        "zoneCode": "O",
+        "shotType": "wrist",
+        "shootingPlayerId": 8482659,
+        "goalieInNetId": 8479979,
+        "eventOwnerTeamId": 7,
+        "awaySOG": 1,
+        "homeSOG": 1
+      }
+    },
+    {
+      "eventId": 64,
+      "sortOrder": 12,
+      "typeDescKey": "hit",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:16",
+      "details": {
+        "xCoord": 85,
+        "yCoord": 35,
+        "zoneCode": "O",
+        "eventOwnerTeamId": 7,
+        "hittingPlayerId": 8482623,
+        "hitteePlayerId": 8474574
+      }
+    },
+    {
+      "eventId": 76,
+      "sortOrder": 13,
+      "typeDescKey": "hit",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:34",
+      "details": {
+        "xCoord": -77,
+        "yCoord": -39,
+        "zoneCode": "D",
+        "eventOwnerTeamId": 7,
+        "hittingPlayerId": 8479359,
+        "hitteePlayerId": 8483425
+      }
+    },
+    {
+      "eventId": 85,
+      "sortOrder": 43,
+      "typeDescKey": "blocked-shot",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "02:40",
+      "details": {
+        "xCoord": -40,
+        "yCoord": 30,
+        "zoneCode": "D",
+        "blockingPlayerId": 8484145,
+        "shootingPlayerId": 8474574,
+        "eventOwnerTeamId": 25,
+        "reason": "blocked"
+      }
+    },
+    {
+      "eventId": 152,
+      "sortOrder": 93,
+      "typeDescKey": "takeaway",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "06:05",
+      "details": {
+        "xCoord": 31,
+        "yCoord": -1,
+        "zoneCode": "D",
+        "playerId": 8484829,
+        "eventOwnerTeamId": 25
+      }
+    },
+    {
+      "eventId": 74,
+      "sortOrder": 14,
+      "typeDescKey": "giveaway",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:43",
+      "details": {
+        "xCoord": -97,
+        "yCoord": 21,
+        "zoneCode": "O",
+        "eventOwnerTeamId": 25,
+        "playerId": 8480840
+      }
+    },
+    {
+      "eventId": 51,
+      "sortOrder": 11,
+      "typeDescKey": "faceoff",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "00:00",
+      "details": {
+        "eventOwnerTeamId": 7,
+        "losingPlayerId": 8476889,
+        "winningPlayerId": 8482623,
+        "xCoord": 0,
+        "yCoord": 0,
+        "zoneCode": "N"
+      }
+    },
+    {
+      "eventId": 8,
+      "sortOrder": 56,
+      "typeDescKey": "stoppage",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "03:11",
+      "details": {
+        "reason": "puck-in-netting"
+      }
+    },
+    {
+      "eventId": 186,
+      "sortOrder": 139,
+      "typeDescKey": "penalty",
+      "periodDescriptor": {
+        "number": 1,
+        "periodType": "REG",
+        "maxRegulationPeriods": 3
+      },
+      "timeInPeriod": "09:08",
+      "details": {
+        "xCoord": 81,
+        "yCoord": -1,
+        "zoneCode": "D",
+        "typeCode": "MIN",
+        "descKey": "high-sticking",
+        "duration": 2,
+        "committedByPlayerId": 8476889,
+        "drawnByPlayerId": 8480064,
+        "eventOwnerTeamId": 25
+      }
+    }
+  ]
+}

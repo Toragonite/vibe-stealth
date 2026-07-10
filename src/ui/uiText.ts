@@ -1,0 +1,160 @@
+/**
+ * UI-layer i18n strings (CONTRACT §5 / §6: every user-visible string goes through t()).
+ *
+ * Core system-line keys (`followed`, `unfollowed`, `restoredFollow`, `finalScore`, …) are
+ * pre-registered by src/core/i18n.ts in BOTH locales — never redefine them here. Everything
+ * below is namespaced `ui.*` so the two sets can never collide.
+ *
+ * EN and KO must stay key-for-key identical; keep the two maps in the same order.
+ */
+
+import { registerMessages } from '../core/i18n';
+
+/** Key constants — use these instead of bare string literals at call sites. */
+export const K = {
+  following: 'ui.following',
+  noGames: 'ui.noGames',
+  loading: 'ui.loading',
+  errNetwork: 'ui.error.network',
+  errRateLimit: 'ui.error.rate-limit',
+  errAuthSecret: 'ui.error.auth.secret',
+  errAuthKeyFree: 'ui.error.auth.keyfree',
+  errParse: 'ui.error.parse',
+  errNotFound: 'ui.error.not-found',
+  errUnavailable: 'ui.error.unavailable',
+  errUnknown: 'ui.error.unknown',
+  followLimit: 'ui.followLimit',
+  alreadyFollowing: 'ui.alreadyFollowing',
+  pickFollowTitle: 'ui.pickFollow.title',
+  pickFollowPlaceholder: 'ui.pickFollow.placeholder',
+  pickFollowEmpty: 'ui.pickFollow.empty',
+  pickFollowedTitle: 'ui.pickFollowed.title',
+  pickFollowedPlaceholder: 'ui.pickFollowed.placeholder',
+  pickFollowedEmpty: 'ui.pickFollowed.empty',
+  pickFollowedUnfollow: 'ui.pickFollowed.unfollow',
+  relayCleared: 'ui.relayCleared',
+  tokenTitle: 'ui.token.title',
+  tokenPrompt: 'ui.token.prompt',
+  tokenPlaceholder: 'ui.token.placeholder',
+  tokenSaved: 'ui.token.saved',
+  tokenCleared: 'ui.token.cleared',
+  commandFailed: 'ui.commandFailed',
+  /** Palette title of vibeStealth.setPandascoreToken — substituted into `authRequired`. */
+  commandSetToken: 'ui.command.setToken',
+  statusBarTooltip: 'ui.statusBar.tooltip',
+  statusBarHint: 'ui.statusBar.hint',
+  startsAt: 'ui.tree.startsAt',
+  // §11.7 live "current state" tree-row labels.
+  stateOut: 'ui.state.out',
+  stateCount: 'ui.state.count',
+  stateBases: 'ui.state.bases',
+  stateAtBat: 'ui.state.atBat',
+  statePitcher: 'ui.state.pitcher',
+  stateLineup: 'ui.state.lineup',
+  stateStarters: 'ui.state.starters',
+  stateFormation: 'ui.state.formation',
+  stateBlue: 'ui.state.blue',
+  stateRed: 'ui.state.red',
+  statePatch: 'ui.state.patch',
+  stateGold: 'ui.state.gold',
+} as const;
+
+const EN: Record<string, string> = {
+  [K.following]: 'Following',
+  [K.noGames]: 'No live games',
+  [K.loading]: 'Loading…',
+  [K.errNetwork]: 'Connection problem — retrying',
+  [K.errRateLimit]: 'Too many requests — retrying shortly',
+  [K.errAuthSecret]: 'Authentication failed — run “Vibe Stealth: Set PandaScore API Token”',
+  [K.errAuthKeyFree]: 'Provider temporarily refused the request — retrying',
+  [K.errParse]: 'Unexpected response from the provider',
+  [K.errNotFound]: 'Not available',
+  [K.errUnavailable]: 'Temporarily unavailable',
+  [K.errUnknown]: 'Failed to load',
+  [K.followLimit]:
+    'Follow limit reached ({n} games) — unfollow one first via “Vibe Stealth: Followed Games…”',
+  [K.alreadyFollowing]: 'Already following {game}',
+  [K.pickFollowTitle]: 'Follow a game',
+  [K.pickFollowPlaceholder]: 'Select a game to relay',
+  [K.pickFollowEmpty]: 'No games to follow — try “Vibe Stealth: Refresh Games”',
+  [K.pickFollowedTitle]: 'Followed games',
+  [K.pickFollowedPlaceholder]: 'Select a game to open its relay',
+  [K.pickFollowedEmpty]: 'No followed games',
+  [K.pickFollowedUnfollow]: 'Unfollow',
+  [K.relayCleared]: 'Relay cleared',
+  [K.tokenTitle]: 'PandaScore API Token',
+  [K.tokenPrompt]: 'Paste your PandaScore token — leave empty to remove it',
+  [K.tokenPlaceholder]: 'PandaScore token',
+  [K.tokenSaved]: 'PandaScore token saved — esports leagues enabled',
+  [K.tokenCleared]: 'PandaScore token removed',
+  [K.commandFailed]: 'Vibe Stealth: command failed — see the “Vibe Stealth Diagnostics” output',
+  [K.commandSetToken]: 'Vibe Stealth: Set PandaScore API Token',
+  [K.statusBarTooltip]: 'Vibe Stealth — following',
+  [K.statusBarHint]: 'Click to open the relay or unfollow',
+  [K.startsAt]: 'Starts at {time}',
+  [K.stateOut]: '{n} out',
+  [K.stateCount]: 'Count',
+  [K.stateBases]: 'Runners',
+  [K.stateAtBat]: 'At bat',
+  [K.statePitcher]: 'Pitcher',
+  [K.stateLineup]: 'Lineup',
+  [K.stateStarters]: 'Starting XI',
+  [K.stateFormation]: 'Formation',
+  [K.stateBlue]: 'Blue',
+  [K.stateRed]: 'Red',
+  [K.statePatch]: 'Patch',
+  [K.stateGold]: 'Gold',
+};
+
+const KO: Record<string, string> = {
+  [K.following]: '팔로우 중',
+  [K.noGames]: '진행 중인 경기 없음',
+  [K.loading]: '불러오는 중…',
+  [K.errNetwork]: '연결 문제 — 다시 시도합니다',
+  [K.errRateLimit]: '요청이 너무 많습니다 — 잠시 후 다시 시도합니다',
+  [K.errAuthSecret]: '인증 실패 — “Vibe Stealth: Set PandaScore API Token” 명령으로 토큰을 설정하세요',
+  [K.errAuthKeyFree]: '제공처가 일시적으로 요청을 거부했습니다 — 다시 시도합니다',
+  [K.errParse]: '응답 형식이 예상과 다릅니다',
+  [K.errNotFound]: '경기 정보를 찾을 수 없습니다',
+  [K.errUnavailable]: '일시적으로 사용할 수 없습니다',
+  [K.errUnknown]: '불러오지 못했습니다',
+  [K.followLimit]:
+    '팔로우 한도({n}개)에 도달했습니다 — “Vibe Stealth: Followed Games…”에서 먼저 하나를 해제하세요',
+  [K.alreadyFollowing]: '이미 {game} 경기를 팔로우 중입니다',
+  [K.pickFollowTitle]: '경기 팔로우',
+  [K.pickFollowPlaceholder]: '중계할 경기를 선택하세요',
+  [K.pickFollowEmpty]: '팔로우할 경기가 없습니다 — “Vibe Stealth: Refresh Games”를 실행해 보세요',
+  [K.pickFollowedTitle]: '팔로우 중인 경기',
+  [K.pickFollowedPlaceholder]: '중계를 열 경기를 선택하세요',
+  [K.pickFollowedEmpty]: '팔로우 중인 경기가 없습니다',
+  [K.pickFollowedUnfollow]: '팔로우 해제',
+  [K.relayCleared]: '중계 출력을 지웠습니다',
+  [K.tokenTitle]: 'PandaScore API 토큰',
+  [K.tokenPrompt]: 'PandaScore 토큰을 붙여넣으세요 — 비워 두면 삭제됩니다',
+  [K.tokenPlaceholder]: 'PandaScore 토큰',
+  [K.tokenSaved]: 'PandaScore 토큰을 저장했습니다 — e스포츠 리그가 활성화됩니다',
+  [K.tokenCleared]: 'PandaScore 토큰을 삭제했습니다',
+  [K.commandFailed]: 'Vibe Stealth: 명령을 실행하지 못했습니다 — “Vibe Stealth Diagnostics” 출력을 확인하세요',
+  [K.commandSetToken]: 'Vibe Stealth: Set PandaScore API Token',
+  [K.statusBarTooltip]: 'Vibe Stealth — 팔로우 중',
+  [K.statusBarHint]: '클릭하여 중계를 열거나 팔로우를 해제하세요',
+  [K.startsAt]: '{time} 시작',
+  [K.stateOut]: '아웃 {n}',
+  [K.stateCount]: '볼카운트',
+  [K.stateBases]: '주자',
+  [K.stateAtBat]: '타석',
+  [K.statePitcher]: '투수',
+  [K.stateLineup]: '라인업',
+  [K.stateStarters]: '선발',
+  [K.stateFormation]: '포메이션',
+  [K.stateBlue]: '블루',
+  [K.stateRed]: '레드',
+  [K.statePatch]: '패치',
+  [K.stateGold]: '골드',
+};
+
+/** Must run before the first t('ui.*') call — extension.ts calls this first. */
+export function registerUiMessages(): void {
+  registerMessages('en', EN);
+  registerMessages('ko', KO);
+}

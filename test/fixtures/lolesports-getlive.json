@@ -1,0 +1,377 @@
+{
+  "data": {
+    "schedule": {
+      "events": [
+        {
+          "id": "115570934355614581",
+          "startTime": "2026-07-08T08:00:00Z",
+          "state": "inProgress",
+          "type": "match",
+          "blockName": "토너먼트 스테이지",
+          "league": {
+            "id": "98767991325878492",
+            "slug": "msi",
+            "name": "MSI",
+            "image": "http://static.lolesports.com/leagues/1592594634248_MSIDarkBG.png",
+            "priority": 1,
+            "displayPriority": {
+              "position": 1,
+              "status": "force_selected"
+            }
+          },
+          "tournament": {
+            "id": "115570934354631452"
+          },
+          "match": {
+            "id": "115570934355614581",
+            "teams": [
+              {
+                "id": "98767991926151025",
+                "name": "G2 Esports",
+                "slug": "g2-esports",
+                "code": "G2",
+                "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                "result": {
+                  "outcome": null,
+                  "gameWins": 0
+                },
+                "record": {
+                  "wins": 1,
+                  "losses": 1
+                }
+              },
+              {
+                "id": "98767991853197861",
+                "name": "T1",
+                "slug": "t1",
+                "code": "T1",
+                "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
+                "result": {
+                  "outcome": null,
+                  "gameWins": 0
+                },
+                "record": {
+                  "wins": 1,
+                  "losses": 1
+                }
+              }
+            ],
+            "strategy": {
+              "type": "bestOf",
+              "count": 5
+            },
+            "games": [
+              {
+                "number": 1,
+                "id": "115570934355614582",
+                "state": "inProgress",
+                "teams": [
+                  {
+                    "id": "98767991926151025",
+                    "side": "blue"
+                  },
+                  {
+                    "id": "98767991853197861",
+                    "side": "red"
+                  }
+                ],
+                "vods": []
+              },
+              {
+                "number": 2,
+                "id": "115570934355614583",
+                "state": "unstarted",
+                "teams": [
+                  {
+                    "id": "98767991926151025",
+                    "side": "blue"
+                  },
+                  {
+                    "id": "98767991853197861",
+                    "side": "red"
+                  }
+                ],
+                "vods": []
+              },
+              {
+                "number": 3,
+                "id": "115570934355614584",
+                "state": "unstarted",
+                "teams": [
+                  {
+                    "id": "98767991853197861",
+                    "side": "blue"
+                  },
+                  {
+                    "id": "98767991926151025",
+                    "side": "red"
+                  }
+                ],
+                "vods": []
+              },
+              {
+                "number": 4,
+                "id": "115570934355614585",
+                "state": "unstarted",
+                "teams": [
+                  {
+                    "id": "98767991926151025",
+                    "side": "blue"
+                  },
+                  {
+                    "id": "98767991853197861",
+                    "side": "red"
+                  }
+                ],
+                "vods": []
+              },
+              {
+                "number": 5,
+                "id": "115570934355614586",
+                "state": "unstarted",
+                "teams": [
+                  {
+                    "id": "98767991853197861",
+                    "side": "blue"
+                  },
+                  {
+                    "id": "98767991926151025",
+                    "side": "red"
+                  }
+                ],
+                "vods": []
+              }
+            ]
+          },
+          "streams": [
+            {
+              "parameter": "esport2tv",
+              "locale": "hu-HU",
+              "mediaLocale": {
+                "locale": "hu-HU",
+                "englishName": "Hungarian (Hungary)",
+                "translatedName": "Magyar"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -45000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "tolkin",
+              "locale": "de-DE",
+              "mediaLocale": {
+                "locale": "de-DE",
+                "englishName": "German (Germany)",
+                "translatedName": "Deutsch"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -40000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "riotgames",
+              "locale": "en-US",
+              "mediaLocale": {
+                "locale": "en-US",
+                "englishName": "English (North America)",
+                "translatedName": "English (North America)"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -40000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "viKFyeAcFuc",
+              "locale": "en-US",
+              "mediaLocale": {
+                "locale": "en-US",
+                "englishName": "English (North America)",
+                "translatedName": "English (North America)"
+              },
+              "provider": "youtube",
+              "countries": [],
+              "offset": -30000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "xnKFeeK69V0",
+              "locale": "sr-SR",
+              "mediaLocale": {
+                "locale": "sr-SR",
+                "englishName": "Serbian",
+                "translatedName": "Srpski"
+              },
+              "provider": "youtube",
+              "countries": [],
+              "offset": -40000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "lolesportstw",
+              "locale": "zh-TW",
+              "mediaLocale": {
+                "locale": "zh-TW",
+                "englishName": "Chinese (Republic of China)",
+                "translatedName": "繁體中文"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -50000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "cblol",
+              "locale": "pt-BR",
+              "mediaLocale": {
+                "locale": "pt-BR",
+                "englishName": "Portuguese (Brazil)",
+                "translatedName": "Português (Brasil)"
+              },
+              "provider": "twitch",
+              "countries": [
+                "BR"
+              ],
+              "offset": -50000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "tMCg_NRer4I",
+              "locale": "pt-BR",
+              "mediaLocale": {
+                "locale": "pt-BR",
+                "englishName": "Portuguese (Brazil)",
+                "translatedName": "Português (Brasil)"
+              },
+              "provider": "youtube",
+              "countries": [],
+              "offset": -50000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "aflol",
+              "locale": "ko-KR",
+              "mediaLocale": {
+                "locale": "ko-KR",
+                "englishName": "Korean (Korea)",
+                "translatedName": "한국어"
+              },
+              "provider": "afreecatv",
+              "countries": [],
+              "offset": -45000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "LES",
+              "locale": "es-ES",
+              "mediaLocale": {
+                "locale": "es-ES",
+                "englishName": "Spanish (Spain)",
+                "translatedName": "Español (España)"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -60000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "lolesportsla",
+              "locale": "es-MX",
+              "mediaLocale": {
+                "locale": "es-MX",
+                "englishName": "Spanish (Mexico)",
+                "translatedName": "Español (Latinoamérica)"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -50000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "hth8DdQCNNA",
+              "locale": "es-MX",
+              "mediaLocale": {
+                "locale": "es-MX",
+                "englishName": "Spanish (Mexico)",
+                "translatedName": "Español (Latinoamérica)"
+              },
+              "provider": "youtube",
+              "countries": [],
+              "offset": -40000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "nervarien",
+              "locale": "pl-PL",
+              "mediaLocale": {
+                "locale": "pl-PL",
+                "englishName": "Polish (Poland)",
+                "translatedName": "Polski"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -40000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "otplol_",
+              "locale": "fr-FR",
+              "mediaLocale": {
+                "locale": "fr-FR",
+                "englishName": "French (France)",
+                "translatedName": "Français"
+              },
+              "provider": "twitch",
+              "countries": [
+                "FR"
+              ],
+              "offset": -45000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "VdXewqd2abg",
+              "locale": "vi-VN",
+              "mediaLocale": {
+                "locale": "vi-VN",
+                "englishName": "Vietnamese (Vietnam)",
+                "translatedName": "Tiếng Việt"
+              },
+              "provider": "youtube",
+              "countries": [],
+              "offset": -45000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "leagueoflegendsjp",
+              "locale": "ja-JP",
+              "mediaLocale": {
+                "locale": "ja-JP",
+                "englishName": "Japanese (Japan)",
+                "translatedName": "日本語"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -50000,
+              "statsStatus": "enabled"
+            },
+            {
+              "parameter": "leagueoflegendsth",
+              "locale": "th-TH",
+              "mediaLocale": {
+                "locale": "th-TH",
+                "englishName": "Thai (Thailand)",
+                "translatedName": "ภาษาไทย"
+              },
+              "provider": "twitch",
+              "countries": [],
+              "offset": -50000,
+              "statsStatus": "enabled"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
