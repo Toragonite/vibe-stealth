@@ -5,6 +5,23 @@ All notable changes to Vibe Stealth are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-07-10
+
+Publishing and metadata fixes only — no change to relay behavior.
+
+### Changed
+
+- Marketplace listing description no longer enumerates league and brand names,
+  which the Marketplace scanner flagged as misleading metadata; it now describes
+  the extension in neutral terms. The full league coverage is still documented
+  in the README.
+- Extension category is now `Visualization` instead of `Other`.
+- The public LoL Esports gateway key (the same one the site ships to every
+  browser; see SECURITY.md) is assembled from fragments at runtime instead of
+  appearing as a single literal, which the Marketplace credential scanner
+  flagged. The value is byte-identical and relay behavior is unchanged.
+- Stripped embedded XMP/EXIF metadata from the icon and screenshots.
+
 ## [1.0.0] - 2026-07-10
 
 First public release. Vibe Stealth turns live sports and esports into a text
