@@ -109,6 +109,9 @@ const DETAIL_KEYS = [
   'lolObjective.elder',
 ] as const;
 
+/** CONTRACT §14 — the field-contest leader templates, in en+ko parity. */
+const FIELD_KEYS = ['leaderPosition', 'leaderPositionBare'] as const;
+
 const placeholders = (template: string): string[] =>
   [...template.matchAll(/\{(\w+)\}/g)].map((m) => m[1] ?? '').sort();
 
@@ -219,6 +222,10 @@ describe('en/ko parity', () => {
     }
   });
 
+  it('every field-contest key (CONTRACT §14) exists in BOTH locales with identical placeholders', () => {
+    for (const key of FIELD_KEYS) assertParity(key);
+  });
+
   it('ko is actually Korean for the user-facing system lines', () => {
     expect(t('ko', 'connectionTrouble')).toBe('연결 문제 — 재시도 중…');
     expect(t('ko', 'gameVanished')).toBe('경기 정보를 찾을 수 없어 팔로우를 해제합니다');
@@ -228,6 +235,22 @@ describe('en/ko parity', () => {
     expect(t('ko', 'authRequired', { provider: 'PandaScore', command: 'Set PandaScore API Token' })).toBe(
       'PandaScore 인증 필요 — 명령 팔레트에서 Set PandaScore API Token 실행',
     );
+  });
+});
+
+describe('field contests (CONTRACT §14)', () => {
+  it('renders the leader position in both locales', () => {
+    expect(t('en', 'leaderPosition', { n: 1, who: 'VER' })).toBe('P1 VER');
+    expect(t('ko', 'leaderPosition', { n: 1, who: 'VER' })).toBe('1위 VER');
+    expect(t('en', 'leaderPositionBare', { n: 12 })).toBe('P12');
+    expect(t('ko', 'leaderPositionBare', { n: 12 })).toBe('12위');
+  });
+
+  it('never leaves a raw {placeholder} in either variant', () => {
+    for (const loc of ['en', 'ko'] as const) {
+      expect(t(loc, 'leaderPosition', { n: 3, who: 'NOR' })).not.toMatch(/\{[a-zA-Z]+\}/);
+      expect(t(loc, 'leaderPositionBare', { n: 3 })).not.toMatch(/\{[a-zA-Z]+\}/);
+    }
   });
 });
 

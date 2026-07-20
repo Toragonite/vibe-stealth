@@ -22,6 +22,13 @@ const EN: Record<string, string> = {
   restoredFollow: 'Restored follow: {game}',
   corrected: '(corrected)',
 
+  // ---- CONTRACT §14: field contests (motorsport) ------------------------------
+  // The leading competitor of a field, rendered in the tree row and the status bar.
+  // `leaderPositionBare` covers an entrant the feed gave neither an abbrev nor a
+  // name, so a raw {who} can never render.
+  leaderPosition: 'P{n} {who}',
+  leaderPositionBare: 'P{n}',
+
   // ---- CONTRACT §12: detail-level, provider-composed lines --------------------
   // These are localized because the API carries no prose for them (pitch data is
   // pure structured fields). API prose (at-bat descriptions, soccer commentary)
@@ -163,6 +170,10 @@ const KO: Record<string, string> = {
   unfollowed: '{game} 팔로우 해제',
   restoredFollow: '{game} 팔로우 복원',
   corrected: '(수정)',
+
+  // ---- CONTRACT §14: field contests (see EN comments) -------------------------
+  leaderPosition: '{n}위 {who}',
+  leaderPositionBare: '{n}위',
 
   // ---- CONTRACT §12: detail-level, provider-composed lines (see EN comments) ---
   pitchLine: '{type} {mph} · 존{zone} · {call} ({balls}-{strikes})',

@@ -20,6 +20,11 @@ export type SportKind =
   | 'hockey'
   | 'soccer'
   | 'esports'
+  | 'tennis'
+  | 'mma'
+  | 'cricket'
+  | 'volleyball'
+  | 'motorsport'
   | 'other';
 
 /** pre = not started; in = live; post = finished; unknown = unparsable status. */
@@ -43,6 +48,54 @@ export interface League {
   name: string;
   sport: SportKind;
   logo?: LogoRef;
+}
+
+/**
+ * CONTRACT §14. 'versus' = two opposing sides (every sport shipped before v1.1).
+ * 'field' = N competitors placing against each other (motorsport). See `Game.format`.
+ */
+export type GameFormat = 'versus' | 'field';
+
+/**
+ * Inclusive upper bound for `Entrant.position` (CONTRACT §14). The largest real
+ * field observed across the sports we serve is 156 (a golf major); 9999 leaves
+ * generous headroom while still rejecting the absurd magnitudes that pass a
+ * shape-only integer check. A position outside [1, MAX_FIELD_POSITION] is not a
+ * position — consumers treat it exactly as they treat `undefined` (unranked).
+ */
+export const MAX_FIELD_POSITION = 9999;
+
+/**
+ * One competitor in a `format: 'field'` contest (CONTRACT §14). Deliberately
+ * NOT a TeamSide: a field entrant has a position, not a score, and conflating
+ * the two is how "P1" ends up rendered as a score of 1.
+ */
+export interface Entrant {
+  /** Provider-native competitor id; '' if unknown. */
+  id: string;
+  /**
+   * 1-based running/finishing position: an integer in [1, MAX_FIELD_POSITION],
+   * or undefined when the upstream has not ranked the field yet (pre-session).
+   * Never 0, never negative, never fractional.
+   *
+   * The UPPER bound is part of the validity rule, not a nicety. `Number.isInteger(1e308)`
+   * is true, so a shape-only check (`isInteger && >= 1`) accepts 1e308 and renders it as
+   * `P1e+308` — well-formed and meaningless. Validity here is a VALUE-SEMANTICS question:
+   * the largest real field we probed was 156 (golf), so anything beyond
+   * MAX_FIELD_POSITION is upstream garbage and must be treated as unranked.
+   */
+  position: number | undefined;
+  /** Display name, e.g. 'Max Verstappen'. Never empty — fall back to abbrev or 'TBD'. */
+  name: string;
+  /** Short code ≤ 5 chars, e.g. 'VER'. Derived from name if the feed lacks one. */
+  abbrev: string;
+  /**
+   * One short qualifier shown after the name, e.g. a constructor ('Red Bull')
+   * or a gap ('+4.213'). Locale-neutral, ≤ 40 chars, or undefined.
+   */
+  detail: string | undefined;
+  /** Logo/portrait, or undefined. Same allowlist rules as TeamSide (§13). */
+  logo: LogoRef | undefined;
 }
 
 export interface TeamSide {
@@ -78,8 +131,32 @@ export interface Game {
   statusText: string;
   /** ≤ 8 chars for the status bar, e.g. 'T7', 'Q3', "67'", 'FT', 'HT', 'G2'. Never empty. */
   statusShort: string;
-  home: TeamSide;
-  away: TeamSide;
+  /**
+   * How this contest is shaped (CONTRACT §14).
+   * - 'versus' — two opposing sides. `home` AND `away` are BOTH defined;
+   *   `entrants` is undefined. Every provider written before §14 emits this.
+   * - 'field'  — one field of N competitors racing/placing against each other
+   *   (motorsport, and any future golf-shaped sport). `entrants` is defined and
+   *   NON-EMPTY; `home` and `away` are BOTH undefined.
+   *
+   * These are hard invariants, not conventions: consumers may rely on
+   * `format === 'versus'` implying `home`/`away` are present, and on
+   * `format === 'field'` implying `entrants.length > 0`. A provider that
+   * violates the pairing produces a game the UI is entitled to drop.
+   *
+   * Deliberately NOT optional-with-default: every construction site must state
+   * which shape it means, so a new provider cannot silently inherit 'versus'.
+   */
+  format: GameFormat;
+  /** Defined iff `format === 'versus'`. */
+  home: TeamSide | undefined;
+  /** Defined iff `format === 'versus'`. */
+  away: TeamSide | undefined;
+  /**
+   * Defined and non-empty iff `format === 'field'`. Sorted by `position`
+   * ascending, ties broken by `name` — providers sort; consumers do not re-sort.
+   */
+  entrants: Entrant[] | undefined;
 }
 
 export type PlayEventKind =
@@ -346,6 +423,28 @@ export interface FollowedGameState {
     homeScore: number | undefined;
     statusShort: string;
     phase: GamePhase;
+    /**
+     * The §14 discriminator as it was when the follow was persisted, plus the
+     * contest name a field game needs to render its row.
+     *
+     * ABSENT means "persisted before §14 shipped" and MUST be read as 'versus' —
+     * every game that existed before §14 was two-sided. It must NOT be re-derived
+     * from the sport, because a sport-to-format lookup duplicated in the restore
+     * path drifts from the providers and, on an unknown sport, turns "I don't
+     * know" into a positive assertion of 'versus' — which fabricates two TBD
+     * sides beside a live status. Persisting the fact removes the guess.
+     */
+    format?: GameFormat;
+    /**
+     * Contest name for a field game (e.g. 'Belgian Grand Prix — Practice 1').
+     * A field row is labelled from the contest, so without this a restored race
+     * degrades to the generic series name until the first fetch lands.
+     */
+    contestName?: string;
+    /** Leader abbrev of a field game, for the pre-fetch row (e.g. 'VER'). */
+    leaderAbbrev?: string;
+    /** Leader position of a field game; same validity rule as `Entrant.position`. */
+    leaderPosition?: number;
   };
 }
 

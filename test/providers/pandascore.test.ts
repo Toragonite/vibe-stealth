@@ -45,8 +45,10 @@ function lolGame(): Game {
     phase: 'in',
     statusText: 'GEN 0–1 T1',
     statusShort: 'G2',
+    format: 'versus',
     home: { id: '11', name: 'T1', abbrev: 'T1', score: 1 },
     away: { id: '22', name: 'Gen.G', abbrev: 'GEN', score: 0 },
+    entrants: undefined,
   };
 }
 

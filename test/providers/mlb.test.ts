@@ -70,8 +70,10 @@ function mlbGame(gamePk: string): Game {
     phase: 'in',
     statusText: 'x',
     statusShort: 'x',
+    format: 'versus',
     home: { id: '138', name: 'St. Louis Cardinals', abbrev: 'STL', score: undefined },
     away: { id: '158', name: 'Milwaukee Brewers', abbrev: 'MIL', score: undefined },
+    entrants: undefined,
   };
 }
 
@@ -177,6 +179,32 @@ describe('mlb fetchPlays (feed/live)', () => {
     expect(snap.game.away.abbrev).toBe('MIL');
     expect(snap.game.home.score).toBe(3); // from linescore runs
     expect(snap.game.away.score).toBe(4);
+  });
+
+  it("§14: format 'field' ⇒ status refreshed but the two-sided merge is skipped", async () => {
+    const input: Game = {
+      ...mlbGame('823062'),
+      format: 'field',
+      home: undefined,
+      away: undefined,
+      entrants: [{ id: '1', position: 1, name: 'Max Verstappen', abbrev: 'VER', detail: undefined, logo: undefined }],
+    };
+    const snap = await mlbProvider.fetchPlays(makeCtx(load('mlb-feed-live.json')).ctx, input);
+    expect(snap.game.phase).toBe('post'); // the status path is not gated
+    expect(snap.game.statusShort).toBe('F');
+    expect(snap.game.home).toBeUndefined(); // no sides invented onto a field contest
+    expect(snap.game.away).toBeUndefined();
+    expect(snap.game.entrants).toEqual(input.entrants);
+  });
+
+  it('§14: an ABSENT format is legacy versus — the sides still refresh', async () => {
+    // Exactly what a v1.0.1 game looks like after a restore: no discriminator at all.
+    const legacy = { ...mlbGame('823062') } as Partial<Game>;
+    delete legacy.format;
+    const snap = await mlbProvider.fetchPlays(makeCtx(load('mlb-feed-live.json')).ctx, legacy as Game);
+    expect(snap.game.home!.score).toBe(3); // refreshed, NOT frozen at the stale undefined
+    expect(snap.game.away!.score).toBe(4);
+    expect(snap.game.home!.abbrev).toBe('STL');
   });
 
   it('only emits plays with isComplete === true AND non-empty description', async () => {

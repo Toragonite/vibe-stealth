@@ -186,8 +186,10 @@ function buildGame(
     phase,
     statusText,
     statusShort,
+    format: 'versus',
     home: sides.home,
     away: sides.away,
+    entrants: undefined,
   };
 }
 

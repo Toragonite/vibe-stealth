@@ -5,9 +5,9 @@
 
 import * as vscode from 'vscode';
 import { IDS, type RelayLocale } from '../core/contract';
-import { formatStatusBar } from '../core/format';
+import { statusBarText } from '../core/format';
 import { t } from '../core/i18n';
-import { scoreText } from './display';
+import { gameLine } from './display';
 import type { FollowEntry, FollowManager } from './followManager';
 import { readSettings } from './settings';
 import { K } from './uiText';
@@ -71,14 +71,15 @@ export class StatusBar implements vscode.Disposable {
       return;
     }
 
-    const game = target.game;
-    this.item.text = formatStatusBar(
-      game.away.abbrev,
-      game.away.score,
-      game.home.score,
-      game.home.abbrev,
-      game.statusShort,
-    );
+    // A malformed game can leave nothing renderable at all (§14); an empty item is a
+    // dead click target, so hide rather than show a blank gap.
+    const text = statusBarText(target.game, settings.locale);
+    if (text === '') {
+      this.item.hide();
+      return;
+    }
+
+    this.item.text = text;
     this.item.tooltip = buildTooltip(entries, settings.locale);
     this.item.show();
   }
@@ -92,9 +93,7 @@ function buildTooltip(entries: readonly FollowEntry[], locale: RelayLocale): str
   const lines = [t(locale, K.statusBarTooltip)];
   for (const entry of entries) {
     const g = entry.game;
-    lines.push(
-      `${g.away.name} ${scoreText(g.away.score)}:${scoreText(g.home.score)} ${g.home.name} · ${g.statusText}`,
-    );
+    lines.push(`${gameLine(g, locale)} · ${g.statusText}`);
   }
   lines.push('', t(locale, K.statusBarHint));
   return lines.join('\n');

@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import type { FormatOptions, Game, PlayEvent, SportKind } from '../../src/core/contract';
-import { formatEventLine, formatStatusBar, localizePeriod } from '../../src/core/format';
+import { MAX_FIELD_POSITION } from '../../src/core/contract';
+import type { Entrant, FormatOptions, Game, PlayEvent, SportKind } from '../../src/core/contract';
+import {
+  formatEventLine,
+  formatLeader,
+  formatStatusBar,
+  leadEntrant,
+  localizePeriod,
+  statusBarText,
+} from '../../src/core/format';
 
 /** Fixed instant; the formatter renders it in whatever zone the host runs in. */
 const AT = Date.parse('2026-07-08T19:45:07Z');
@@ -22,10 +30,39 @@ function game(overrides: Partial<Game> = {}): Game {
     phase: 'in',
     statusText: 'Top 7th',
     statusShort: 'T7',
+    format: 'versus',
     home: { id: '1', name: 'Cardinals', abbrev: 'STL', score: 2 },
     away: { id: '2', name: 'Cubs', abbrev: 'CHC', score: 3 },
+    entrants: undefined,
     ...overrides,
   };
+}
+
+/** CONTRACT §14: a field contest — N entrants placing, no home/away at all. */
+function fieldGame(overrides: Partial<Game> = {}): Game {
+  return {
+    id: 'espn:f1:401600',
+    providerId: 'espn',
+    leagueId: 'f1',
+    leagueName: 'Belgian Grand Prix',
+    sport: 'motorsport',
+    startTimeUtc: '2026-07-26T13:00:00Z',
+    phase: 'in',
+    statusText: 'Lap 32/44',
+    statusShort: 'L32',
+    format: 'field',
+    home: undefined,
+    away: undefined,
+    entrants: [
+      entrant({ id: '1', position: 1, name: 'Max Verstappen', abbrev: 'VER', detail: 'Red Bull' }),
+      entrant({ id: '4', position: 2, name: 'Lando Norris', abbrev: 'NOR', detail: '+4.213' }),
+    ],
+    ...overrides,
+  };
+}
+
+function entrant(overrides: Partial<Entrant> = {}): Entrant {
+  return { id: '1', position: 1, name: 'Max Verstappen', abbrev: 'VER', detail: undefined, logo: undefined, ...overrides };
 }
 
 function event(overrides: Partial<PlayEvent> = {}): PlayEvent {
@@ -75,6 +112,21 @@ describe('formatEventLine', () => {
     expect(formatEventLine(event(), game(), opts())).not.toContain('[CHC-STL]');
   });
 
+  it('tags a field contest with its contest initials instead of two sides (§14)', () => {
+    const multi = opts({ multiGame: true });
+    expect(formatEventLine(event(), fieldGame(), multi)).toContain('│ [BGP] · T7 │');
+    expect(formatEventLine(event(), fieldGame({ leagueName: 'Monaco' }), multi)).toContain('[MONAC]');
+    expect(formatEventLine(event(), fieldGame({ leagueName: 'Formula 1' }), multi)).toContain('[F1]');
+    expect(formatEventLine(event(), fieldGame(), opts())).not.toContain('[BGP]');
+  });
+
+  it('drops the tag rather than rendering a stub when a malformed game names nothing', () => {
+    const multi = opts({ multiGame: true });
+    // 'field' with no entrants and no contest name; 'versus' with no sides at all.
+    expect(formatEventLine(event(), fieldGame({ leagueName: '   ', entrants: [] }), multi)).toContain('│ · T7 │');
+    expect(formatEventLine(event(), game({ home: undefined, away: undefined }), multi)).toContain('│ · T7 │');
+  });
+
   it('prefixes the sport emoji when enabled, and nothing for sport "other"', () => {
     const withEmoji = opts({ showEmoji: true });
     const cases: Array<[SportKind, string]> = [
@@ -84,6 +136,11 @@ describe('formatEventLine', () => {
       ['hockey', '🏒'],
       ['soccer', '⚽'],
       ['esports', '🎮'],
+      ['tennis', '🎾'],
+      ['mma', '🥊'],
+      ['cricket', '🏏'],
+      ['volleyball', '🏐'],
+      ['motorsport', '🏎'],
     ];
     for (const [sport, emoji] of cases) {
       expect(formatEventLine(event(), game({ sport }), withEmoji)).toContain(`│ ${emoji} Strikeout swinging.`);
@@ -152,6 +209,108 @@ describe('formatStatusBar', () => {
   it('omits the separator when statusShort is empty', () => {
     expect(formatStatusBar('CHC', 3, 2, 'STL', '')).toBe('CHC 3:2 STL');
     expect(formatStatusBar('CHC', 3, 2, 'STL', '   ')).toBe('CHC 3:2 STL');
+  });
+});
+
+describe('leadEntrant', () => {
+  it('takes the first entrant carrying a usable position, without re-sorting', () => {
+    expect(leadEntrant(fieldGame().entrants)?.abbrev).toBe('VER');
+    // Unranked entries ahead of the ranked ones are skipped, not sorted around.
+    const mixed = [entrant({ position: undefined, abbrev: 'HAM' }), entrant({ position: 3, abbrev: 'LEC' })];
+    expect(leadEntrant(mixed)?.abbrev).toBe('LEC');
+  });
+
+  it('rejects a position that is not a 1-based integer', () => {
+    for (const position of [0, -1, 1.5, NaN, Infinity, -Infinity]) {
+      expect(leadEntrant([entrant({ position })]), `position ${position}`).toBeUndefined();
+    }
+    // A numeric-looking string is not a number, however plausible it renders.
+    for (const position of ['1', null]) {
+      const hostile = entrant({ position: position as unknown as number });
+      expect(leadEntrant([hostile]), `position ${String(position)}`).toBeUndefined();
+    }
+  });
+
+  it('§14: treats the range [1, MAX_FIELD_POSITION] as a boundary, not a shape check', () => {
+    // Every value on this line passes `Number.isInteger(p) && p >= 1` — a shape-only
+    // check would take one as the leader and render `P1e+308`. The bound is what
+    // makes the test about MEANING rather than form.
+    for (const position of [MAX_FIELD_POSITION + 1, 1e308, Number.MAX_SAFE_INTEGER]) {
+      expect(leadEntrant([entrant({ position })]), `position ${position}`).toBeUndefined();
+    }
+    // Both ends of the valid range are in; one step outside either end is out.
+    expect(leadEntrant([entrant({ position: MAX_FIELD_POSITION })])?.position).toBe(MAX_FIELD_POSITION);
+    expect(leadEntrant([entrant({ position: 1 })])?.position).toBe(1);
+    expect(leadEntrant([entrant({ position: 0 })])).toBeUndefined();
+  });
+
+  it('skips an out-of-range position exactly as it skips an unranked one', () => {
+    const hostile = [0, -1, 1.5, NaN, Infinity, -Infinity, '1', null, undefined, 1e308].map((position, i) =>
+      entrant({ id: String(i), position: position as unknown as number, name: `D${i}`, abbrev: `D${i}` }),
+    );
+    hostile.push(entrant({ id: 'ok', position: 7, name: 'Real Driver', abbrev: 'RLD' }));
+    expect(leadEntrant(hostile)?.abbrev).toBe('RLD');
+    // Nothing meaningless survives into the rendered line.
+    expect(formatLeader(hostile, 'en')).toBe('P7 RLD');
+  });
+
+  it('returns undefined for an unranked, empty, absent or hostile field', () => {
+    expect(leadEntrant([entrant({ position: undefined })])).toBeUndefined();
+    expect(leadEntrant([])).toBeUndefined();
+    expect(leadEntrant(undefined)).toBeUndefined();
+    expect(leadEntrant('nope' as unknown as Entrant[])).toBeUndefined();
+    expect(leadEntrant([undefined as unknown as Entrant, entrant({ position: 2 })])?.position).toBe(2);
+  });
+});
+
+describe('formatLeader', () => {
+  it('renders the leader in both locales', () => {
+    expect(formatLeader(fieldGame().entrants, 'en')).toBe('P1 VER');
+    expect(formatLeader(fieldGame().entrants, 'ko')).toBe('1위 VER');
+  });
+
+  it('falls back to the name, then to the bare position — never a raw {who}', () => {
+    expect(formatLeader([entrant({ abbrev: '  ', name: 'Max Verstappen' })], 'en')).toBe('P1 Max Verstappen');
+    const bare = formatLeader([entrant({ abbrev: '', name: '' })], 'ko');
+    expect(bare).toBe('1위');
+    expect(bare).not.toMatch(/\{[a-zA-Z]+\}/);
+  });
+
+  it('is undefined when nothing is ranked yet', () => {
+    expect(formatLeader([entrant({ position: undefined })], 'en')).toBeUndefined();
+    expect(formatLeader([], 'en')).toBeUndefined();
+  });
+});
+
+describe('statusBarText (CONTRACT §5, §14)', () => {
+  it('keeps the pinned two-sided shape for a versus game', () => {
+    expect(statusBarText(game(), 'en')).toBe('CHC 3:2 STL · T7');
+    expect(statusBarText(game(), 'ko')).toBe('CHC 3:2 STL · T7');
+    expect(statusBarText(game({ away: { id: '2', name: 'Cubs', abbrev: 'CHC', score: undefined } }), 'en')).toBe(
+      'CHC –:2 STL · T7',
+    );
+  });
+
+  it('shows the leader and the status for a field contest — never a fake score', () => {
+    expect(statusBarText(fieldGame(), 'en')).toBe('P1 VER · L32');
+    expect(statusBarText(fieldGame(), 'ko')).toBe('1위 VER · L32');
+    expect(statusBarText(fieldGame(), 'en')).not.toContain(':');
+  });
+
+  it('falls back to the status alone when the field is not ranked yet', () => {
+    const unranked = fieldGame({ entrants: [entrant({ position: undefined }), entrant({ position: undefined })] });
+    expect(statusBarText(unranked, 'en')).toBe('L32');
+    expect(statusBarText(unranked, 'ko')).toBe('L32');
+  });
+
+  it('degrades a malformed game to the status instead of throwing (§14)', () => {
+    expect(statusBarText(fieldGame({ entrants: [] }), 'en')).toBe('L32');
+    expect(statusBarText(fieldGame({ entrants: undefined }), 'en')).toBe('L32');
+    expect(statusBarText(game({ home: undefined }), 'en')).toBe('T7');
+    expect(statusBarText(game({ away: undefined }), 'en')).toBe('T7');
+    expect(statusBarText(game({ home: undefined, away: undefined }), 'ko')).toBe('T7');
+    // Nothing renderable at all — an empty string, never 'undefined' or a throw.
+    expect(statusBarText(fieldGame({ entrants: [], statusShort: '' }), 'en')).toBe('');
   });
 });
 

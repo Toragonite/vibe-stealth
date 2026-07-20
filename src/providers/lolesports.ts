@@ -212,8 +212,10 @@ async function listGames(ctx: ProviderContext, league: League): Promise<Game[]> 
           phase,
           statusText,
           statusShort,
+          format: 'versus',
           home,
           away,
+          entrants: undefined,
         });
       } catch (inner) {
         ctx.log(`lolesports: skipped malformed event: ${String(inner)}`);
@@ -902,16 +904,37 @@ function refreshGame(
   hw: number,
   firstInProgress: number | undefined,
 ): Game {
-  const homeSide: TeamSide = { ...game.home, score: home.score ?? game.home.score };
-  if (home.logo) homeSide.logo = home.logo;
-  const awaySide: TeamSide = { ...game.away, score: away.score ?? game.away.score };
-  if (away.logo) awaySide.logo = away.logo;
-  const next: Game = {
-    ...game,
-    phase,
-    home: homeSide,
-    away: awaySide,
+  // §14: this provider only emits 'versus' games, so the input carries both
+  // sides. Spreading them wholesale used to leak their optionality into the
+  // result; naming each field keeps the contract's id/name/abbrev present, and
+  // the freshly parsed side — which buildTeam already floors at 'TBD' — stands
+  // in for an input that somehow has no sides at all.
+  //
+  // Only a positively-'field' game has no sides to merge onto; an ABSENT format
+  // is a pre-§14 game, and every game shipped before §14 was two-sided, so it
+  // refreshes as versus. Do not tighten this back to `!== 'versus'`: that freezes
+  // a legacy game's score while its status keeps updating, silently and without
+  // a log.
+  const isField = game.format === 'field';
+  const prevHome = game.home;
+  const prevAway = game.away;
+  const homeSide: TeamSide = {
+    id: prevHome?.id ?? home.id,
+    name: prevHome?.name ?? home.name,
+    abbrev: prevHome?.abbrev ?? home.abbrev,
+    score: home.score ?? prevHome?.score,
   };
+  const homeLogo = home.logo ?? prevHome?.logo;
+  if (homeLogo) homeSide.logo = homeLogo;
+  const awaySide: TeamSide = {
+    id: prevAway?.id ?? away.id,
+    name: prevAway?.name ?? away.name,
+    abbrev: prevAway?.abbrev ?? away.abbrev,
+    score: away.score ?? prevAway?.score,
+  };
+  const awayLogo = away.logo ?? prevAway?.logo;
+  if (awayLogo) awaySide.logo = awayLogo;
+  const next: Game = isField ? { ...game, phase } : { ...game, phase, home: homeSide, away: awaySide };
   if (phase === 'post') {
     next.statusText = 'Final';
     next.statusShort = 'F';

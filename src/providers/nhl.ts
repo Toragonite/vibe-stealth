@@ -188,6 +188,15 @@ function freshGameFromPlayByPlay(data: Record<string, unknown>, game: Game): Gam
   const pd = rec(data.periodDescriptor);
   const periodNum = typeof pd.number === 'number' && Number.isFinite(pd.number) ? pd.number : undefined;
   const st = nhlStatus(phase, gameState, periodNum, str(pd.periodType), rec(data.clock), game.startTimeUtc);
+  // §14: every NHL game is 'versus', so both sides are present. Only a
+  // positively-'field' game has no sides to merge onto; an ABSENT format is a
+  // pre-§14 game, and every game shipped before §14 was two-sided, so it
+  // refreshes as versus. Do not tighten this back to `!== 'versus'`: that
+  // freezes a legacy game's score while its status keeps updating, silently
+  // and without a log.
+  if (game.format === 'field' || !game.home || !game.away) {
+    return { ...game, phase, statusText: st.statusText, statusShort: st.statusShort };
+  }
   return {
     ...game,
     phase,
@@ -340,8 +349,10 @@ function parseScore(raw: unknown, ctx: ProviderContext): Game[] {
         phase,
         statusText: st.statusText,
         statusShort: st.statusShort,
+        format: 'versus',
         home: homeSide,
         away: awaySide,
+        entrants: undefined,
       });
     } catch (e) {
       ctx.log(`nhl: skipped malformed score game: ${String(e)}`);
@@ -365,8 +376,10 @@ function buildRoster(rosterRaw: unknown): Map<number, string> {
 function parsePlayByPlay(raw: unknown, game: Game, ctx: ProviderContext): PlaySnapshot {
   const data = rec(raw);
   const roster = buildRoster(data.rosterSpots);
-  const awayAbbrev = str(rec(data.awayTeam).abbrev) || game.away.abbrev;
-  const homeAbbrev = str(rec(data.homeTeam).abbrev) || game.home.abbrev;
+  // §14: these are always 'versus' games, so the input sides are present; the
+  // 'TBD' tail is the type-level end of that invariant, not a real fallback.
+  const awayAbbrev = str(rec(data.awayTeam).abbrev) || (game.away?.abbrev ?? 'TBD');
+  const homeAbbrev = str(rec(data.homeTeam).abbrev) || (game.home?.abbrev ?? 'TBD');
 
   const events: PlayEvent[] = [];
   for (const pl of asArray(data.plays)) {

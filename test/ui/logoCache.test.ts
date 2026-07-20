@@ -273,7 +273,13 @@ describe('LogoCache — size cap (§13.4 rule 4)', () => {
     expect(cache.resolve({ light: PNG_URL })?.light.fsPath).toBe(
       path.join(CACHE_DIR, `${fnv1a32(PNG_URL)}.png`),
     );
-  });
+    // Explicit timeout: this case really does build and hash a 400 KiB buffer, and
+    // it is the only test in the suite that does. It fitted inside vitest's 5 s
+    // default when the suite ran in ~1.7 s, but the suite now runs ~24 s and this
+    // case began timing out on roughly two runs in three under parallel load — a
+    // gate that fails at random is worse than no gate, because it teaches you to
+    // ignore it. The work itself is unchanged; only the budget is stated.
+  }, 30_000);
 
   it('rejects a 600 KiB PNG, over the 512 KiB cap', async () => {
     const { cache, fs, logs } = makeCache(() =>

@@ -194,8 +194,10 @@ function parseGame(obj: Record<string, unknown>, origin: GameOrigin): Game | und
     phase,
     statusText,
     statusShort,
+    format: 'versus',
     home,
     away,
+    entrants: undefined,
   };
 }
 

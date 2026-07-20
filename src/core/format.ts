@@ -5,7 +5,8 @@
  * time zone.
  */
 
-import type { FormatOptions, Game, PlayEvent, RelayLocale, SportKind } from './contract';
+import { MAX_FIELD_POSITION } from './contract';
+import type { Entrant, FormatOptions, Game, PlayEvent, RelayLocale, SportKind } from './contract';
 import { t } from './i18n';
 import { sanitizeText } from './util';
 
@@ -16,6 +17,11 @@ const SPORT_EMOJI: Record<SportKind, string> = {
   hockey: '🏒',
   soccer: '⚽',
   esports: '🎮',
+  tennis: '🎾',
+  mma: '🥊',
+  cricket: '🏏',
+  volleyball: '🏐',
+  motorsport: '🏎',
   other: '',
 };
 
@@ -30,7 +36,7 @@ const NO_SCORE = '–';
  */
 export function formatEventLine(event: PlayEvent, game: Game, opts: FormatOptions): string {
   const stamp = formatLocalTime(opts.now());
-  const tag = opts.multiGame ? `[${game.away.abbrev}-${game.home.abbrev}] ` : '';
+  const tag = opts.multiGame ? gameTag(game) : '';
   const marker = event.kind === 'score' ? '★ ' : event.kind === 'correction' ? '⚠ ' : '· ';
 
   const period = localizePeriod(event.period, game.sport, opts.locale);
@@ -50,6 +56,75 @@ export function formatEventLine(event: PlayEvent, game: Game, opts: FormatOption
   return `${stamp} │ ${middle} │ ${text}`;
 }
 
+/**
+ * The `[AWY-HOM] ` multi-game tag. A field contest (§14) has no two sides to name, so it
+ * tags with the contest's initials instead. Empty when neither shape yields anything.
+ */
+function gameTag(game: Game): string {
+  const label = game.format === 'field' ? contestTag(game.leagueName) : versusTag(game);
+  return label === '' ? '' : `[${label}] `;
+}
+
+function versusTag(game: Game): string {
+  const away = trimmed(game.away?.abbrev);
+  const home = trimmed(game.home?.abbrev);
+  return away === '' && home === '' ? '' : `${away}-${home}`;
+}
+
+/** `Belgian Grand Prix` → `BGP`; a single word keeps its first 5 chars (`Monaco` → `MONAC`). */
+function contestTag(name: string): string {
+  const words = trimmed(name).split(/\s+/).filter((word) => word !== '');
+  if (words.length === 0) return '';
+  const initials = words.map((word) => word[0] ?? '').join('');
+  return (initials.length >= 2 ? initials : (words[0] ?? '')).toUpperCase().slice(0, 5);
+}
+
+/**
+ * The leading competitor of a field contest (§14) — the FIRST entrant carrying a usable
+ * position. Providers sort the field, so scanning forward past unranked entries picks the
+ * leader without re-sorting. undefined when nothing is ranked yet (pre-session) or the
+ * game carries no entrants at all (a malformed 'field' game).
+ */
+export function leadEntrant(entrants: readonly Entrant[] | undefined): Entrant | undefined {
+  if (!Array.isArray(entrants)) return undefined;
+  for (const entrant of entrants) {
+    if (!entrant) continue;
+    if (isFieldPosition(entrant.position)) return entrant;
+  }
+  return undefined;
+}
+
+/**
+ * §14: a usable position is an integer in [1, MAX_FIELD_POSITION].
+ *
+ * The UPPER bound is a value-semantics rule, not decoration — do not "simplify" it
+ * away. `Number.isInteger(1e308)` is true and `1e308 >= 1` is true, so a shape-only
+ * check accepts 1e308 as a rank and renders it as `P1e+308`: structurally perfect,
+ * semantically meaningless. A position outside the range is not a position, so it is
+ * skipped exactly as an unranked (`undefined`) one is.
+ */
+function isFieldPosition(position: number | undefined): boolean {
+  return (
+    typeof position === 'number' &&
+    Number.isInteger(position) &&
+    position >= 1 &&
+    position <= MAX_FIELD_POSITION
+  );
+}
+
+/** `P1 VER` (ko: `1위 VER`), or undefined when the field is not ranked yet (§14). */
+export function formatLeader(
+  entrants: readonly Entrant[] | undefined,
+  locale: RelayLocale,
+): string | undefined {
+  const leader = leadEntrant(entrants);
+  if (!leader) return undefined;
+  const n = leader.position ?? 0;
+  const who = trimmed(leader.abbrev) || trimmed(leader.name);
+  // Two templates so an entrant with neither abbrev nor name can never render a raw {who}.
+  return who === '' ? t(locale, 'leaderPositionBare', { n }) : t(locale, 'leaderPosition', { n, who });
+}
+
 /** `AWY 3:2 HOM · T7` — no emoji, no color (§5). */
 export function formatStatusBar(
   awayAbbrev: string,
@@ -58,9 +133,29 @@ export function formatStatusBar(
   homeAbbrev: string,
   statusShort: string,
 ): string {
-  const head = `${awayAbbrev} ${renderScore(awayScore)}:${renderScore(homeScore)} ${homeAbbrev}`;
-  const status = typeof statusShort === 'string' ? statusShort.trim() : '';
+  return withStatus(`${awayAbbrev} ${renderScore(awayScore)}:${renderScore(homeScore)} ${homeAbbrev}`, statusShort);
+}
+
+/**
+ * The status-bar text for either contest shape (§5, §14): `AWY 3:2 HOM · T7` for a versus
+ * game, `P1 VER · L32` for a field one. A malformed game — 'versus' missing a side, 'field'
+ * with nothing ranked — degrades to the status alone rather than inventing a score.
+ */
+export function statusBarText(game: Game, locale: RelayLocale): string {
+  if (game.format === 'field') return withStatus(formatLeader(game.entrants, locale) ?? '', game.statusShort);
+  const { home, away } = game;
+  if (!home || !away) return withStatus('', game.statusShort);
+  return formatStatusBar(away.abbrev, away.score, home.score, home.abbrev, game.statusShort);
+}
+
+function withStatus(head: string, statusShort: string): string {
+  const status = trimmed(statusShort);
+  if (head === '') return status;
   return status === '' ? head : `${head} · ${status}`;
+}
+
+function trimmed(value: string | undefined): string {
+  return typeof value === 'string' ? value.trim() : '';
 }
 
 /**

@@ -203,8 +203,10 @@ function parseSchedule(raw: unknown, ctx: ProviderContext): Game[] {
           phase: st.phase,
           statusText: st.statusText,
           statusShort: st.statusShort,
+          format: 'versus',
           home: buildScheduleSide(teams.home),
           away: buildScheduleSide(teams.away),
+          entrants: undefined,
         });
       } catch (e) {
         ctx.log(`mlb: skipped malformed schedule game: ${String(e)}`);
@@ -466,15 +468,21 @@ function parseFeedLive(raw: unknown, game: Game, gamePk: string, ctx: ProviderCo
   const awayLogo = mlbTeamLogo(awayGd.id);
   if (awayLogo) awaySide.logo = awayLogo;
 
-  const freshGame: Game = {
-    ...game,
+  // §14: every MLB game is 'versus', so both sides belong on the refreshed game.
+  // Only a positively-'field' game has no sides to carry; an ABSENT format is a
+  // pre-§14 game, and every game shipped before §14 was two-sided, so it refreshes
+  // as versus. Do not tighten this to `!== 'versus'`: that freezes a legacy game's
+  // score while its status keeps updating, silently and without a log.
+  const statusFields = {
     startTimeUtc,
     phase: st.phase,
     statusText: st.statusText,
     statusShort: st.statusShort,
-    home: homeSide,
-    away: awaySide,
   };
+  const freshGame: Game =
+    game.format === 'field'
+      ? { ...game, ...statusFields }
+      : { ...game, ...statusFields, home: homeSide, away: awaySide };
 
   // Live current state (§11.2/§11.3): free from this same payload, populated
   // only while live. Any state-shape surprise degrades to undefined — it must

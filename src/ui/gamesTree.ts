@@ -30,7 +30,7 @@ import {
 import { t } from '../core/i18n';
 import { DEFAULT_LEAGUE_KEYS, getProviders } from '../providers';
 import { Diagnostics } from './diagnostics';
-import { gameLabel, gameTitle, leagueKey, scoreText } from './display';
+import { gameLabel, gameLogo, gameStanding, gameTitle, leagueKey } from './display';
 import type { FollowManager } from './followManager';
 import type { LogoCache } from './logoCache';
 import { readSettings, type UiSettings } from './settings';
@@ -437,17 +437,21 @@ export class GamesTreeProvider implements vscode.TreeDataProvider<TreeNode>, vsc
 
   private gameItem(game: Game, id: string, locale: RelayLocale, forceFollowed = false): vscode.TreeItem {
     const followed = forceFollowed || this.follow.isFollowed(game.id);
-    const item = new vscode.TreeItem(gameLabel(game), vscode.TreeItemCollapsibleState.None);
+    const item = new vscode.TreeItem(gameLabel(game, locale), vscode.TreeItemCollapsibleState.None);
     item.id = id;
     item.description = game.statusText;
     // Drives the inline follow/unfollow menu items pinned in package.json.
     item.contextValue = followed ? 'followedGame' : 'game';
     if (followed) item.iconPath = new vscode.ThemeIcon('star-full');
-    // CONTRACT §13.5 / §13.4b: the HOME crest fills the one 16px icon slot — for followed
-    // games too (the pinned Following section + contextValue already convey follow state).
-    // Two crests in one 16px square render at ~7-10px each; the away team is in the row's
-    // label and tooltip instead. On a miss/disabled the star (followed) or default stays.
-    this.applyLogo(item, () => (game.home.logo ? this.logos.resolve(game.home.logo) : undefined));
+    // CONTRACT §13.5 / §13.4b: the HOME crest (or a field leader's portrait, §14) fills the
+    // one 16px icon slot — for followed games too (the pinned Following section +
+    // contextValue already convey follow state). Two crests in one 16px square render at
+    // ~7-10px each; the away team is in the row's label and tooltip instead. On a
+    // miss/disabled the star (followed) or default stays.
+    this.applyLogo(item, () => {
+      const logo = gameLogo(game);
+      return logo ? this.logos.resolve(logo) : undefined;
+    });
     item.tooltip = gameTooltip(game, locale);
     return item;
   }
@@ -547,12 +551,12 @@ function buildBaseballNodes(
   // A collapsible 라인업 node per team (skip a side whose order isn't posted yet).
   add(() =>
     state.lineups.away.length > 0
-      ? { kind: 'lineup', id: `${base}:lineup:away`, label: `${t(locale, K.stateLineup)} · ${game.away.abbrev}`, spots: state.lineups.away }
+      ? { kind: 'lineup', id: `${base}:lineup:away`, label: sideLabel(t(locale, K.stateLineup), game.away?.abbrev), spots: state.lineups.away }
       : undefined,
   );
   add(() =>
     state.lineups.home.length > 0
-      ? { kind: 'lineup', id: `${base}:lineup:home`, label: `${t(locale, K.stateLineup)} · ${game.home.abbrev}`, spots: state.lineups.home }
+      ? { kind: 'lineup', id: `${base}:lineup:home`, label: sideLabel(t(locale, K.stateLineup), game.home?.abbrev), spots: state.lineups.home }
       : undefined,
   );
 }
@@ -565,18 +569,18 @@ function buildSoccerNodes(
   add: (fn: () => TreeNode | undefined) => void,
 ): void {
   const sides = [
-    { key: 'away', side: state.away, abbrev: game.away.abbrev },
-    { key: 'home', side: state.home, abbrev: game.home.abbrev },
+    { key: 'away', side: state.away, abbrev: game.away?.abbrev },
+    { key: 'home', side: state.home, abbrev: game.home?.abbrev },
   ] as const;
   for (const { key, side, abbrev } of sides) {
     add(() =>
       side.formation
-        ? { kind: 'stateRow', id: `${base}:formation:${key}`, text: `${t(locale, K.stateFormation)} · ${abbrev}`, description: side.formation }
+        ? { kind: 'stateRow', id: `${base}:formation:${key}`, text: sideLabel(t(locale, K.stateFormation), abbrev), description: side.formation }
         : undefined,
     );
     add(() =>
       side.starters.length > 0
-        ? { kind: 'lineup', id: `${base}:xi:${key}`, label: `${t(locale, K.stateStarters)} · ${abbrev}`, spots: side.starters }
+        ? { kind: 'lineup', id: `${base}:xi:${key}`, label: sideLabel(t(locale, K.stateStarters), abbrev), spots: side.starters }
         : undefined,
     );
   }
@@ -590,12 +594,12 @@ function buildEsportsNodes(
 ): void {
   add(() =>
     state.blue.picks.length > 0
-      ? { kind: 'draft', id: `${base}:blue`, label: draftSideLabel(t(locale, K.stateBlue), state.blue.teamCode), picks: state.blue.picks }
+      ? { kind: 'draft', id: `${base}:blue`, label: sideLabel(t(locale, K.stateBlue), state.blue.teamCode), picks: state.blue.picks }
       : undefined,
   );
   add(() =>
     state.red.picks.length > 0
-      ? { kind: 'draft', id: `${base}:red`, label: draftSideLabel(t(locale, K.stateRed), state.red.teamCode), picks: state.red.picks }
+      ? { kind: 'draft', id: `${base}:red`, label: sideLabel(t(locale, K.stateRed), state.red.teamCode), picks: state.red.picks }
       : undefined,
   );
   add(() => (state.patch ? { kind: 'stateRow', id: `${base}:patch`, text: t(locale, K.statePatch), description: state.patch } : undefined));
@@ -643,8 +647,13 @@ function formatPick(pick: DraftPick): string {
   return pick.player.trim() !== '' ? `${head} (${pick.player.trim()})` : head;
 }
 
-function draftSideLabel(sideName: string, teamCode: string): string {
-  return teamCode.trim() !== '' ? `${sideName} · ${teamCode}` : sideName;
+/**
+ * `Lineup · STL` — the qualifier is dropped when the side has no abbrev, which is also
+ * how a §14 field game (no home/away at all) avoids a dangling separator.
+ */
+function sideLabel(rowName: string, abbrev: string | undefined): string {
+  const code = typeof abbrev === 'string' ? abbrev.trim() : '';
+  return code !== '' ? `${rowName} · ${code}` : rowName;
 }
 
 // ---------------------------------------------------------------------------
@@ -652,9 +661,12 @@ function draftSideLabel(sideName: string, teamCode: string): string {
 // ---------------------------------------------------------------------------
 
 function gameTooltip(game: Game, locale: RelayLocale): string {
+  // A field contest (§14) shows its leader where a versus game shows the score; a
+  // malformed game has neither, and the fragment is dropped rather than left dangling.
+  const standing = gameStanding(game, locale);
   const lines = [
     gameTitle(game),
-    `${game.leagueName} · ${scoreText(game.away.score)}:${scoreText(game.home.score)}`,
+    standing === '' ? game.leagueName : `${game.leagueName} · ${standing}`,
     game.statusText,
   ];
   if (game.phase === 'pre' && game.startTimeUtc) {

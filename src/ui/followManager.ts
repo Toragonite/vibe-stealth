@@ -18,9 +18,11 @@
 import * as vscode from 'vscode';
 import {
   IDS,
+  MAX_FIELD_POSITION,
   type FollowedGameState,
   type FormatOptions,
   type Game,
+  type GameFormat,
   type GamePhase,
   type GamePoller,
   type GameState,
@@ -38,12 +40,12 @@ import { coerceScore } from '../core/util';
 import { t } from '../core/i18n';
 import { createRelayEngine } from '../core/relay';
 import { createGamePoller } from '../core/poller';
-import { formatEventLine } from '../core/format';
+import { formatEventLine, leadEntrant } from '../core/format';
 import { getProvider } from '../providers';
 import { readSettings } from './settings';
 import { Diagnostics } from './diagnostics';
 import { RelayChannel } from './relayChannel';
-import { gameTitle } from './display';
+import { contestName, gameTitle } from './display';
 import { K } from './uiText';
 
 /** CONTRACT §4/§6: restored follows older than this are dropped at activation. */
@@ -53,6 +55,8 @@ const SAVE_DEBOUNCE_MS = 5_000;
 const STATUS_MESSAGE_MS = 6_000;
 /** Guard against an absurd persisted array (hand-edited / corrupted state). */
 const MAX_PERSISTED_ENTRIES = 100;
+/** Persisted §14 contest names are display strings, not documents. */
+const MAX_CONTEST_NAME = 80;
 
 /** CONTRACT §4: real clock wrapper — the poller's only source of time. */
 const REAL_TIMERS: SchedulerTimers = {
@@ -135,7 +139,7 @@ export class FollowManager implements vscode.Disposable {
       const [existing] = this.entries.splice(index, 1);
       if (existing) {
         existing.game = game;
-        Object.assign(existing.state.lastKnown, snapshotOf(game));
+        existing.state.lastKnown = snapshotOf(game);
         this.entries.push(existing);
       }
       await this.persist();
@@ -310,7 +314,7 @@ export class FollowManager implements vscode.Disposable {
       // CONTRACT §11.1: the engine passes state through unchanged; stash it for the tree.
       // undefined here (pre/post, wrong sport, feature off) reverts the row to a leaf.
       entry.liveState = emission.state;
-      Object.assign(entry.state.lastKnown, snapshotOf(emission.game));
+      entry.state.lastKnown = snapshotOf(emission.game);
 
       // The poller owns its own `postObservedAt`; the UI owns the persisted copy that
       // drives the status-bar lame-duck window and the restore-time auto-unfollow.
@@ -456,15 +460,36 @@ export class FollowManager implements vscode.Disposable {
 // Pure helpers
 // ---------------------------------------------------------------------------
 
-function snapshotOf(game: Game): FollowedGameState['lastKnown'] {
-  return {
-    awayAbbrev: game.away.abbrev,
-    homeAbbrev: game.home.abbrev,
-    awayScore: game.away.score,
-    homeScore: game.home.score,
+/**
+ * CONTRACT §6/§14: the persisted display snapshot. The two-sided fields describe a
+ * versus game; a field contest instead persists its `format`, its contest name and —
+ * when the field is ranked — its leader, so the restore render is the contest and its
+ * leader rather than a fabricated pair of sides (see `synthesizeGame`).
+ *
+ * Callers REPLACE `lastKnown` with this wholesale rather than merging into it: the
+ * §14 fields are optional, and merging would leave a stale `leaderAbbrev` behind when
+ * a later snapshot has none.
+ */
+export function snapshotOf(game: Game): FollowedGameState['lastKnown'] {
+  const { home, away } = game;
+  const snapshot: FollowedGameState['lastKnown'] = {
+    awayAbbrev: away?.abbrev ?? '',
+    homeAbbrev: home?.abbrev ?? '',
+    awayScore: away?.score,
+    homeScore: home?.score,
     statusShort: game.statusShort,
     phase: game.phase,
+    format: game.format,
   };
+  if (game.format === 'field') {
+    const contest = contestName(game);
+    if (contest !== '') snapshot.contestName = contest;
+    const leader = leadEntrant(game.entrants);
+    const abbrev = leader ? (leader.abbrev.trim() || leader.name.trim()) : '';
+    if (abbrev !== '') snapshot.leaderAbbrev = abbrev.slice(0, 5);
+    if (leader?.position !== undefined) snapshot.leaderPosition = leader.position;
+  }
+  return snapshot;
 }
 
 function cloneState(state: FollowedGameState): FollowedGameState {
@@ -481,10 +506,21 @@ function cloneState(state: FollowedGameState): FollowedGameState {
 /**
  * Renders a restored follow before its first fetch lands. `startTimeUtc` is not part of
  * FollowedGameState, so the poller treats it as unknown (60 s pre-game interval).
+ *
+ * CONTRACT §14: the shape comes from the PERSISTED `format`, never from a sport-to-format
+ * lookup — a duplicated table drifts from the providers and, on an unknown sport, turns
+ * "I don't know" into a positive assertion of 'versus' that fabricates two TBD sides.
+ * An ABSENT `format` is a pre-§14 entry, and every game that existed before §14 was
+ * two-sided, so it restores as versus exactly as it did before.
+ *
+ * A field contest is labelled from its persisted contest name (more specific than the
+ * series name `listLeagues` returns: 'Belgian Grand Prix', not 'Formula 1') and keeps a
+ * single entrant — the persisted leader, or an unranked placeholder when it had none, in
+ * which case the row renders as the contest alone until the first fetch replaces it.
  */
-function synthesizeGame(state: FollowedGameState, leagueName: string, sport: SportKind): Game {
+export function synthesizeGame(state: FollowedGameState, leagueName: string, sport: SportKind): Game {
   const lk = state.lastKnown;
-  return {
+  const base = {
     id: state.gameId,
     providerId: state.providerId,
     leagueId: state.leagueId,
@@ -494,8 +530,35 @@ function synthesizeGame(state: FollowedGameState, leagueName: string, sport: Spo
     phase: lk.phase,
     statusText: lk.statusShort,
     statusShort: lk.statusShort,
+  };
+
+  if (lk.format === 'field') {
+    const abbrev = lk.leaderAbbrev ?? '';
+    return {
+      ...base,
+      leagueName: lk.contestName ?? leagueName,
+      format: 'field',
+      home: undefined,
+      away: undefined,
+      entrants: [
+        {
+          id: '',
+          position: lk.leaderPosition,
+          name: abbrev !== '' ? abbrev : 'TBD',
+          abbrev,
+          detail: undefined,
+          logo: undefined,
+        },
+      ],
+    };
+  }
+
+  return {
+    ...base,
+    format: 'versus',
     home: { id: '', name: lk.homeAbbrev, abbrev: lk.homeAbbrev, score: lk.homeScore },
     away: { id: '', name: lk.awayAbbrev, abbrev: lk.awayAbbrev, score: lk.awayScore },
+    entrants: undefined,
   };
 }
 
@@ -542,19 +605,46 @@ function sanitizeState(raw: unknown): FollowedGameState | undefined {
 
   const lk = o.lastKnown && typeof o.lastKnown === 'object' ? (o.lastKnown as Record<string, unknown>) : {};
 
+  const lastKnown: FollowedGameState['lastKnown'] = {
+    awayAbbrev: shortString(lk.awayAbbrev, 'TBD', 5),
+    homeAbbrev: shortString(lk.homeAbbrev, 'TBD', 5),
+    awayScore: coerceScore(lk.awayScore),
+    homeScore: coerceScore(lk.homeScore),
+    statusShort: shortString(lk.statusShort, '?', 8),
+    phase: isPhase(lk.phase) ? lk.phase : 'unknown',
+  };
+
+  // CONTRACT §14: `format` stays ABSENT unless the persisted value is a real
+  // discriminator — absent means "predates §14", which `synthesizeGame` reads as
+  // 'versus'. A garbage value is dropped to that same legacy reading rather than
+  // being trusted. The three field extras are only meaningful alongside it.
+  if (isGameFormat(lk.format)) lastKnown.format = lk.format;
+  const contest = nonEmptyString(lk.contestName);
+  if (contest) lastKnown.contestName = contest.trim().slice(0, MAX_CONTEST_NAME);
+  const leaderAbbrev = nonEmptyString(lk.leaderAbbrev);
+  if (leaderAbbrev) lastKnown.leaderAbbrev = leaderAbbrev.trim().slice(0, 5);
+  if (isFieldPosition(lk.leaderPosition)) lastKnown.leaderPosition = lk.leaderPosition;
+
   return {
     gameId,
     providerId,
     leagueId,
     followedAt: nonNegativeNumber(o.followedAt),
     postObservedAt: nonNegativeNumber(o.postObservedAt),
-    lastKnown: {
-      awayAbbrev: shortString(lk.awayAbbrev, 'TBD', 5),
-      homeAbbrev: shortString(lk.homeAbbrev, 'TBD', 5),
-      awayScore: coerceScore(lk.awayScore),
-      homeScore: coerceScore(lk.homeScore),
-      statusShort: shortString(lk.statusShort, '?', 8),
-      phase: isPhase(lk.phase) ? lk.phase : 'unknown',
-    },
+    lastKnown,
   };
+}
+
+function isGameFormat(v: unknown): v is GameFormat {
+  return v === 'versus' || v === 'field';
+}
+
+/**
+ * CONTRACT §14: the same validity rule as `Entrant.position` — an integer in
+ * [1, MAX_FIELD_POSITION]. workspaceState is user-writable JSON, so `0`, `-1`, `1e308`,
+ * `'3'` and NaN all reach here; each is not a position, so the field is simply dropped
+ * and the restored entrant renders unranked.
+ */
+function isFieldPosition(v: unknown): v is number {
+  return typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= MAX_FIELD_POSITION;
 }

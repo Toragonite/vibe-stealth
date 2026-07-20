@@ -53,8 +53,10 @@ function nhlGame(gid: string): Game {
     phase: 'in',
     statusText: 'x',
     statusShort: 'x',
+    format: 'versus',
     home: { id: '7', name: 'Sabres', abbrev: 'BUF', score: undefined },
     away: { id: '25', name: 'Stars', abbrev: 'DAL', score: undefined },
+    entrants: undefined,
   };
 }
 
@@ -532,6 +534,39 @@ describe('nhl fetchPlays fresh game (P9 / §2 pin)', () => {
     expect(snap.game.home.name).toBe('Sabres');
     // events still parsed — a status refresh must never drop play lines.
     expect(snap.events.map((e) => e.id)).toEqual(['52', '78', '186', '227', '372', '373', '377']);
+  });
+
+  it('P9: input game with NO `format` key (pre-§14 shape) still refreshes both sides', async () => {
+    const input = nhlGame('2025021301');
+    input.phase = 'in';
+    input.home.score = 1; // stale
+    input.away.score = 2; // stale
+    // A game persisted before §14 carries no `format` key at all — absent, not
+    // `undefined`-valued. `format` is required by the type, so the key is
+    // dropped structurally here rather than typed away.
+    const { format: _dropped, ...legacy } = input;
+    expect('format' in legacy).toBe(false);
+
+    const snap = await nhlProvider.fetchPlays(makeCtx(terminalPayload()).ctx, legacy as Game);
+    expect(snap.game.phase).toBe('post');
+    expect(snap.game.home.score).toBe(3); // BUF — refreshed, NOT frozen at the stale 1
+    expect(snap.game.away.score).toBe(4); // DAL — refreshed, NOT frozen at the stale 2
+    expect(snap.events).toHaveLength(7);
+  });
+
+  it("format 'field' ⇒ status refreshed but the two-sided merge is skipped", async () => {
+    const input: Game = {
+      ...nhlGame('2025021301'),
+      format: 'field',
+      home: undefined,
+      away: undefined,
+      entrants: [{ id: '1', position: 1, name: 'Max Verstappen', abbrev: 'VER', detail: undefined }],
+    };
+    const snap = await nhlProvider.fetchPlays(makeCtx(terminalPayload()).ctx, input);
+    expect(snap.game.phase).toBe('post'); // status path is not gated
+    expect(snap.game.home).toBeUndefined(); // no sides invented
+    expect(snap.game.away).toBeUndefined();
+    expect(snap.game.entrants).toEqual(input.entrants);
   });
 
   it('feed with no top-level gameState ⇒ input game carried through (phase unchanged)', async () => {

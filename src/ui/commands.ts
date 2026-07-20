@@ -79,7 +79,7 @@ export function registerCommands(deps: CommandDeps): vscode.Disposable[] {
 
     const locale = readSettings().locale;
     const items: GameQuickPickItem[] = games.map((game) => ({
-      label: follow.isFollowed(game.id) ? `$(star-full) ${gameLabel(game)}` : gameLabel(game),
+      label: follow.isFollowed(game.id) ? `$(star-full) ${gameLabel(game, locale)}` : gameLabel(game, locale),
       description: game.statusText,
       detail: `${game.leagueName} · ${gameTitle(game)}`,
       game,
@@ -125,7 +125,7 @@ export function registerCommands(deps: CommandDeps): vscode.Disposable[] {
     picker.matchOnDescription = true;
     picker.items = entries
       .map((entry): FollowedQuickPickItem => ({
-        label: gameLabel(entry.game),
+        label: gameLabel(entry.game, locale),
         description: entry.game.statusText,
         detail: gameTitle(entry.game),
         buttons: [unfollowButton],

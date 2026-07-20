@@ -50,10 +50,18 @@ async function collect() {
       let games = [];
       try { games = await p.listGames(ctx, lg); } catch { continue; }
       for (const g of games.slice(0, 2)) {
+        // A §14 'field' game (motorsport) has NO home/away — both are undefined by
+        // contract — and carries its competitors in `entrants` instead. Optional-chain
+        // the sides so a live F1 session does not crash this probe.
         for (const [side, team] of [['home', g.home], ['away', g.away]]) {
-          if (!team.logo) continue;
+          if (!team?.logo) continue;
           found.set(team.logo.light, `${p.id}:${lg.id} ${side} ${team.abbrev} (light)`);
           if (team.logo.dark) found.set(team.logo.dark, `${p.id}:${lg.id} ${side} ${team.abbrev} (dark)`);
+        }
+        for (const e of Array.isArray(g.entrants) ? g.entrants.slice(0, 4) : []) {
+          if (!e?.logo) continue;
+          found.set(e.logo.light, `${p.id}:${lg.id} entrant ${e.abbrev} (light)`);
+          if (e.logo.dark) found.set(e.logo.dark, `${p.id}:${lg.id} entrant ${e.abbrev} (dark)`);
         }
       }
     }

@@ -263,6 +263,188 @@ const FMT = { locale: 'en', showEmoji: false, multiGame: false, now: () => 0 };
     `threw=${threw} state=${snap?.state} events=${snap?.events?.length}`);
 }
 
+// =============================================================================
+// §14 field-event probes (P18–P23). The invariant under attack: a game is
+// EITHER 'versus' with home+away, OR 'field' with a non-empty entrants list.
+// Every probe below hands the UI a game that VIOLATES that pairing, or hands it
+// semantically meaningless values that are structurally well-formed. Nothing
+// here may throw: a malformed game must degrade to something renderable.
+// =============================================================================
+
+const { leadEntrant, formatLeader, statusBarText } = require('../out/core/format.js');
+const { gameLabel, gameLine, contestName } = require('../out/ui/display.js');
+
+/** Render a game through every surface at once; returns the outputs or the throw. */
+const renderAll = (game) => {
+  try {
+    return {
+      threw: false,
+      label: gameLabel(game, 'en'),
+      line: gameLine(game, 'en'),
+      status: statusBarText(game, 'en'),
+      contest: contestName(game),
+    };
+  } catch (e) {
+    return { threw: true, err: `${e?.name}: ${e?.message}` };
+  }
+};
+
+const F = (o = {}) => ({
+  id: 'espn-racing:f1:x', providerId: 'espn-racing', leagueId: 'f1',
+  leagueName: 'Belgian Grand Prix', sport: 'motorsport',
+  startTimeUtc: '2026-07-08T10:00:00Z', phase: 'in', statusText: 'Lap 32', statusShort: 'L32',
+  format: 'field', home: undefined, away: undefined,
+  entrants: [{ id: '1', position: 1, name: 'Max Verstappen', abbrev: 'VER', detail: 'Red Bull', logo: undefined }],
+  ...o,
+});
+
+// ---- P18: field game with an EMPTY entrants list (violates non-empty pin) ----
+{
+  const r = renderAll(F({ entrants: [] }));
+  check('P18', "field game with entrants:[] ⇒ degrades to contest name, never throws, never invents a score",
+    !r.threw && typeof r.label === 'string' && r.label.length > 0 && !/\d+\s*[:\-–]\s*\d+/.test(r.label),
+    r.threw ? r.err : `label=${JSON.stringify(r.label)} status=${JSON.stringify(r.status)}`);
+}
+
+// ---- P19: BOTH shapes present at once (home/away AND entrants) --------------
+{
+  const r = renderAll(F({
+    home: { id: 'h', name: 'H', abbrev: 'HOM', score: 3 },
+    away: { id: 'a', name: 'A', abbrev: 'AWY', score: 2 },
+  }));
+  // format is the discriminator: 'field' must WIN, so no two-sided score renders.
+  check('P19', "format:'field' but home/away also set ⇒ discriminator wins, no fake 'AWY 2:3 HOM' score",
+    !r.threw && !/AWY|HOM/.test(r.label) && !/\d+\s*[:\-–]\s*\d+/.test(r.label),
+    r.threw ? r.err : `label=${JSON.stringify(r.label)}`);
+}
+
+// ---- P20: semantically meaningless positions that are structurally fine -----
+{
+  const bad = [0, -1, 1.5, NaN, Infinity, -Infinity, '1', null, undefined, 1e308];
+  const ent = bad.map((p, i) => ({ id: String(i), position: p, name: `D${i}`, abbrev: `D${i}`, detail: undefined, logo: undefined }));
+  // Only a 1-based positive INTEGER is a real position; every value above is not.
+  ent.push({ id: 'ok', position: 7, name: 'Real Driver', abbrev: 'RLD', detail: undefined, logo: undefined });
+  const g = F({ entrants: ent });
+  const lead = leadEntrant(g.entrants); // takes the entrants array, not the game
+  const r = renderAll(g);
+  check('P20', 'hostile positions (0/-1/1.5/NaN/±Inf/string/null/1e308) rejected ⇒ leader is the only valid one',
+    !r.threw && lead?.abbrev === 'RLD' && !/NaN|Infinity|undefined|null/.test(r.label + r.status),
+    r.threw ? r.err : `lead=${lead?.abbrev} pos=${lead?.position} label=${JSON.stringify(r.label)}`);
+}
+
+// ---- P21: entrants is not an array at all (hostile type confusion) ----------
+{
+  const shapes = [null, 'VER', 42, {}, { length: 3 }, [null], [undefined], [{}]];
+  let threw = null, dirty = null;
+  for (const s of shapes) {
+    const r = renderAll(F({ entrants: s }));
+    if (r.threw) { threw = `${JSON.stringify(s)} → ${r.err}`; break; }
+    if (/undefined|null|NaN|\[object/.test(String(r.label))) { dirty = `${JSON.stringify(s)} → ${r.label}`; break; }
+  }
+  check('P21', 'entrants of every wrong type (null/string/number/{}/[null]/[{}]) ⇒ no throw, no leaked undefined/[object',
+    threw === null && dirty === null,
+    threw ? `THREW ${threw}` : dirty ? `DIRTY ${dirty}` : `all ${shapes.length} hostile shapes degraded cleanly`);
+}
+
+// ---- P22: versus game missing a side (the mirror-image violation) -----------
+{
+  const V = (o) => ({ ...G(), format: 'versus', entrants: undefined, ...o });
+  const cases = [{ home: undefined }, { away: undefined }, { home: undefined, away: undefined }];
+  let bad = null;
+  for (const c of cases) {
+    const r = renderAll(V(c));
+    if (r.threw) { bad = `${JSON.stringify(Object.keys(c))} → ${r.err}`; break; }
+    if (/undefined|NaN|\[object/.test(String(r.label) + String(r.status))) { bad = `${JSON.stringify(Object.keys(c))} → ${r.label} / ${r.status}`; break; }
+  }
+  check('P22', "format:'versus' with a missing side ⇒ degrades, never throws, never prints 'undefined'",
+    bad === null, bad ? `BAD ${bad}` : 'all 3 missing-side cases degraded cleanly');
+}
+
+// ---- P23: absurdly large field ⇒ bounded output, no explosion ---------------
+{
+  const many = Array.from({ length: 5000 }, (_, i) => ({
+    id: String(i), position: i + 1, name: `Driver ${i}`, abbrev: `D${i}`, detail: undefined, logo: undefined,
+  }));
+  const t0 = Date.now();
+  const r = renderAll(F({ entrants: many }));
+  const ms = Date.now() - t0;
+  // The row must stay a ROW: the whole 5000-strong field must not be inlined.
+  check('P23', '5000-entrant field ⇒ label stays bounded (≤200 chars) and renders fast (<250ms)',
+    !r.threw && typeof r.label === 'string' && r.label.length <= 200 && ms < 250,
+    r.threw ? r.err : `len=${r.label.length} ms=${ms} label=${JSON.stringify(r.label.slice(0, 60))}`);
+}
+
+// ---- P24: tennis D3 — score MUST be sets won, never games in a set ----------
+{
+  const ctx = { locale: 'en', now: () => Date.parse('2026-07-08T12:00:00Z'), log: () => {},
+    getSecret: async () => undefined,
+    fetchJson: async () => ({ events: [{ id: 't1', name: 'Probe Open', date: '2026-07-08T10:00:00Z',
+      groupings: [{ grouping: { slug: 'mens-singles', displayName: "Men's Singles" }, competitions: [{
+        id: 'm1', date: '2026-07-08T10:00:00Z',
+        status: { type: { state: 'post', completed: true, description: 'Final', shortDetail: 'Final' } },
+        competitors: [
+          { id: 'a', winner: true, score: null, athlete: { displayName: 'Winner Player' },
+            linescores: [{ value: 6, winner: true }, { value: 7, winner: true }] },
+          { id: 'b', winner: false, score: null, athlete: { displayName: 'Loser Player' },
+            linescores: [{ value: 2, winner: false }, { value: 5, winner: false }] }] }] }] }] }) };
+  const { espnTennisProvider } = require('../out/providers/espnTennis.js');
+  let games = [], err = null;
+  try { games = await espnTennisProvider.listGames(ctx, { id: 'atp', providerId: 'espn-tennis', name: 'ATP Tour', sport: 'tennis' }); }
+  catch (e) { err = `${e?.name}: ${e?.message}`; }
+  const g = games[0];
+  const scores = g ? [g.home?.score, g.away?.score].sort((a, b) => b - a) : [];
+  // 6-2, 7-5 is a straight-sets win: the score is 2–0 (SETS), never 6, 7, 13 or 2.
+  check('P24', 'tennis 6-2 7-5 ⇒ score is SETS won (2–0), never games (6/7/13) [contract D3]',
+    !err && scores[0] === 2 && scores[1] === 0 && g?.format === 'versus' && g?.entrants === undefined,
+    err ? `ERROR ${err}` : `scores=${JSON.stringify(scores)} format=${g?.format} status=${JSON.stringify(g?.statusText)}`);
+}
+
+// ---- P25: TWO evolving polls ⇒ zero false corrections (gate-gap closer) ----
+// The adversarial review's structural finding: every probe above tests ONE
+// snapshot, but the worst defects (a set published early then retracted, a bout
+// id derived from an array index that shifts) only appear on the SECOND poll.
+// This probe ingests two evolving payloads through a REAL relay engine and
+// asserts the immutable-text pin: an id that reappears must carry the same text,
+// so no line is ever retracted as a 'correction'.
+{
+  const { espnTennisProvider } = require('../out/providers/espnTennis.js');
+  const board = (sets) => ({
+    events: [{ id: 't1', name: 'Probe Open', date: '2026-07-08T10:00:00Z',
+      groupings: [{ grouping: { slug: 'mens-singles', displayName: "Men's Singles" }, competitions: [{
+        id: 'm1', date: '2026-07-08T10:00:00Z',
+        status: { type: { state: 'in', completed: false, description: 'In Progress', shortDetail: 'Set 2' } },
+        competitors: [
+          { id: 'a', winner: false, score: null, athlete: { displayName: 'Alpha Player' },
+            linescores: sets.map(([h]) => ({ value: h })) },
+          { id: 'b', winner: false, score: null, athlete: { displayName: 'Beta Player' },
+            linescores: sets.map(([, a]) => ({ value: a })) }] }] }] }] });
+
+  const league = { id: 'atp', providerId: 'espn-tennis', name: 'ATP Tour', sport: 'tennis' };
+  const mk = (payload) => ({ locale: 'en', now: () => Date.parse('2026-07-08T12:00:00Z'), log: () => {},
+    getSecret: async () => undefined, fetchJson: async () => payload });
+
+  // Poll 1: set 1 done (6-4), set 2 under way at 5-3. Poll 2: set 2 reached 6-4.
+  const g1 = (await espnTennisProvider.listGames(mk(board([[6, 4], [5, 3]])), league))[0];
+  const s1 = await espnTennisProvider.fetchPlays(mk(board([[6, 4], [5, 3]])), g1);
+  const s2 = await espnTennisProvider.fetchPlays(mk(board([[6, 4], [6, 4]])), g1);
+
+  const engine = createRelayEngine({ backfillLimit: 50, locale: 'en' });
+  const e1 = engine.ingest(s1);
+  const e2 = engine.ingest(s2);
+  const all = [...e1.events, ...e2.events];
+  const corrections = all.filter((e) => e.kind === 'correction');
+  // Any id emitted twice must carry identical text — that is the pin.
+  const byId = new Map();
+  let mutated = null;
+  for (const e of all) {
+    if (byId.has(e.id) && byId.get(e.id) !== e.text) mutated = `${e.id}: "${byId.get(e.id)}" → "${e.text}"`;
+    byId.set(e.id, e.text);
+  }
+  check('P25', 'two EVOLVING polls through a real engine ⇒ 0 corrections, no emitted text ever mutates',
+    corrections.length === 0 && mutated === null,
+    `corrections=${corrections.length} mutated=${mutated ?? 'none'} poll1=${e1.events.length} poll2=${e2.events.length}`);
+}
+
 const failed = results.filter((r) => !r.pass);
 console.log(`\n${results.length - failed.length}/${results.length} probes passed`);
 if (failed.length) console.log('FAILED: ' + failed.map((f) => f.id).join(', '));

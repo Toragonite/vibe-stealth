@@ -2,7 +2,7 @@
   "name": "vibe-stealth",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "publisher": "toragonite",
   "license": "MIT",
   "icon": "media/icon.png",

@@ -21,7 +21,7 @@ import {
   SportProvider,
   TeamSide,
 } from '../core/contract';
-import { t, tEnum } from '../core/i18n';
+import { registerMessages, t, tEnum } from '../core/i18n';
 import { coerceScore, fnv1a32, normalizeWs, parseIsoUtc, sanitizeText } from '../core/util';
 
 const BASE = 'https://site.api.espn.com/apis/site/v2/sports/';
@@ -31,6 +31,16 @@ interface EspnLeagueDef {
   path: string;
   sport: SportKind;
   name: string;
+  /**
+   * Whether `<path>/summary?event=<id>` exists for this league. Absent ⇒ true.
+   *
+   * `mma/ufc` has no summary route at all (probed live: HTTP 404), and a 404 is
+   * ProviderError('not-found') — the very signal the poller uses to auto-unfollow
+   * a vanished game (§4). Left unmarked, following a UFC fight silently unfollows
+   * itself. A league marked `false` derives its snapshot from the SCOREBOARD
+   * instead, exactly as the tennis and motorsport providers do.
+   */
+  hasSummary?: boolean;
 }
 
 // Static list (§2.1). Soccer paths are `soccer/<id>`; the others carry their own sport segment.
@@ -46,7 +56,48 @@ const ESPN_LEAGUES: EspnLeagueDef[] = [
   { id: 'fra.1', path: 'soccer/fra.1', sport: 'soccer', name: 'French Ligue 1' },
   { id: 'usa.1', path: 'soccer/usa.1', sport: 'soccer', name: 'MLS' },
   { id: 'uefa.champions', path: 'soccer/uefa.champions', sport: 'soccer', name: 'UEFA Champions League' },
+  // Two-sided leagues on the same competitors[] shape (probed 2026-07-20). `rugby/scrum`
+  // (non-JSON) and `golf/pga` (156-competitor field) do NOT fit this path and are absent.
+  { id: 'ufc', path: 'mma/ufc', sport: 'mma', name: 'UFC', hasSummary: false },
+  { id: 'cricket', path: 'cricket/8039', sport: 'cricket', name: 'Cricket' },
+  { id: 'college-football', path: 'football/college-football', sport: 'football', name: 'College Football' },
+  {
+    id: 'mens-college-basketball',
+    path: 'basketball/mens-college-basketball',
+    sport: 'basketball',
+    name: "Men's College Basketball",
+  },
 ];
+
+// --- i18n for the scoreboard-derived relay (§12.1) --------------------------
+
+/**
+ * The lines a league with NO summary endpoint composes from its scoreboard. The
+ * upstream carries no prose for them at all, so per §12.1 they are provider-
+ * composed and therefore localized in both locales.
+ *
+ * Registered from here rather than added to the core table in src/core/i18n.ts,
+ * which this task does not own; `registerMessages` is the pinned public API for
+ * exactly this (§9), it runs at import time and it is idempotent.
+ *
+ * Every variant references only placeholders it is guaranteed to receive — the
+ * caller picks `espnContestEnd` precisely when there is no winner to name — so a
+ * raw `{placeholder}` can never render.
+ */
+const EN_ESPN: Record<string, string> = {
+  espnContestStart: 'Under way — {home} vs {away}',
+  espnContestResult: 'Result — {winner} def. {loser}',
+  espnContestEnd: 'Final — {home} vs {away}',
+};
+
+const KO_ESPN: Record<string, string> = {
+  espnContestStart: '경기 시작 — {home} 대 {away}',
+  espnContestResult: '경기 결과 — {winner} 승, {loser} 패',
+  espnContestEnd: '경기 종료 — {home} 대 {away}',
+};
+
+registerMessages('en', EN_ESPN);
+registerMessages('ko', KO_ESPN);
 
 // --- defensive helpers -----------------------------------------------------
 
@@ -101,6 +152,15 @@ function buildTeam(idRaw: unknown, nameRaw: unknown, abbrevRaw: unknown, scoreRa
 const LOGO_PX = 64;
 
 /**
+ * The ONLY host an MMA fighter headshot may come from: the one ESPN host already
+ * on the logo cache's allowlist (src/ui/logoCache.ts). ESPN serves some headshots
+ * from `secure.espncdn.com`, which the cache would reject — a headshot from
+ * anywhere else yields `undefined` rather than a URL that can never resolve.
+ * This provider does not add hosts.
+ */
+const ALLOWED_LOGO_HOST = 'a.espncdn.com';
+
+/**
  * Coerce a candidate logo URL (§13.3): must be a non-empty string; a leading
  * `http://` is upgraded to `https://`; the result must then start with
  * `https://`, else undefined. Never throws.
@@ -148,6 +208,26 @@ function logoRef(lightRaw: unknown, darkRaw?: unknown): LogoRef | undefined {
   return dark ? { light: lightResized, dark: resizeEspnLogo(dark) } : { light: lightResized };
 }
 
+/** `headshot` arrives either as `{ href }` or as a bare string, depending on the sport. */
+function headshotHref(v: unknown): unknown {
+  const h = rec(v).headshot;
+  return isRecord(h) ? h.href : h;
+}
+
+/** An https headshot on the allowlisted host, resized; anything else undefined. */
+function headshotRef(v: unknown): LogoRef | undefined {
+  const url = normLogoUrl(v);
+  if (url === undefined) return undefined;
+  let host: string;
+  try {
+    host = new URL(url).hostname;
+  } catch {
+    return undefined;
+  }
+  if (host !== ALLOWED_LOGO_HOST) return undefined;
+  return { light: resizeEspnLogo(url) };
+}
+
 /** Keep a scoreboard-sourced logo on the fresh game when the summary header carries none. */
 function carryLogo(side: TeamSide, prev: TeamSide): TeamSide {
   if (!side.logo && prev.logo) return { ...side, logo: prev.logo };
@@ -180,6 +260,18 @@ function espnPhase(state: string): Phase {
   return state === 'pre' || state === 'in' || state === 'post' ? state : 'unknown';
 }
 
+/**
+ * Live period label by sport. ESPN reports the in-progress unit in the same
+ * numeric `status.period` for every sport, but the unit is NOT a quarter
+ * everywhere: MMA fights ROUNDS and cricket plays INNINGS, and rendering either
+ * as 'Q3' is simply wrong. Sliced to the contract's 8-char statusShort cap so a
+ * nonsense period number cannot overflow it.
+ */
+function livePeriodLabel(sport: SportKind, period: number): string {
+  const prefix = sport === 'mma' ? 'R' : sport === 'cricket' ? 'I' : 'Q';
+  return `${prefix}${period}`.slice(0, 8);
+}
+
 function espnStatusShort(
   phase: Phase,
   sport: SportKind,
@@ -195,7 +287,7 @@ function espnStatusShort(
       return dc ? dc.slice(0, 8) : 'LIVE';
     }
     const p = status.period;
-    return typeof p === 'number' && Number.isFinite(p) ? `Q${p}` : 'LIVE';
+    return typeof p === 'number' && Number.isFinite(p) ? livePeriodLabel(sport, p) : 'LIVE';
   }
   const sd = sanitizeText(type.shortDetail);
   return sd ? sd.slice(0, 8) : 'TBD';
@@ -219,20 +311,132 @@ function deriveStatus(
   return { phase, statusText, statusShort };
 }
 
-/** Shared competitor parse: `competitions[0].competitors[]` → home/away (undefined when absent). */
-function parseCompetitors(competitors: unknown[]): { home: TeamSide | undefined; away: TeamSide | undefined } {
-  let home: TeamSide | undefined;
-  let away: TeamSide | undefined;
+/**
+ * Cricket reports a batting side's score as `runs/wickets (overs)` —
+ * '241/4 (43/50 ov, target 241)' live — where every other sport reports a bare
+ * integer. coerceScore is deliberately strict (§2) and rejects the whole string,
+ * so the side that is actually AHEAD showed no score at all while the side that
+ * had already batted showed one: the display asserted the opposite of the result,
+ * and mid-match BOTH innings carry the format, so neither score ever changed.
+ * The runs lead the string, so take them and let coerceScore judge them as usual.
+ * Anything that does not start with digits is passed through untouched.
+ */
+function cricketRuns(v: unknown): unknown {
+  if (typeof v !== 'string') return v;
+  const m = v.trim().match(/^\d+/);
+  return m ? m[0] : v;
+}
+
+/**
+ * The wickets and overs that `cricketRuns` drops are real information, so they
+ * stay readable on statusText: '2nd Innings — IND 241/4 (43/50 ov, target 241)'.
+ * A side whose score is already a bare integer adds nothing and is omitted, so a
+ * non-cricket-shaped feed leaves the status untouched.
+ */
+function withCricketDetail(base: string, competitors: unknown[]): string {
+  const parts: string[] = [];
   for (const c of competitors) {
     if (!isRecord(c)) continue;
-    const team = rec(c.team);
-    const side = buildTeam(team.id, team.displayName ?? team.name ?? team.shortDisplayName, team.abbreviation, c.score);
-    const logo = logoRef(team.logo);
-    if (logo) side.logo = logo;
-    if (c.homeAway === 'home') home = side;
-    else if (c.homeAway === 'away') away = side;
+    const raw = sanitizeText(c.score);
+    // A bare integer says nothing the number does not, and a feed that already
+    // spells the innings out in its own status is not repeated back at itself.
+    if (raw === undefined || /^\d+$/.test(raw) || base.includes(raw)) continue;
+    parts.push(`${buildCompetitorSide(c, 'cricket').abbrev} ${raw}`);
+  }
+  if (parts.length === 0) return base;
+  return sanitizeText(`${base} — ${parts.join(', ')}`) ?? base;
+}
+
+/** One `competitors[]` entry → a TeamSide. */
+function buildCompetitorSide(c: Record<string, unknown>, sport: SportKind): TeamSide {
+  // Team sports carry `competitor.team`; MMA carries an individual `athlete`
+  // and no team at all, so every field falls through team → athlete →
+  // the competitor's own name, and buildTeam's 'TBD' is the floor.
+  const team = rec(c.team);
+  const athlete = rec(c.athlete);
+  const side = buildTeam(
+    team.id ?? athlete.id ?? c.id,
+    team.displayName ??
+      team.name ??
+      team.shortDisplayName ??
+      athlete.displayName ??
+      athlete.fullName ??
+      athlete.shortName ??
+      c.displayName ??
+      c.name,
+    // NOT athlete.shortName: 'J. Jones' truncates to a meaningless 'J. Jo',
+    // where buildTeam's name-derived fallback yields 'JON'.
+    team.abbreviation ?? athlete.abbreviation,
+    sport === 'cricket' ? cricketRuns(c.score) : c.score,
+  );
+  const logo = logoRef(team.logo) ?? headshotRef(headshotHref(c.athlete));
+  if (logo) side.logo = logo;
+  return side;
+}
+
+/** `competitor.winner` is boolean on most feeds and the STRING 'true' on cricket's. */
+function isWinner(v: unknown): boolean {
+  return v === true || v === 'true';
+}
+
+/** A side plus the feed's own verdict on it — what the relay needs and TeamSide cannot hold. */
+interface Contestant {
+  side: TeamSide;
+  won: boolean;
+}
+
+/**
+ * Shared competitor parse: `competitions[].competitors[]` → home/away (undefined
+ * when absent), each carrying its winner flag.
+ */
+function parseContestants(
+  competitors: unknown[],
+  sport: SportKind,
+): { home: Contestant | undefined; away: Contestant | undefined } {
+  const ordered: { entry: Contestant; declared: string }[] = [];
+  for (const c of competitors) {
+    if (!isRecord(c)) continue;
+    const entry: Contestant = { side: buildCompetitorSide(c, sport), won: isWinner(c.winner) };
+    ordered.push({ entry, declared: typeof c.homeAway === 'string' ? c.homeAway : '' });
+  }
+  let home: Contestant | undefined;
+  let away: Contestant | undefined;
+  // A declared side is trusted verbatim and never second-guessed; the first
+  // declaration of each side wins, so a duplicate cannot displace it.
+  for (const o of ordered) {
+    if (o.declared === 'home') home = home ?? o.entry;
+    else if (o.declared === 'away') away = away ?? o.entry;
+  }
+  // A UFC bout's competitors carry `order`, not `homeAway` (probed live), which
+  // used to leave both sides 'TBD'. An undeclared competitor takes whichever slot
+  // is still free, in the FEED'S OWN array order — index 0 is home — exactly as
+  // the tennis provider pins it. Which side is "home" is meaningless in a
+  // one-on-one contest; what matters is that the assignment is stable across
+  // polls, and array order is.
+  //
+  // Per-side, NOT all-or-nothing: one card mixes the two shapes (the repo fixture
+  // declares homeAway, the live card carries only `order`), and a bout where just
+  // ONE competitor declares used to lose the other fighter to 'TBD' entirely and
+  // drop the bout's relay line. Only a genuine pair falls back — with three or
+  // more competitors and a missing declaration the pairing is ambiguous, and
+  // inventing one is worse than reporting none.
+  if (ordered.length === 2 && (home === undefined || away === undefined)) {
+    for (const o of ordered) {
+      if (o.declared === 'home' || o.declared === 'away') continue;
+      if (home === undefined) home = o.entry;
+      else if (away === undefined) away = o.entry;
+    }
   }
   return { home, away };
+}
+
+/** parseContestants without the winner flags — the shape the game builders want. */
+function parseCompetitors(
+  competitors: unknown[],
+  sport: SportKind,
+): { home: TeamSide | undefined; away: TeamSide | undefined } {
+  const { home, away } = parseContestants(competitors, sport);
+  return { home: home?.side, away: away?.side };
 }
 
 /**
@@ -245,16 +449,31 @@ function freshGameFromHeader(data: Record<string, unknown>, game: Game): Game {
   const header = rec(data.header);
   const comp = rec(asArray(header.competitions)[0]);
   const status = rec(comp.status);
-  const { phase, statusText, statusShort } = deriveStatus(status, game.sport, game.startTimeUtc);
+  const competitors = asArray(comp.competitors);
+  const derived = deriveStatus(status, game.sport, game.startTimeUtc);
+  const { phase, statusShort } = derived;
+  const statusText =
+    game.sport === 'cricket' ? withCricketDetail(derived.statusText, competitors) : derived.statusText;
   if (phase === 'unknown') return game;
-  const { home, away } = parseCompetitors(asArray(comp.competitors));
+  // §14: every game this provider emits is 'versus', so both sides are present.
+  // Only a positively-'field' game genuinely has no sides to merge onto; an
+  // ABSENT format is a pre-§14 game, and every game shipped before §14 was
+  // two-sided, so it refreshes as versus. Do not tighten this back to
+  // `!== 'versus'`: that freezes a legacy game's score while its status keeps
+  // updating, silently and without a log.
+  if (game.format === 'field' || !game.home || !game.away) {
+    return { ...game, phase, statusText, statusShort };
+  }
+  const prevHome = game.home;
+  const prevAway = game.away;
+  const { home, away } = parseCompetitors(competitors, game.sport);
   return {
     ...game,
     phase,
     statusText,
     statusShort,
-    home: home ? carryLogo(home, game.home) : game.home,
-    away: away ? carryLogo(away, game.away) : game.away,
+    home: home ? carryLogo(home, prevHome) : prevHome,
+    away: away ? carryLogo(away, prevAway) : prevAway,
   };
 }
 
@@ -262,6 +481,52 @@ function freshGameFromHeader(data: Record<string, unknown>, game: Game): Game {
 
 function defForLeague(leagueId: string): EspnLeagueDef | undefined {
   return ESPN_LEAGUES.find((l) => l.id === leagueId);
+}
+
+/**
+ * One scoreboard `events[]` entry → a Game, or undefined when it carries no id.
+ * Shared by listGames and by the scoreboard-derived fetchPlays path, so a league
+ * without a summary endpoint refreshes into EXACTLY the game listGames built.
+ */
+function parseScoreboardEvent(ev: Record<string, unknown>, league: League): Game | undefined {
+  const eventId = str(ev.id);
+  if (!eventId) return undefined;
+  const status = rec(ev.status);
+  const startTimeUtc = parseIsoUtc(ev.date);
+
+  // The LAST competition, not the first. A UFC `event` is a whole fight CARD whose
+  // `competitions[]` are its bouts in running order, so `[0]` named the row, the
+  // status-bar tag and the relay's final line after the opening PRELIM — two
+  // fighters nobody followed the card for — while the main event, which is what
+  // `ev.name` itself is named after, never appeared anywhere. The main event closes
+  // the card, so the last competition is the one a user recognises. Every other
+  // league puts exactly one competition on an event, where last IS first.
+  const comps = asArray(ev.competitions);
+  const comp = rec(comps.length > 0 ? comps[comps.length - 1] : undefined);
+  const competitors = asArray(comp.competitors);
+
+  const derived = deriveStatus(status, league.sport, startTimeUtc);
+  const { phase, statusShort } = derived;
+  const statusText =
+    league.sport === 'cricket' ? withCricketDetail(derived.statusText, competitors) : derived.statusText;
+  const { home, away } = parseCompetitors(competitors, league.sport);
+  const tbd: TeamSide = { id: '', name: 'TBD', abbrev: 'TBD', score: undefined };
+
+  return {
+    id: `espn:${league.id}:${eventId}`,
+    providerId: 'espn',
+    leagueId: league.id,
+    leagueName: league.name,
+    sport: league.sport,
+    startTimeUtc,
+    phase,
+    statusText,
+    statusShort,
+    format: 'versus',
+    home: home ?? tbd,
+    away: away ?? tbd,
+    entrants: undefined,
+  };
 }
 
 function parseScoreboard(raw: unknown, league: League, ctx: ProviderContext): Game[] {
@@ -273,31 +538,9 @@ function parseScoreboard(raw: unknown, league: League, ctx: ProviderContext): Ga
         ctx.log('espn: skipped non-object scoreboard event');
         continue;
       }
-      const eventId = str(ev.id);
-      if (!eventId) continue;
-      const status = rec(ev.status);
-      const startTimeUtc = parseIsoUtc(ev.date);
-
-      const comps = asArray(ev.competitions);
-      const comp = rec(comps[0]);
-
-      const { phase, statusText, statusShort } = deriveStatus(status, league.sport, startTimeUtc);
-      const { home, away } = parseCompetitors(asArray(comp.competitors));
-      const tbd: TeamSide = { id: '', name: 'TBD', abbrev: 'TBD', score: undefined };
-
-      games.push({
-        id: `espn:${league.id}:${eventId}`,
-        providerId: 'espn',
-        leagueId: league.id,
-        leagueName: league.name,
-        sport: league.sport,
-        startTimeUtc,
-        phase,
-        statusText,
-        statusShort,
-        home: home ?? tbd,
-        away: away ?? tbd,
-      });
+      const game = parseScoreboardEvent(ev, league);
+      if (game === undefined) continue;
+      games.push(game);
     } catch (e) {
       ctx.log(`espn: skipped malformed scoreboard event: ${String(e)}`);
     }
@@ -555,6 +798,191 @@ function buildSoccerState(data: Record<string, unknown>, ctx: ProviderContext): 
   };
 }
 
+// --- leagues with no summary endpoint --------------------------------------
+
+/** Sequence band per contest: `index * 2` for the start line, `+ 1` for the result. */
+const SEQ_PER_CONTEST = 2;
+
+/**
+ * Contest id when the feed names none: derived from WHO is contesting, never from
+ * the array position. A fight card's `competitions[]` is exactly the list that
+ * SHRINKS as bouts settle, so position N addresses a different bout after a
+ * removal — and because the relay engine keys on id, the next poll re-emitted one
+ * bout's result under the previous bout's id as a 'correction' (§3.4), rewriting
+ * the user's log to claim a fight ended differently than it did. The two sides are
+ * sorted so that a feed reordering them is still the same contest.
+ */
+function contestFallbackId(eventId: string, a: TeamSide, b: TeamSide): string {
+  const keys = [a, b].map((s) => s.id || normalizeWs(s.name)).sort();
+  return `${eventId}#${fnv1a32(keys.join('|'))}`;
+}
+
+/**
+ * Relay events for a league with NO summary endpoint, derived from the SINGLE
+ * scoreboard response that also supplies the fresh game. This provider is
+ * stateless and never diffs across polls, so nothing here may depend on a
+ * previous one: what one response states truthfully is which contests on the
+ * event are under way and, for the ones that are over, who won them.
+ *
+ * A UFC `event` is a whole FIGHT CARD and its `competitions[]` are the individual
+ * bouts (probed live), so a card yields one result line per settled bout. A league
+ * whose event holds a single competition simply yields one contest's lines.
+ *
+ * Ids are `${competitionId}:start` and `${competitionId}:result` — derived from
+ * the contest and its meaning, and therefore stable across polls. The relay engine
+ * dedupes by id, so an id that shifted would re-emit the same line forever. Text
+ * carries only immutable facts (§2, §12.2): a settled result never changes, which
+ * is why no line reports a live round or a running clock.
+ *
+ * The start line is emitted only while that contest is 'in'. It has already been
+ * relayed by then, and the engine never re-adds an id it has seen, so dropping it
+ * once the contest ends keeps a 12-bout card from reading as 24 lines of noise.
+ */
+function buildContestEvents(
+  ev: Record<string, unknown>,
+  game: Game,
+  locale: RelayLocale,
+  ctx: ProviderContext,
+): PlayEvent[] {
+  const out: PlayEvent[] = [];
+  const comps = asArray(ev.competitions);
+  // A single-competition league states the contest's status only on the EVENT, so
+  // there the event's phase IS the contest's. On a CARD it is not: a 12-bout card
+  // sits at 'in' from its first prelim to its main event, and inheriting that
+  // announced all twelve bouts as under way at once — a burst of false starts that
+  // also spent the relay's backfill limit. A bout that declares no status of its
+  // own is not known to be under way, so it produces no line at all.
+  const eventPhaseIsContestPhase = comps.length === 1;
+  comps.forEach((raw, idx) => {
+    try {
+      const comp = rec(raw);
+      const own = espnPhase(str(rec(rec(comp.status).type).state));
+      const phase = own !== 'unknown' ? own : eventPhaseIsContestPhase ? game.phase : 'unknown';
+      if (phase !== 'in' && phase !== 'post') return;
+
+      const { home, away } = parseContestants(asArray(comp.competitors), game.sport);
+      if (home === undefined || away === undefined) {
+        ctx.log(`espn: contest ${idx} of ${game.id} has no two sides — no relay line`);
+        return;
+      }
+      // A native competition id, else one derived from the competitors themselves.
+      const nativeId = str(comp.id) || contestFallbackId(str(ev.id), home.side, away.side);
+      const base = idx * SEQ_PER_CONTEST;
+
+      if (phase === 'in') {
+        const text = sanitizeText(t(locale, 'espnContestStart', { home: home.side.name, away: away.side.name }));
+        if (text === undefined) return;
+        out.push({
+          id: `${nativeId}:start`,
+          gameId: game.id,
+          sequence: base,
+          clock: undefined,
+          period: undefined,
+          text,
+          kind: 'status',
+          scoreAfter: undefined,
+        });
+        return;
+      }
+
+      // Exactly one side flagged the winner names a result; a draw, a no-contest
+      // or an unflagged pair states the pairing and invents no outcome.
+      const winner = home.won !== away.won ? (home.won ? home : away) : undefined;
+      const text =
+        winner === undefined
+          ? sanitizeText(t(locale, 'espnContestEnd', { home: home.side.name, away: away.side.name }))
+          : sanitizeText(
+              t(locale, 'espnContestResult', {
+                winner: winner.side.name,
+                loser: (winner === home ? away : home).side.name,
+              }),
+            );
+      if (text === undefined) return;
+      const hs = home.side.score;
+      const as = away.side.score;
+      out.push({
+        id: `${nativeId}:result`,
+        gameId: game.id,
+        sequence: base + 1,
+        clock: undefined,
+        period: undefined,
+        text,
+        // 'score' rather than 'status': this is the line reporting the outcome,
+        // which the relay marks with ★ (§5). A bout carries no numeric score, so
+        // `scoreAfter` simply stays undefined there.
+        kind: 'score',
+        scoreAfter: hs !== undefined && as !== undefined ? { home: hs, away: as } : undefined,
+      });
+    } catch (e) {
+      ctx.log(`espn: skipped malformed contest: ${String(e)}`);
+    }
+  });
+  // §2: providers sort by sequence ascending; array order is never trusted.
+  out.sort((a, b) => a.sequence - b.sequence || a.id.localeCompare(b.id));
+  return out;
+}
+
+/**
+ * fetchPlays for a league whose `summary` route does not exist. The scoreboard is
+ * re-fetched and the event located by its native id; that one response supplies
+ * both the fresh game (§2 pin — phase, scores and status strings are re-derived,
+ * never carried over) and every relay line D4 allows.
+ *
+ * An event that is genuinely no longer on the scoreboard is still 'not-found':
+ * that means the game is gone and auto-unfollowing it (§4) is correct. What must
+ * never produce 'not-found' again is the mere absence of a summary ROUTE.
+ *
+ * 'not-found' is the signal the poller counts three of and then AUTO-UNFOLLOWS
+ * (§4), so it is raised ONLY when the board itself testifies to the absence: the
+ * response must be well-formed AND carry at least one usable event AND still not
+ * contain this id. A fetch failure, a body that is not a scoreboard at all, and an
+ * EMPTY board (a day rollover, an off-season, a route hiccup) say nothing about
+ * this game and are 'unavailable', which backs off and retries. The asymmetry was
+ * the indictment: the identical upstream condition is harmless on a summary-backed
+ * league, where an empty body is simply zero plays.
+ */
+async function fetchFromScoreboard(ctx: ProviderContext, game: Game, def: EspnLeagueDef): Promise<PlaySnapshot> {
+  const eventId = lastSegment(game.id);
+  let raw: unknown;
+  try {
+    raw = await ctx.fetchJson(`${BASE}${def.path}/scoreboard`);
+  } catch (e) {
+    // A 404 on the SCOREBOARD route is the route being unreachable, not the game
+    // vanishing — never let it auto-unfollow a live fight. Every other provider
+    // error keeps its own kind; none of them auto-unfollows.
+    if (e instanceof ProviderError && e.kind !== 'not-found') throw e;
+    throw new ProviderError('unavailable', `espn: ${def.id} scoreboard fetch failed: ${String(e)}`);
+  }
+  try {
+    const league: League = {
+      id: def.id,
+      providerId: 'espn',
+      name: game.leagueName || def.name,
+      sport: def.sport,
+    };
+    const events = rec(raw).events;
+    if (!Array.isArray(events)) {
+      throw new ProviderError('unavailable', `espn: ${def.id} scoreboard body is not a scoreboard`);
+    }
+    let usable = 0;
+    for (const ev of events) {
+      if (!isRecord(ev) || str(ev.id) === '') continue;
+      usable++;
+      if (str(ev.id) !== eventId) continue;
+      const fresh = parseScoreboardEvent(ev, league);
+      if (fresh === undefined) break;
+      return { game: fresh, events: buildContestEvents(ev, fresh, ctx.locale, ctx), state: undefined };
+    }
+    if (usable === 0) {
+      throw new ProviderError('unavailable', `espn: ${def.id} scoreboard carries no usable event`);
+    }
+    throw new ProviderError('not-found', `espn: event ${eventId} is not on the ${def.id} scoreboard`);
+  } catch (e) {
+    if (e instanceof ProviderError) throw e;
+    throw new ProviderError('parse', `espn fetchPlays parse: ${String(e)}`);
+  }
+}
+
 export const espnProvider: SportProvider = {
   id: 'espn',
   displayName: 'ESPN',
@@ -579,6 +1007,9 @@ export const espnProvider: SportProvider = {
   async fetchPlays(ctx: ProviderContext, game: Game): Promise<PlaySnapshot> {
     const eventId = lastSegment(game.id);
     const def = defForLeague(game.leagueId);
+    // No summary route for this league ⇒ derive the snapshot from the scoreboard.
+    // Every other league keeps the summary path untouched.
+    if (def !== undefined && def.hasSummary === false) return fetchFromScoreboard(ctx, game, def);
     const path = def ? def.path : game.sport === 'soccer' ? `soccer/${game.leagueId}` : game.leagueId;
     const raw = await ctx.fetchJson(`${BASE}${path}/summary?event=${eventId}`);
     try {

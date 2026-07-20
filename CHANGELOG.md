@@ -5,6 +5,74 @@ All notable changes to Vibe Stealth are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-07-11
+
+Seven new leagues, including the first four sports the extension did not cover
+before: tennis, motorsport, mixed martial arts, and cricket. Two of them arrive
+with limits worth knowing before you follow a game — cricket relays nothing, and
+a UFC row is a whole fight card.
+
+### Added
+
+- **Tennis** (key-free, unofficial, ESPN-backed) — ATP Tour and WTA Tour, singles
+  and doubles. The score is **sets won**, so a 6-2, 7-5 win reads `2:0`, and the
+  per-set games (`6-2, 7-5`) ride in the row's status text. The relay emits one
+  line per completed set plus a match-final line, both composed by the extension
+  and localized. There is no upstream play-by-play for tennis, so there is no
+  point-by-point commentary. A doubles pair renders as
+  `Hao-Ching Chan / Miyu Kato` and abbreviates to `CH/KA`. No tennis row carries
+  an image, singles or doubles: the upstream headshots are served from hosts
+  outside the logo downloader's allowlist, so the row uses a plain icon.
+- **Motorsport / Formula 1** (key-free, unofficial, ESPN-backed) — the first
+  sport here that is not a two-sided contest. A session is a field of ~22
+  drivers, so the row shows the contest and the current leader —
+  `Belgian Grand Prix — Practice 1 · P1 VER` — instead of a score, and the
+  leader is re-rendered on every poll. Each session of a race weekend is its own
+  row (Practice 1, Practice 2, Practice 3, Qualifying, Sprint, the Race), so a
+  practice session is never mislabelled as the Grand Prix. The relay emits
+  session-start, session-end, and a result line naming the top three.
+- **UFC** on the ESPN provider (`espn:ufc`). Upstream models a fight night as a
+  single event, so a row is a whole **fight card**: it is named after the card's
+  **main event**, while the relay covers every bout on the card, one result line
+  each.
+- **Cricket** on the ESPN provider (`espn:cricket`) — **score and status only**.
+  Its upstream summary endpoint returns data but carries no plays and no
+  commentary, so a followed cricket match refreshes its score and status while
+  its relay stays empty, the same way PandaScore is a score ticker.
+- **Men's College Basketball** on the ESPN provider
+  (`espn:mens-college-basketball`), with the same play-by-play feed as the NBA.
+- **College Football** on the ESPN provider (`espn:college-football`), fully
+  supported but **not enabled by default**: it resolves around 99 games on a
+  single Saturday and the tree draws one row per game, which would bury every
+  other league. Opt in by adding `espn:college-football` to
+  `vibeStealth.leagues.enabled`. That setting is an allowlist, so list the other
+  leagues you want alongside it.
+
+### Changed
+
+- The relay for tennis, motorsport and UFC is **entirely extension-composed and
+  therefore localized**, because those upstreams carry no prose at all. This is
+  the same split the README already documented: composed text localizes, and API
+  prose (MLB at-bat descriptions, ESPN soccer commentary) is passed through in
+  English. Names ESPN supplies are not translated, and the session suffix on a
+  motorsport row's name (`— Practice 1`) is pinned to English so the row reads
+  the same in both languages.
+- `vibeStealth.detail` has no effect on tennis, motorsport, UFC or cricket. None
+  of them has an upstream play-by-play feed to turn up, so `detailed` produces
+  exactly the same lines as `summary`.
+- Motorsport deliberately emits **no position-change stream** — you will never
+  see "Hamilton up to P3". Providers never compare one poll against the previous
+  one, and a single upstream response carries only the current order, so such a
+  line could not be derived honestly.
+- Live game-state child rows are still baseball, soccer, and LoL only. A tennis,
+  motorsport, UFC or cricket row does not expand.
+- A tennis tournament shows at most 12 matches — one tournament returned 124
+  across its draws — keeping the most relevant (live, then recently finished,
+  then upcoming) and logging how many were dropped. The 12 slots are spent
+  round-robin across the tournament's draws (Men's Singles, Women's Singles and
+  the doubles draws), singles draws first, so every draw is represented and
+  singles are never crowded out by doubles.
+
 ## [1.0.1] - 2026-07-10
 
 Publishing and metadata fixes only — no change to relay behavior.

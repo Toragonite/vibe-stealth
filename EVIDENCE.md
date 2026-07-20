@@ -644,3 +644,142 @@ uncovered.
   it, the LoL draft and kill feed degrade to "no state" and no events (never an error, §11.2), and
   the relay is unaffected. That degradation is by design, but it is silent — this document is where
   you find out what the endpoint used to do.
+
+---
+
+## 6. §14 field contests and the new sports (v1.1.0), as verified
+
+v1.1.0 added tennis, Formula 1 motorsport, UFC, cricket and two college leagues. Formula 1 forced
+the first structural change to the game model since v1.0: a race is a FIELD of ~22 drivers, not two
+opposing sides. This section records what was measured, what was attacked, and what broke.
+
+### 6.1 The APIs, as measured (probed live 2026-07-10/11)
+
+Base `https://site.api.espn.com/apis/site/v2/sports/`:
+
+| endpoint | events | shape | competitors/contest | summary route |
+|---|---|---|---|---|
+| tennis/atp | 4 | `groupings` | 2 | non-JSON (none) |
+| tennis/wta | 9 | `groupings` | 2 | non-JSON (none) |
+| racing/f1 | 1 | `competitions` | **22** | `{code,message}` (none) |
+| mma/ufc | 1 | `competitions` | 2 | **HTTP 404 (none)** |
+| cricket/8039 | 1 | `competitions` | 2 | HTTP 200, but no plays/commentary |
+| basketball/mens-college-basketball | 1 | `competitions` | 2 | HTTP 200 |
+| football/college-football | **99** | `competitions` | 2 | HTTP 200 |
+| golf/pga | 2 | `competitions` | **156** | — (excluded: field sport, deferred) |
+| rugby/scrum | — | non-JSON | — | (excluded: unsupported) |
+
+Three findings drove the design. **Tennis nests one level deeper** — an `event` is a TOURNAMENT and
+matches live at `event.groupings[].competitions[]`; competitor `score` is always `null` and the real
+score is `linescores[]`, one entry per set holding that set's GAMES. **Formula 1 has no two sides**
+— 22 competitors with `order` and `athlete`, and `competition.type.abbreviation` distinguishes
+`FP1`/`Q`/`R`, so a practice session is not the race. **Neither tennis nor motorsport nor UFC has
+any upstream play-by-play**, so their relay text is composed by the extension from structured state
+and is therefore localized (§12.1), unlike MLB/ESPN prose which passes through verbatim.
+
+### 6.2 The contract change
+
+`Game` gained `format: 'versus' | 'field'`; `home`/`away` became OPTIONAL and are present iff
+`versus`; `entrants` is present and NON-EMPTY iff `field`. Making the sides optional was deliberate
+— the compiler then enumerated all 46 call sites that had to learn about field contests, which is
+exactly the migration. `MAX_FIELD_POSITION = 9999` bounds `Entrant.position`.
+
+### 6.3 Contract-violating probes (P18–P25 in `scripts/hostile-probes.mjs`)
+
+Every probe hands the system a game that VIOLATES the pairing, or values that are structurally
+well-formed but semantically meaningless. All 22 probes pass; two FAILED first and found real bugs.
+
+| probe | attack | observed |
+|---|---|---|
+| P18 | `format:'field'` with `entrants: []` | degrades to the contest name; never throws, never invents a score |
+| P19 | `field` with home/away ALSO set | discriminator wins; no fake `AWY 2:3 HOM` |
+| P20 | positions `0, -1, 1.5, NaN, ±Inf, '1', null, 1e308` | **FAILED FIRST** — see 6.4 |
+| P21 | `entrants` as `null`/string/number/`{}`/`[null]`/`[{}]` | 8 hostile shapes degrade cleanly, no leaked `undefined`/`[object` |
+| P22 | `versus` with a missing side | 3 cases degrade; never prints `undefined` |
+| P23 | 5000-entrant field | label bounded at ≤200 chars, renders in 0 ms |
+| P24 | tennis 6-2 7-5 | score is SETS (2–0), never games (6/7/13) |
+| P25 | **two EVOLVING polls through a real relay engine** | 0 corrections, no emitted text ever mutates |
+| P9 | terminal payload, game with NO `format` | **FAILED FIRST** — see 6.4 |
+
+### 6.4 Defects the probes found (both fixed)
+
+**P9 — an absent discriminator silently froze the score.** A `Game` with no `format` property had
+its score refresh skipped while its status kept updating: no throw, no log, just a score that never
+moved. Root cause was a guard written as `format !== 'versus'`, which lumps "genuinely a field
+contest" together with "legacy game, discriminator absent". Fixed to `format === 'field'` in every
+provider: ABSENT means legacy versus, because every game shipped before §14 was two-sided. This is
+the project's standing rule that ABSENT must be distinguished from INVALID.
+
+**P20 — `1e308` rendered as `P1e+308`.** `Number.isInteger(1e308)` is `true`, so a shape-only check
+(`isInteger && >= 1`) accepted it. Validity here is a VALUE-SEMANTICS question: the largest real
+field we measured is 156, so `MAX_FIELD_POSITION` now bounds it at both the producing and consuming
+ends, and an out-of-range value is treated exactly as `undefined` (unranked) — never clamped, since
+clamping would promote garbage to a plausible finishing place.
+
+### 6.5 Adversarial review
+
+A fresh-context reviewer was tasked with proving the system broken. It found **17 defects that all
+four gates were blind to** — the suite, the hostile probes and the live probe were green throughout.
+The structural finding is worth recording: *every gate tested ONE snapshot, and the worst defects
+only appear on the SECOND poll.* Probe P25 now closes that gap permanently.
+
+Confirmed against LIVE production data and fixed:
+
+- **Tennis reported a finished match as 0-0 while naming the winner.** The score counted per-set
+  `winner` flags, but ESPN sometimes flags only the COMPETITOR. One half of the file already
+  distrusted those flags and compared games; the other did not. Now one shared decision function
+  serves both, so they cannot drift.
+- **Cricket displayed the winning side with no score at all.** ESPN reports `241/4 (43/50 ov)`;
+  `coerceScore` rejects the whole string, so the side that was AHEAD showed `–` — the display
+  asserted the opposite of the result, and mid-match both innings were `undefined` so a followed
+  match never updated. Now the leading integer (the runs) is parsed for cricket only.
+- **A UFC card was named after its opening prelim**, while `ev.name` (containing the main event) was
+  never read. Now the row identifies the card.
+- **Tennis published an in-progress set as finished, then retracted it as a false 'correction'** —
+  a direct violation of the immutable-text pin. Root cause was `Math.max` where the decision needed
+  `Math.min` of the two sides' set counts.
+- **UFC event ids derived from an array index rewrote one fight's result into another's** as settled
+  bouts dropped out of the list. Ids now hash the competitors, never the position.
+- **A transient scoreboard blip auto-unfollowed a live fight in ~2 minutes**, because a fetch
+  failure, a malformed body and an empty board all raised `not-found` — the auto-unfollow signal.
+  Only a genuine absence from a well-formed, non-empty board raises it now.
+- **A Grand Slam showed one draw and zero singles**: all draws competed for the same 12-match cap
+  and lost to a lexicographic id tiebreak. The cap is now spent round-robin across draws.
+- **An F1 event id containing `:` made a session permanently unpollable**, and a `-` collision
+  silently dropped an entire race weekend. Both operands are now percent-escaped injectively.
+- **The §14 discriminator was not persisted**, so a restored field contest was re-derived from a
+  duplicated table and could fabricate a `TBD –:– TBD` pair beside a live status. `format` and the
+  contest identity are now persisted; an ABSENT value still reads as legacy versus.
+
+Invariants the reviewer attacked and could NOT break: the §14 pairing itself (24 hostile payloads ×
+8 providers × 2 entry points), id stability under identical refetch, position value-semantics
+(~30 hostile values), sort determinism, phase provenance and the 12-hour runaway guard, the
+`statusShort` ≤ 8 budget, en/ko key parity across all five message maps, and "nothing throws on
+hostile upstream data" (zero raw `TypeError`s).
+
+### 6.6 Gate results after the fixes
+
+`npm run compile` clean · `npx vitest run` **604 passed** · `node scripts/hostile-probes.mjs`
+**22/22** · `probe-i18n-render.mjs` P15 PASS · `probe-logos.mjs` P17 PASS (49 logos) ·
+`node scripts/probe.mjs` (LIVE, now covering `espn-tennis`, `espn-racing` and the four new ESPN
+leagues, with a §14 invariant assertion on every game it sees) **0 failures**.
+
+Live end-to-end output at verification time: Belgian Grand Prix sessions with a 22-driver field and
+Korean session lines; WTA doubles rendering `Hao-Ching Chan / Miyu Kato` with per-set relay lines;
+a 12-bout UFC card relaying one result line per bout.
+
+### 6.7 What is still NOT verified for the new sports
+
+- **Cricket relays nothing.** Its summary route returns 200 but carries no plays and no commentary,
+  so a followed match refreshes score and status while the relay stays empty. Documented as
+  score-only; the `matchcards` array could support derived lines and is deferred.
+- **A UFC row is a whole fight card, not one bout** — upstream models a fight night as a single
+  event. The relay covers every bout; the row identifies the card.
+- **`espn:college-football` is opt-in**, not in the default league set: ~99 games on one Saturday
+  against a tree that draws one row per game with no truncation.
+- **Golf is not implemented.** Its 156-competitor field fits the §14 `field` shape, but it was
+  deferred rather than shipped unverified.
+- **Motorsport emits no position-change stream.** Providers never diff across polls, and one
+  response carries only the current order, so "Hamilton up to P3" could not be derived honestly.
+- The field-contest tree row and the restored-follow row were verified by unit tests and probes, not
+  by eye in a running VS Code window — the same limitation §5 records for logo rendering.

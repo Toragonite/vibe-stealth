@@ -73,8 +73,10 @@ function kboGame(): Game {
     phase: 'in',
     statusText: '9회초',
     statusShort: 'T9',
+    format: 'versus',
     home: { id: 'LT', name: '롯데', abbrev: 'LT', score: 0 },
     away: { id: 'HT', name: 'KIA', abbrev: 'HT', score: 0 },
+    entrants: undefined,
   };
 }
 
@@ -89,8 +91,10 @@ function kleagueGame(): Game {
     phase: 'in',
     statusText: '후반',
     statusShort: 'H2',
+    format: 'versus',
     home: { id: '05', name: '전북', abbrev: '05', score: 0 },
     away: { id: '21', name: '강원', abbrev: '21', score: 0 },
+    entrants: undefined,
   };
 }
 

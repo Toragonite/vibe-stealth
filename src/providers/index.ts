@@ -12,14 +12,20 @@ import { nhlProvider } from './nhl';
 import { naverProvider } from './naver';
 import { lolesportsProvider } from './lolesports';
 import { pandascoreProvider } from './pandascore';
+import { espnTennisProvider } from './espnTennis';
+import { espnRacingProvider } from './espnRacing';
 
-// Display order (§9): naver, lolesports, mlb, nhl, espn, pandascore.
+// Display order (§9): naver, lolesports, mlb, nhl, espn, then the §14 additions
+// (tennis, motorsport), then pandascore — which stays last because it is the one
+// secret-gated provider and is hidden until a token is set.
 const PROVIDERS: SportProvider[] = [
   naverProvider,
   lolesportsProvider,
   mlbProvider,
   nhlProvider,
   espnProvider,
+  espnTennisProvider,
+  espnRacingProvider,
   pandascoreProvider,
 ];
 
@@ -63,4 +69,20 @@ export const DEFAULT_LEAGUE_KEYS: string[] = [
   'espn:fra.1',
   'espn:usa.1',
   'espn:uefa.champions',
+  'espn:ufc',
+  'espn:cricket',
+  'espn:mens-college-basketball',
+  // espn-tennis (§14)
+  'espn-tennis:atp',
+  'espn-tennis:wta',
+  // espn-racing (§14)
+  'espn-racing:f1',
 ];
+
+/**
+ * Valid league keys that are deliberately NOT enabled by default. `espn:college-football`
+ * resolves ~99 games on a single Saturday and the tree renders one row per game with no
+ * truncation (premortem P2), so switching it on for everyone would bury the other leagues.
+ * It stays fully supported — a user opts in by adding the key to `vibeStealth.leagues.enabled`.
+ */
+export const OPT_IN_LEAGUE_KEYS: string[] = ['espn:college-football'];

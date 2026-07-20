@@ -1,0 +1,309 @@
+{
+  "sports": [{ "id": "850", "name": "Tennis", "slug": "tennis" }],
+  "events": [
+    {
+      "id": "600001",
+      "name": "Nordea Open",
+      "date": "2026-07-20T08:00Z",
+      "endDate": "2026-07-26T20:00Z",
+      "status": {
+        "type": {
+          "id": "2",
+          "name": "STATUS_IN_PROGRESS",
+          "state": "in",
+          "completed": false,
+          "description": "In Progress",
+          "detail": "In Progress",
+          "shortDetail": "In Progress"
+        }
+      },
+      "venue": { "fullName": "Bastad Tennis Stadium" },
+      "groupings": [
+        {
+          "grouping": { "id": "1", "slug": "mens-singles", "displayName": "Men's Singles" },
+          "competitions": [
+            {
+              "id": "401700001",
+              "date": "2026-07-20T10:00Z",
+              "round": { "displayName": "Round of 16" },
+              "format": { "sets": { "count": 3 } },
+              "wasSuspended": false,
+              "status": {
+                "type": {
+                  "id": "3",
+                  "name": "STATUS_FINAL",
+                  "state": "post",
+                  "completed": true,
+                  "description": "Final",
+                  "detail": "Final",
+                  "shortDetail": "Final"
+                }
+              },
+              "competitors": [
+                {
+                  "id": "9001",
+                  "winner": true,
+                  "score": null,
+                  "athlete": {
+                    "id": "9001",
+                    "displayName": "Miriam Bulgaru",
+                    "fullName": "Miriam Bulgaru",
+                    "shortName": "M. Bulgaru",
+                    "headshot": { "href": "https://a.espncdn.com/i/headshots/tennis/players/full/9001.png" }
+                  },
+                  "linescores": [
+                    { "value": 6.0, "winner": true },
+                    { "value": 6.0, "winner": true }
+                  ]
+                },
+                {
+                  "id": "9002",
+                  "winner": false,
+                  "score": null,
+                  "athlete": {
+                    "id": "9002",
+                    "displayName": "Anna Kovacs",
+                    "fullName": "Anna Kovacs",
+                    "shortName": "A. Kovacs",
+                    "headshot": { "href": "https://secure.espncdn.com/i/headshots/tennis/players/full/9002.png" }
+                  },
+                  "linescores": [
+                    { "value": 2.0, "winner": false },
+                    { "value": 4.0, "winner": false }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "401700002",
+              "date": "2026-07-20T12:30Z",
+              "round": { "displayName": "Round of 16" },
+              "wasSuspended": false,
+              "status": {
+                "type": {
+                  "id": "2",
+                  "name": "STATUS_IN_PROGRESS",
+                  "state": "in",
+                  "completed": false,
+                  "description": "In Progress",
+                  "detail": "In Progress",
+                  "shortDetail": "In Progress"
+                }
+              },
+              "competitors": [
+                {
+                  "id": "9003",
+                  "winner": false,
+                  "score": null,
+                  "athlete": { "id": "9003", "displayName": "Leo Sundqvist", "shortName": "L. Sundqvist" },
+                  "linescores": [
+                    { "value": 6.0, "winner": true },
+                    { "value": 3.0, "winner": false },
+                    { "value": 2.0 }
+                  ]
+                },
+                {
+                  "id": "9004",
+                  "winner": false,
+                  "score": null,
+                  "athlete": { "id": "9004", "displayName": "Tomas Neri", "shortName": "T. Neri" },
+                  "linescores": [
+                    { "value": 4.0, "winner": false },
+                    { "value": 6.0, "winner": true },
+                    { "value": 1.0 }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "401700003",
+              "date": "2026-07-20T18:00Z",
+              "round": { "displayName": "Round of 16" },
+              "status": {
+                "type": {
+                  "id": "1",
+                  "name": "STATUS_SCHEDULED",
+                  "state": "pre",
+                  "completed": false,
+                  "description": "Scheduled",
+                  "detail": "Mon, July 20th at 6:00 PM UTC",
+                  "shortDetail": "7/20 - 6:00 PM UTC"
+                }
+              },
+              "competitors": [
+                {
+                  "id": "9005",
+                  "winner": false,
+                  "score": null,
+                  "athlete": { "id": "9005", "displayName": "Ivan Petrov", "shortName": "I. Petrov" },
+                  "linescores": []
+                },
+                {
+                  "id": "9006",
+                  "winner": false,
+                  "score": null,
+                  "athlete": { "id": "9006", "displayName": "Hugo Marchand", "shortName": "H. Marchand" },
+                  "linescores": []
+                }
+              ]
+            },
+            {
+              "id": "401700006",
+              "date": "2026-07-17T10:00Z",
+              "round": { "displayName": "Qualifying" },
+              "status": {
+                "type": {
+                  "id": "3",
+                  "name": "STATUS_FINAL",
+                  "state": "post",
+                  "completed": true,
+                  "description": "Final",
+                  "detail": "Final",
+                  "shortDetail": "Final"
+                }
+              },
+              "competitors": [
+                {
+                  "id": "9007",
+                  "winner": true,
+                  "score": null,
+                  "athlete": { "id": "9007", "displayName": "Old Qualifier", "shortName": "O. Qualifier" },
+                  "linescores": [
+                    { "value": 6.0, "winner": true },
+                    { "value": 6.0, "winner": true }
+                  ]
+                },
+                {
+                  "id": "9008",
+                  "winner": false,
+                  "score": null,
+                  "athlete": { "id": "9008", "displayName": "Older Qualifier", "shortName": "O. Qualifier" },
+                  "linescores": [
+                    { "value": 1.0, "winner": false },
+                    { "value": 2.0, "winner": false }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "grouping": { "id": "2", "slug": "mens-doubles", "displayName": "Men's Doubles" },
+          "competitions": [
+            {
+              "id": "401700004",
+              "date": "2026-07-20T11:00Z",
+              "round": { "displayName": "Quarterfinal" },
+              "status": {
+                "type": {
+                  "id": "3",
+                  "name": "STATUS_FINAL",
+                  "state": "post",
+                  "completed": true,
+                  "description": "Final",
+                  "detail": "Final",
+                  "shortDetail": "Final"
+                }
+              },
+              "competitors": [
+                {
+                  "id": "9101",
+                  "winner": true,
+                  "score": null,
+                  "athlete": null,
+                  "team": null,
+                  "roster": {
+                    "displayName": "Rafael Costa / Nils Berg",
+                    "shortDisplayName": "R. Costa / N. Berg",
+                    "athletes": [
+                      { "id": "9110", "displayName": "Rafael Costa", "fullName": "Rafael Costa", "shortName": "R. Costa" },
+                      { "id": "9111", "displayName": "Nils Berg", "fullName": "Nils Berg", "shortName": "N. Berg" }
+                    ]
+                  },
+                  "linescores": [
+                    { "value": 7.0, "winner": true },
+                    { "value": 6.0, "winner": true }
+                  ]
+                },
+                {
+                  "id": "9102",
+                  "winner": false,
+                  "score": null,
+                  "athlete": null,
+                  "team": null,
+                  "roster": {
+                    "displayName": "Paul Mercier / Diego Salas",
+                    "shortDisplayName": "P. Mercier / D. Salas",
+                    "athletes": [
+                      { "id": "9112", "displayName": "Paul Mercier", "fullName": "Paul Mercier", "shortName": "P. Mercier" },
+                      { "id": "9113", "displayName": "Diego Salas", "fullName": "Diego Salas", "shortName": "D. Salas" }
+                    ]
+                  },
+                  "linescores": [
+                    { "value": 6.0, "winner": false },
+                    { "value": 3.0, "winner": false }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "401700005",
+              "date": "2026-07-20T13:00Z",
+              "round": { "displayName": "Quarterfinal" },
+              "status": {
+                "type": {
+                  "id": "3",
+                  "name": "STATUS_FINAL",
+                  "state": "post",
+                  "completed": true,
+                  "description": "Final",
+                  "detail": "Final",
+                  "shortDetail": "Final"
+                }
+              },
+              "competitors": [
+                {
+                  "id": "9201",
+                  "winner": true,
+                  "score": null,
+                  "athlete": { "id": "9201", "displayName": "Erik Lund", "shortName": "E. Lund" },
+                  "linescores": [
+                    { "value": 6.0, "winner": true },
+                    { "value": 6.0, "winner": true }
+                  ]
+                },
+                {
+                  "id": "9202",
+                  "winner": false,
+                  "score": null,
+                  "linescores": [
+                    { "value": 0.0, "winner": false },
+                    { "value": 2.0, "winner": false }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "600002",
+      "name": "Quiet Cup",
+      "date": "2026-07-20T08:00Z",
+      "endDate": "2026-07-26T20:00Z",
+      "status": {
+        "type": {
+          "id": "1",
+          "name": "STATUS_SCHEDULED",
+          "state": "pre",
+          "completed": false,
+          "description": "Scheduled",
+          "detail": "Scheduled",
+          "shortDetail": "Scheduled"
+        }
+      },
+      "groupings": []
+    }
+  ]
+}

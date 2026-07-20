@@ -69,8 +69,10 @@ function msiGame(phase: Game['phase'] = 'in'): Game {
     phase,
     statusText: 'BO5 · 0:0',
     statusShort: 'G1',
+    format: 'versus',
     home: { id: '98767991853197861', name: 'T1', abbrev: 'T1', score: 0 },
     away: { id: '98767991926151025', name: 'G2 Esports', abbrev: 'G2', score: 0 },
+    entrants: undefined,
   };
 }
 
@@ -301,6 +303,36 @@ describe('lolesports fetchPlays fresh game (P9 / §2.6 pin)', () => {
     expect(snap.game.phase).toBe('in'); // game 1 inProgress, input was 'pre'
     expect(snap.game.statusShort).toBe('G1');
     expect(snap.events).toEqual([]);
+  });
+
+  it("§14: format 'field' ⇒ status refreshed but the two-sided merge is skipped", async () => {
+    const input: Game = {
+      ...staleInGame(),
+      format: 'field',
+      home: undefined,
+      away: undefined,
+      entrants: [{ id: '1', position: 1, name: 'Max Verstappen', abbrev: 'VER', detail: undefined, logo: undefined }],
+    };
+    const { ctx } = makeCtx({ response: loadFixture('lolesports-eventdetails-sweep.json') });
+    const snap = await lolesportsProvider.fetchPlays(ctx, input);
+    expect(snap.game.phase).toBe('post'); // the status path is not gated
+    expect(snap.game.statusShort).toBe('F');
+    expect(snap.game.home).toBeUndefined(); // no sides invented onto a field contest
+    expect(snap.game.away).toBeUndefined();
+    expect(snap.game.entrants).toEqual(input.entrants);
+  });
+
+  it('§14: an ABSENT format is legacy versus — the sides still refresh', async () => {
+    // Exactly what a v1.0.1 game looks like after a restore: no discriminator at all.
+    // The `!== 'versus'` form used to drop both sides here and rebuild them bare.
+    const legacy = { ...staleInGame() } as Partial<Game>;
+    delete legacy.format;
+    const { ctx } = makeCtx({ response: loadFixture('lolesports-eventdetails-sweep.json') });
+    const snap = await lolesportsProvider.fetchPlays(ctx, legacy as Game);
+    expect(snap.game.phase).toBe('post');
+    expect(snap.game.away!.score).toBe(3); // refreshed, NOT frozen at the stale 0
+    expect(snap.game.home!.score).toBe(0);
+    expect(snap.game.away!.name).toBe(staleInGame().away!.name); // the input's identity survives
   });
 
   it('strategy.count missing ⇒ games-terminal fallback yields phase post', async () => {
